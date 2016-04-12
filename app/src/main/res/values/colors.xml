@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#0db09b</color>
+    <color name="colorPrimaryDark">#0b9685</color>
+    <color name="colorEditText">#26b8a5</color>
+    <color name="colorVDivider">#d2d2d2</color>//竖向分割线
+    <color name="colorHDivider">#f5f5f5</color>//横向分割线
+    <color name="colorBg">#f5f5f5</color>//背景
+    <color name="colorGray">#8e8e8e</color>//主体灰色
+    <color name="colorBlue">#1fa3e7</color>
+    <color name="colorCityFont">#828282</color>
+    <color name="colorIntroduceMyselfBg">#eeeeee</color>
+    <color name="colorFemale">#FD6282</color>
+    <color name="colorMale">#7BC3F3</color>
+    <color name="colorHeight">#9A9A9A</color>
+    <color name="colorApplicantInfoBg">#CFEFEA</color>
+    <color name="colorCalendarTitle">#FE6300</color>
+
+    <color name="transparent">#00000000</color>
+    <color name="transparentBlack">#22000000</color>
+    <color name="white">#ffffff</color>
+    <color name="black">#000000</color>
+</resources>

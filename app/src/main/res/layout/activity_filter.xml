@@ -1,0 +1,341 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:toggle="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/llayout_filter"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBg"
+    android:orientation="vertical">
+
+    <include layout="@layout/pub_layout_title_bar" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="性别要求"
+            android:textColor="@color/black"
+            android:textSize="18sp" />
+
+        <RadioGroup
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
+
+
+            <RadioButton
+                android:id="@+id/rbtn_sex_all"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/selector_filter"
+                android:button="@null"
+                android:checked="true"
+                android:gravity="center"
+                android:text="@string/tab_all"
+                android:textColor="@drawable/selector_text_filter_background"
+                android:textSize="16sp" />
+
+            <RadioButton
+                android:id="@+id/rbtn_sex_man"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:background="@drawable/selector_filter"
+                android:button="@null"
+                android:gravity="center"
+                android:text="@string/tab_man"
+                android:textColor="@drawable/selector_text_filter_background"
+                android:textSize="16sp" />
+
+            <RadioButton
+                android:id="@+id/rbtn_sex_woman"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:background="@drawable/selector_filter"
+                android:button="@null"
+                android:gravity="center"
+                android:text="@string/tab_woman"
+                android:textColor="@drawable/selector_text_filter_background"
+                android:textSize="16sp" />
+
+        </RadioGroup>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="上班时间(可多选)"
+            android:textColor="@color/black"
+            android:textSize="18sp" />
+
+        <LinearLayout
+            android:id="@+id/test"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/rbtn_time_all"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/selector_filter"
+                android:button="@null"
+                android:checked="true"
+                android:gravity="center"
+                android:text="@string/tab_all"
+                android:textColor="@drawable/selector_text_filter_background"
+                android:textSize="16sp" />
+
+
+            <CheckBox
+                android:id="@+id/chk_time_morning"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:background="@drawable/selector_filter"
+                android:button="@null"
+                android:gravity="center"
+                android:text="@string/tab_morning"
+                android:textColor="@drawable/selector_text_filter_background"
+                android:textSize="16sp" />
+
+            <CheckBox
+                android:id="@+id/chk_time_afternoon"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:background="@drawable/selector_filter"
+                android:button="@null"
+                android:gravity="center"
+                android:text="@string/tab_afternoon"
+                android:textColor="@drawable/selector_text_filter_background"
+                android:textSize="16sp" />
+
+            <CheckBox
+                android:id="@+id/chk_time_evening"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:background="@drawable/selector_filter"
+                android:button="@null"
+                android:gravity="center"
+                android:text="@string/tab_evening"
+                android:textColor="@drawable/selector_text_filter_background"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="开始工作时间"
+                android:textColor="@color/black"
+                android:textSize="18sp" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/txt_startWorkTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="不限"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <RadioGroup
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
+
+
+            <RadioButton
+                android:id="@+id/rbtn_startTime_all"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/selector_filter"
+                android:button="@null"
+                android:checked="true"
+                android:gravity="center"
+                android:text="@string/tab_all"
+                android:textColor="@drawable/selector_text_filter_background"
+                android:textSize="16sp" />
+
+            <RadioButton
+                android:id="@+id/rbtn_startTime_assign"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:background="@drawable/selector_filter"
+                android:button="@null"
+                android:gravity="center"
+                android:text="@string/tab_assign"
+                android:textColor="@drawable/selector_text_filter_background"
+                android:textSize="16sp" />
+
+        </RadioGroup>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="工作周期"
+            android:textColor="@color/black"
+            android:textSize="18sp" />
+
+        <RadioGroup
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
+
+
+            <RadioButton
+                android:id="@+id/rbtn_workPeriod_all"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/selector_filter"
+                android:button="@null"
+                android:checked="true"
+                android:gravity="center"
+                android:text="@string/tab_all"
+                android:textColor="@drawable/selector_text_filter_background"
+                android:textSize="16sp" />
+
+            <RadioButton
+                android:id="@+id/rbtn_workPeriod_long"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:background="@drawable/selector_filter"
+                android:button="@null"
+                android:gravity="center"
+                android:text="@string/tab_long"
+                android:textColor="@drawable/selector_text_filter_background"
+                android:textSize="16sp" />
+
+            <RadioButton
+                android:id="@+id/rbtn_workPeriod_short"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:background="@drawable/selector_filter"
+                android:button="@null"
+                android:gravity="center"
+                android:text="@string/tab_short"
+                android:textColor="@drawable/selector_text_filter_background"
+                android:textSize="16sp" />
+
+            <RadioButton
+                android:id="@+id/rbtn_workPeriod_weekEnd"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:background="@drawable/selector_filter"
+                android:button="@null"
+                android:gravity="center"
+                android:text="@string/tab_weekend"
+                android:textColor="@drawable/selector_text_filter_background"
+                android:textSize="16sp" />
+
+        </RadioGroup>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="只看认证兼职"
+                android:textColor="@color/black"
+                android:textSize="18sp" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <com.zcw.togglebutton.ToggleButton
+                android:id="@+id/tBtn_authJob"
+                android:layout_width="60dp"
+                android:layout_height="24dp"
+                toggle:offColor="#979797"
+                toggle:onColor="#FF6600"
+                toggle:spotColor="@color/white" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="只看快结兼职"
+                android:textColor="@color/black"
+                android:textSize="18sp" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <com.zcw.togglebutton.ToggleButton
+                android:id="@+id/tBtn_soonJob"
+                android:layout_width="60dp"
+                android:layout_height="24dp"
+                toggle:isDefaultOn="true"
+                toggle:offColor="#979797"
+                toggle:onColor="#FF6600"
+                toggle:spotColor="@color/white" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <Button
+        style="@style/myButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="@string/btn_confirm" />
+</LinearLayout>

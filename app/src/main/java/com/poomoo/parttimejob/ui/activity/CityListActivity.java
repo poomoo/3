@@ -1,0 +1,889 @@
+/**
+ * Copyright (c) 2015. 李苜菲 Inc. All rights reserved.
+ */
+package com.poomoo.parttimejob.ui.activity;
+
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.graphics.PixelFormat;
+import android.net.Uri;
+import android.os.Bundle;
+import android.os.Handler;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.BaseAdapter;
+import android.widget.EditText;
+import android.widget.GridView;
+import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+
+import com.baidu.location.BDLocation;
+import com.baidu.location.BDLocationListener;
+import com.baidu.location.LocationClient;
+import com.baidu.location.LocationClientOption;
+import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.poomoo.api.AbsAPICallback;
+import com.poomoo.api.ApiException;
+import com.poomoo.api.NetConfig;
+import com.poomoo.api.Network;
+import com.poomoo.commlib.LogUtils;
+import com.poomoo.commlib.MyUtils;
+import com.poomoo.commlib.PingYinUtil;
+import com.poomoo.model.request.BaseRequestBO;
+import com.poomoo.model.response.RAreaBO;
+import com.poomoo.parttimejob.R;
+import com.poomoo.parttimejob.ui.custom.MyLetterListView;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.regex.Pattern;
+
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
+
+/**
+ * 城市列表
+ * 作者: 李苜菲
+ * 日期: 2015/11/25 15:40.
+ */
+public class CityListActivity extends BaseActivity implements OnScrollListener {
+    private BaseAdapter adapter;
+    private ResultListAdapter resultListAdapter;
+    private ListView personList;
+    private ListView resultList;
+    private TextView overlay; // 对话框首字母textview
+    private MyLetterListView letterListView; // A-Z listview
+    private HashMap<String, Integer> alphaIndexer;// 存放存在的汉语拼音首字母和与之对应的列表位置
+    private String[] sections;// 存放存在的汉语拼音首字母
+    private Handler handler;
+    private OverlayThread overlayThread; // 显示首字母对话框
+    private List<RAreaBO.city> allCity_lists; // 所有城市列表
+    private List<RAreaBO.city> city_lists;// 城市列表
+    private List<RAreaBO.city> city_hot;
+    private List<RAreaBO.city> city_result;
+    //    private List<String> city_history;
+    private EditText sh;
+    private TextView tv_noresult;
+
+    private LocationClient mLocationClient;
+    private MyLocationListener mMyLocationListener;
+
+    private String currentCity; // 当前城市
+    private String locateCity; // 定位城市
+    private int locateProcess = 1; // 记录当前定位的状态 正在定位-定位成功-定位失败
+    private boolean isNeedFresh;
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    private GoogleApiClient client;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        initView();
+    }
+
+    @Override
+    protected String onSetTitle() {
+        return getString(R.string.title_selectCity);
+    }
+
+    @Override
+    protected int onBindLayout() {
+        return R.layout.activity_city_list;
+    }
+
+    protected void initView() {
+        initTitleBar();
+
+        personList = (ListView) findViewById(R.id.list_view);
+        resultList = (ListView) findViewById(R.id.search_result);
+        sh = (EditText) findViewById(R.id.sh);
+        tv_noresult = (TextView) findViewById(R.id.tv_noresult);
+        letterListView = (MyLetterListView) findViewById(R.id.MyLetterListView01);
+
+        initData();
+        getCityList();
+    }
+
+    protected void initTitleBar() {
+        HeaderViewHolder headerViewHolder = getHeaderView();
+        headerViewHolder.titleTxt.setText(R.string.title_selectCity);
+        headerViewHolder.backImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+                getActivityOutToRight();
+            }
+        });
+    }
+
+    private void initData() {
+        locateCity = application.getLocateCity();
+
+        allCity_lists = new ArrayList<>();
+        city_hot = new ArrayList<>();
+        city_result = new ArrayList<>();
+//        city_history = new ArrayList<>();
+//
+//        city_history = MyUtils.getHistoryCitys();
+
+//        helper = new DatabaseHelper(this);
+        sh.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before,
+                                      int count) {
+                if (TextUtils.isEmpty(s + "")) {
+                    letterListView.setVisibility(View.VISIBLE);
+                    personList.setVisibility(View.VISIBLE);
+                    resultList.setVisibility(View.GONE);
+                    tv_noresult.setVisibility(View.GONE);
+                } else {
+                    city_result.clear();
+                    letterListView.setVisibility(View.GONE);
+                    personList.setVisibility(View.GONE);
+                    getResultCityList(s.toString());
+                    if (city_result.size() <= 0) {
+                        tv_noresult.setVisibility(View.VISIBLE);
+                        resultList.setVisibility(View.GONE);
+                    } else {
+                        tv_noresult.setVisibility(View.GONE);
+                        resultList.setVisibility(View.VISIBLE);
+                        resultListAdapter.notifyDataSetChanged();
+                    }
+                }
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count,
+                                          int after) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        letterListView.setOnTouchingLetterChangedListener(new LetterListViewListener());
+        alphaIndexer = new HashMap<>();
+        handler = new Handler();
+        overlayThread = new OverlayThread();
+        isNeedFresh = true;
+        personList.setOnItemClickListener(new OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    final int position, long id) {
+                if (position >= 5) {
+                    currentCity = allCity_lists.get(position).cityName;
+                    if (!locateCity.equals(currentCity)) {
+                        String title = "定位的城市是" + locateCity + ",是否跳转到" + currentCity + "?";
+                        Dialog dialog = new AlertDialog.Builder(CityListActivity.this).setMessage(title).setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                application.setCurrCity(currentCity);
+//                                HistoryCityInfo cityInfo = new HistoryCityInfo();
+//                                cityInfo.setCityName(currentCity);
+//                                MyUtils.saveHistoryCity(cityInfo);
+                                finish();
+                                getActivityOutToRight();
+                            }
+                        }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                            }
+                        }).create();
+                        dialog.show();
+                    } else {
+                        application.setCurrCity(currentCity);
+//                        HistoryCityInfo cityInfo = new HistoryCityInfo();
+//                        cityInfo.setCityName(currentCity);
+//                        MyUtils.saveHistoryCity(cityInfo);
+                        finish();
+                        getActivityOutToRight();
+                    }
+                }
+            }
+        });
+        locateProcess = 1;
+        personList.setAdapter(adapter);
+        personList.setOnScrollListener(this);
+        resultListAdapter = new ResultListAdapter(this, city_result);
+        resultList.setAdapter(resultListAdapter);
+        resultList.setOnItemClickListener(new OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+                currentCity = city_result.get(position).cityName;
+                if (!locateCity.equals(currentCity)) {
+                    String title = "定位的城市是" + locateCity + ",是否跳转到" + currentCity + "?";
+                    Dialog dialog = new AlertDialog.Builder(CityListActivity.this).setMessage(title).setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            application.setCurrCity(currentCity);
+//                            HistoryCityInfo cityInfo = new HistoryCityInfo();
+//                            cityInfo.setCityName(currentCity);
+//                            MyUtils.saveHistoryCity(cityInfo);
+                            finish();
+                            getActivityOutToRight();
+                        }
+                    }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    }).create();
+                    dialog.show();
+                } else {
+                    application.setCurrCity(currentCity);
+//                    HistoryCityInfo cityInfo = new HistoryCityInfo();
+//                    cityInfo.setCityName(currentCity);
+//                    MyUtils.saveHistoryCity(cityInfo);
+                    finish();
+                    getActivityOutToRight();
+                }
+
+            }
+        });
+        initOverlay();
+        cityInit();
+        setAdapter(allCity_lists, city_hot);
+
+        mLocationClient = new LocationClient(this.getApplicationContext());
+        mMyLocationListener = new MyLocationListener();
+        mLocationClient.registerLocationListener(mMyLocationListener);
+        initLocation();
+        LogUtils.i("location", "1mLocationClient.start()");
+        mLocationClient.start();
+        LogUtils.i("location", "2mLocationClient.start()");
+    }
+
+    private void cityInit() {
+        RAreaBO rAreaBO = new RAreaBO();
+        RAreaBO.city city = rAreaBO.new city("定位", "0");
+        allCity_lists.add(city);
+//        city = rAreaBO.new city("历史", "1"); // 最近访问的城市
+//        allCity_lists.add(city);
+        city = rAreaBO.new city("热门", "1"); // 热门城市
+        allCity_lists.add(city);
+        city = rAreaBO.new city("全部", "2"); // 全部城市
+        allCity_lists.add(city);
+    }
+
+    /**
+     * 热门城市
+     */
+    public void hotCityInit() {
+        int len = city_lists.size();
+        RAreaBO rAreaBO = new RAreaBO();
+        RAreaBO.city city;
+        for (int i = 0; i < len; i++) {
+            if (city_lists.get(i).isHot.equals("1")) {
+                city = rAreaBO.new city(city_lists.get(i).cityName, "2");
+                city_hot.add(city);
+            }
+
+        }
+    }
+
+    private void getCityList() {
+        showProgressDialog(getString(R.string.dialog_msg));
+        BaseRequestBO baseRequestBO = new BaseRequestBO(NetConfig.COMMACTION, NetConfig.CITY);
+        Network.getCommApi().getCitys(baseRequestBO)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new AbsAPICallback<List<RAreaBO>>() {
+                    @Override
+                    protected void onError(ApiException e) {
+                        closeProgressDialog();
+                        MyUtils.showToast(getApplicationContext(), e.getMessage());
+                    }
+
+                    @Override
+                    public void onNext(List<RAreaBO> rAreaBOs) {
+                        closeProgressDialog();
+                        for (RAreaBO rAreaBO : rAreaBOs) {
+                            int len = rAreaBO.cityList.size();
+                            for (int i = 0; i < len; i++)
+                                city_lists.add(rAreaBO.cityList.get(i));
+                        }
+                        hotCityInit();
+                        Collections.sort(city_lists, comparator);
+                        allCity_lists.addAll(city_lists);
+                        LogUtils.i("lmf", "allCity_lists:" + allCity_lists.toString());
+                        adapter.notifyDataSetChanged();
+                        sections = new String[allCity_lists.size()];
+                        for (int i = 0; i < allCity_lists.size(); i++) {
+                            // 当前汉语拼音首字母
+                            String currentStr = getAlpha(allCity_lists.get(i).pinyin);
+                            // 上一个汉语拼音首字母，如果不存在为" "
+                            String previewStr = (i - 1) >= 0 ? getAlpha(allCity_lists.get(i - 1).pinyin) : " ";
+                            if (!previewStr.equals(currentStr)) {
+                                String name = getAlpha(allCity_lists.get(i).pinyin);
+                                alphaIndexer.put(name, i);
+                                sections[i] = name;
+                            }
+                        }
+                    }
+                });
+    }
+
+    private void getResultCityList(String keyword) {
+        int len = city_lists.size();
+        RAreaBO.city city;
+        for (int i = 0; i < len; i++) {
+            city = city_lists.get(i);
+
+            if (city.pinyin.contains(keyword) || city.pinyin.contains(keyword.toUpperCase()) || city.cityName.contains(keyword))
+                city_result.add(city);
+        }
+        Collections.sort(city_result, comparator);
+    }
+
+    /**
+     * a-z排序
+     */
+    Comparator comparator = new Comparator<RAreaBO.city>() {
+        @Override
+        public int compare(RAreaBO.city lhs, RAreaBO.city rhs) {
+            String a = lhs.pinyin.substring(0, 1);
+            String b = rhs.pinyin.substring(0, 1);
+            int flag = a.compareTo(b);
+            if (flag == 0) {
+                return a.compareTo(b);
+            } else {
+                return flag;
+            }
+        }
+    };
+
+    private void setAdapter(List<RAreaBO.city> list, List<RAreaBO.city> hotList) {
+        adapter = new ListAdapter(this, list, hotList);
+        personList.setAdapter(adapter);
+    }
+
+    /**
+     * 实现实位回调监听
+     */
+    private void initLocation() {
+        LocationClientOption option = new LocationClientOption();
+        option.setLocationMode(LocationClientOption.LocationMode.Hight_Accuracy);// 可选，默认高精度，设置定位模式，高精度，低功耗，仅设备
+        option.setCoorType("bd09ll");// 可选，默认gcj02，设置返回的定位结果坐标系，
+        int span = 1 * 10 * 1000;
+
+        option.setScanSpan(span);// 可选，默认0，即仅定位一次，设置发起定位请求的间隔需要大于等于1000ms才是有效的
+        option.setIsNeedAddress(true);// 可选，设置是否需要地址信息，默认不需要
+        option.setOpenGps(true);// 可选，默认false,设置是否使用gps
+        option.setLocationNotify(true);// 可选，默认false，设置是否当gps有效时按照1S1次频率输出GPS结果
+        option.setIgnoreKillProcess(true);// 可选，默认true，定位SDK内部是一个SERVICE，并放到了独立进程，设置是否在stop的时候杀死这个进程，默认不杀死
+        option.setPriority(LocationClientOption.GpsFirst);    // 当gps可用，而且获取了定位结果时，不再发起网络请求，直接返回给用户坐标。这个选项适合希望得到准确坐标位置的用户。如果gps不可用，再发起网络请求，进行定位。
+        mLocationClient.setLocOption(option);
+    }
+
+    public class MyLocationListener implements BDLocationListener {
+
+        @Override
+        public void onReceiveLocation(BDLocation location) {
+            LogUtils.i("location", "location.getLongitude():" + location.getLongitude() + "location.getLatitude():"
+                    + location.getLatitude() + "location.getCity():" + location.getCity());
+//            MyUtils.showToast(getApplicationContext(), "city:" + location.getCity());
+            if (!isNeedFresh)
+                return;
+
+            if (location.getCity() == null) {
+                locateProcess = 3; // 定位失败
+                personList.setAdapter(adapter);
+                adapter.notifyDataSetChanged();
+                return;
+            }
+            locateCity = location.getCity();
+            application.setLocateCity(locateCity);
+            locateProcess = 2; // 定位成功
+            personList.setAdapter(adapter);
+            adapter.notifyDataSetChanged();
+//            mLocationClient.unRegisterLocationListener(mMyLocationListener);
+        }
+    }
+
+    private class ResultListAdapter extends BaseAdapter {
+        private LayoutInflater inflater;
+        private List<RAreaBO.city> results = new ArrayList<>();
+
+        public ResultListAdapter(Context context, List<RAreaBO.city> results) {
+            inflater = LayoutInflater.from(context);
+            this.results = results;
+        }
+
+        @Override
+        public int getCount() {
+            return results.size();
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return position;
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            ViewHolder viewHolder;
+            if (convertView == null) {
+                convertView = inflater.inflate(R.layout.list_item, null);
+                viewHolder = new ViewHolder();
+                viewHolder.name = (TextView) convertView
+                        .findViewById(R.id.name);
+                convertView.setTag(viewHolder);
+            } else {
+                viewHolder = (ViewHolder) convertView.getTag();
+            }
+            viewHolder.name.setText(results.get(position).cityName);
+            return convertView;
+        }
+
+        class ViewHolder {
+            TextView name;
+        }
+    }
+
+    public class ListAdapter extends BaseAdapter {
+        private Context context;
+        private LayoutInflater inflater;
+        private List<RAreaBO.city> list;
+        private List<RAreaBO.city> hotList;
+        //        private List<String> hisCity;
+        final int VIEW_TYPE = 5;
+
+        public ListAdapter(Context context, List<RAreaBO.city> list,
+                           List<RAreaBO.city> hotList) {
+            this.inflater = LayoutInflater.from(context);
+            this.list = list;
+            this.context = context;
+            this.hotList = hotList;
+//            this.hisCity = hisCity;
+            alphaIndexer = new HashMap<>();
+        }
+
+        @Override
+        public int getViewTypeCount() {
+            return VIEW_TYPE;
+        }
+
+        @Override
+        public int getItemViewType(int position) {
+            return position < 4 ? position : 4;
+        }
+
+        @Override
+        public int getCount() {
+            return list.size();
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return list.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        ViewHolder holder;
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            final TextView city;
+            int viewType = getItemViewType(position);
+            if (viewType == 0) { // 定位
+                convertView = inflater.inflate(R.layout.frist_list_item, null);
+                TextView locateHint = (TextView) convertView.findViewById(R.id.locateHint);
+                city = (TextView) convertView.findViewById(R.id.lng_city);
+                city.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (locateProcess == 2) {
+                            application.setCurrCity(city.getText().toString());
+//                            HistoryCityInfo cityInfo = new HistoryCityInfo();
+//                            cityInfo.setCityName(locateCity);
+//                            MyUtils.saveHistoryCity(cityInfo);
+                            finish();
+                            getActivityOutToRight();
+                        } else if (locateProcess == 3) {
+                            locateProcess = 1;
+                            personList.setAdapter(adapter);
+                            adapter.notifyDataSetChanged();
+                            mLocationClient.stop();
+                            isNeedFresh = true;
+                            initLocation();
+                            locateCity = "";
+                            mLocationClient.start();
+                        }
+                    }
+                });
+                ProgressBar pbLocate = (ProgressBar) convertView
+                        .findViewById(R.id.pbLocate);
+                if (locateProcess == 1) { // 正在定位
+                    locateHint.setText("正在定位");
+                    city.setVisibility(View.GONE);
+                    pbLocate.setVisibility(View.VISIBLE);
+                } else if (locateProcess == 2) { // 定位成功
+                    locateHint.setText("当前定位城市");
+                    LogUtils.i(TAG, "定位成功:" + "currentCity:" + currentCity + "city:" + city);
+                    city.setVisibility(View.VISIBLE);
+                    city.setText(locateCity);
+                    mLocationClient.stop();
+                    pbLocate.setVisibility(View.GONE);
+                } else if (locateProcess == 3) {
+                    locateHint.setText("未定位到城市,请选择");
+                    city.setVisibility(View.VISIBLE);
+                    city.setText("重新定位");
+                    pbLocate.setVisibility(View.GONE);
+                }
+            }
+//            else if (viewType == 1) { // 最近访问城市
+//                convertView = inflater.inflate(R.layout.recent_city, null);
+//                GridView recentCity = (GridView) convertView.findViewById(R.id.recent_city);
+//                recentCity.setAdapter(new HitCityAdapter(context, this.hisCity));
+//                recentCity.setOnItemClickListener(new OnItemClickListener() {
+//
+//                    @Override
+//                    public void onItemClick(AdapterView<?> parent, View view,
+//                                            int position, long id) {
+//                        currentCity = city_history.get(position);
+//                        if (!locateCity.equals(currentCity)) {
+//                            String title = "定位的城市是" + locateCity + ",是否跳转到" + currentCity + "?";
+//                            Dialog dialog = new AlertDialog.Builder(CityListActivity.this).setMessage(title).setPositiveButton("确定", new DialogInterface.OnClickListener() {
+//                                @Override
+//                                public void onClick(DialogInterface dialog, int which) {
+//                                    application.setCurrCity(currentCity);
+//                                    HistoryCityInfo cityInfo = new HistoryCityInfo();
+//                                    cityInfo.setCityName(currentCity);
+//                                    MyUtils.saveHistoryCity(cityInfo);
+//                                    finish();
+//                                    getActivityOutToRight();
+//                                }
+//                            }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
+//                                @Override
+//                                public void onClick(DialogInterface dialog, int which) {
+//
+//                                }
+//                            }).create();
+//                            dialog.show();
+//                        } else {
+//                            application.setCurrCity(currentCity);
+//                            HistoryCityInfo cityInfo = new HistoryCityInfo();
+//                            cityInfo.setCityName(currentCity);
+//                            MyUtils.saveHistoryCity(cityInfo);
+//                            finish();
+//                            getActivityOutToRight();
+//                        }
+//                    }
+//                });
+//                TextView recentHint = (TextView) convertView.findViewById(R.id.recentHint);
+//                recentHint.setText(getString(R.string.label_history));
+//            }
+            else if (viewType == 1) {
+                convertView = inflater.inflate(R.layout.recent_city, null);
+                GridView hotCity = (GridView) convertView
+                        .findViewById(R.id.recent_city);
+                hotCity.setOnItemClickListener(new OnItemClickListener() {
+
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view,
+                                            int position, long id) {
+
+                        currentCity = city_hot.get(position).cityName;
+                        LogUtils.i(TAG, "热门城市:" + "currentCity" + currentCity + "locateCity:" + locateCity);
+                        if (!locateCity.equals(currentCity)) {
+                            String message = "定位的城市是" + locateCity + ",是否跳转到" + currentCity + "?";
+                            Dialog dialog = new AlertDialog.Builder(CityListActivity.this).setMessage(message).setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    application.setCurrCity(currentCity);
+//                                    HistoryCityInfo cityInfo = new HistoryCityInfo();
+//                                    cityInfo.setCityName(currentCity);
+//                                    MyUtils.saveHistoryCity(cityInfo);
+                                    finish();
+                                    getActivityOutToRight();
+                                }
+                            }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                }
+                            }).create();
+                            dialog.show();
+                        } else {
+                            application.setCurrCity(currentCity);
+//                            HistoryCityInfo cityInfo = new HistoryCityInfo();
+//                            cityInfo.setCityName(currentCity);
+//                            MyUtils.saveHistoryCity(cityInfo);
+                            finish();
+                            getActivityOutToRight();
+                        }
+                    }
+                });
+                hotCity.setAdapter(new HotCityAdapter(context, this.hotList));
+                TextView hotHint = (TextView) convertView
+                        .findViewById(R.id.recentHint);
+                hotHint.setText(getString(R.string.label_hot));
+            } else if (viewType == 2) {
+                convertView = inflater.inflate(R.layout.total_item, null);
+            } else {
+                if (convertView == null) {
+                    convertView = inflater.inflate(R.layout.list_item, null);
+                    holder = new ViewHolder();
+                    holder.alpha = (TextView) convertView.findViewById(R.id.alpha);
+                    holder.name = (TextView) convertView.findViewById(R.id.name);
+                    convertView.setTag(holder);
+                } else {
+                    holder = (ViewHolder) convertView.getTag();
+                }
+                if (position >= 5) {
+                    LogUtils.i("lmf", "position:" + position + "cityName:" + list.get(position).cityName);
+                    holder.name.setText(list.get(position).cityName);
+                    String currentStr = getAlpha(list.get(position).pinyin);
+                    String previewStr = (position - 1) >= 0 ? getAlpha(list.get(position - 1).pinyin) : " ";
+                    LogUtils.i("lmf", "currentStr:" + currentStr + " previewStr:" + previewStr);
+                    if (!previewStr.equals(currentStr)) {
+                        holder.alpha.setVisibility(View.VISIBLE);
+                        holder.alpha.setText(currentStr);
+                    } else {
+                        holder.alpha.setVisibility(View.GONE);
+                    }
+                }
+            }
+            return convertView;
+        }
+
+        private class ViewHolder {
+            TextView alpha; // 首字母标题
+            TextView name; // 城市名字
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        mLocationClient.stop();
+        super.onStop();
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        Action viewAction = Action.newAction(
+                Action.TYPE_VIEW, // TODO: choose an action type.
+                "CityList Page", // TODO: Define a title for the content shown.
+                // TODO: If you have web page content that matches this app activity's content,
+                // make sure this auto-generated web page URL is correct.
+                // Otherwise, set the URL to null.
+                Uri.parse("http://host/path"),
+                // TODO: Make sure this auto-generated app URL is correct.
+                Uri.parse("android-app://com.poomoo.parttimejob.ui.activity/http/host/path")
+        );
+        AppIndex.AppIndexApi.end(client, viewAction);
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client.disconnect();
+    }
+
+    class HotCityAdapter extends BaseAdapter {
+        private Context context;
+        private LayoutInflater inflater;
+        private List<RAreaBO.city> hotCitys;
+
+        public HotCityAdapter(Context context, List<RAreaBO.city> hotCitys) {
+            this.context = context;
+            inflater = LayoutInflater.from(this.context);
+            this.hotCitys = hotCitys;
+        }
+
+        @Override
+        public int getCount() {
+            return hotCitys.size();
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return position;
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            convertView = inflater.inflate(R.layout.item_city, null);
+            TextView city = (TextView) convertView.findViewById(R.id.city);
+            city.setText(hotCitys.get(position).cityName);
+            return convertView;
+        }
+    }
+
+//    class HitCityAdapter extends BaseAdapter {
+//        private Context context;
+//        private LayoutInflater inflater;
+//        private List<String> hotCitys;
+//
+//        public HitCityAdapter(Context context, List<String> hotCitys) {
+//            this.context = context;
+//            inflater = LayoutInflater.from(this.context);
+//            this.hotCitys = hotCitys;
+//        }
+//
+//        @Override
+//        public int getCount() {
+//            return hotCitys.size();
+//        }
+//
+//        @Override
+//        public Object getItem(int position) {
+//            return position;
+//        }
+//
+//        @Override
+//        public long getItemId(int position) {
+//            return position;
+//        }
+//
+//        @Override
+//        public View getView(int position, View convertView, ViewGroup parent) {
+//            convertView = inflater.inflate(R.layout.item_city, null);
+//            TextView city = (TextView) convertView.findViewById(R.id.city);
+//            city.setText(hotCitys.get(position));
+//            return convertView;
+//        }
+//    }
+
+    private boolean mReady;
+
+    // 初始化汉语拼音首字母弹出提示框
+    private void initOverlay() {
+        mReady = true;
+        LayoutInflater inflater = LayoutInflater.from(this);
+        overlay = (TextView) inflater.inflate(R.layout.overlay, null);
+        overlay.setVisibility(View.INVISIBLE);
+        WindowManager.LayoutParams lp = new WindowManager.LayoutParams(
+                AbsListView.LayoutParams.WRAP_CONTENT, AbsListView.LayoutParams.WRAP_CONTENT,
+                WindowManager.LayoutParams.TYPE_APPLICATION,
+                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
+                        | WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                PixelFormat.TRANSLUCENT);
+        WindowManager windowManager = (WindowManager) this
+                .getSystemService(Context.WINDOW_SERVICE);
+        windowManager.addView(overlay, lp);
+    }
+
+    private boolean isScroll = false;
+
+    private class LetterListViewListener implements
+            MyLetterListView.OnTouchingLetterChangedListener {
+
+        @Override
+        public void onTouchingLetterChanged(final String s) {
+            isScroll = false;
+            if (alphaIndexer.get(s) != null) {
+                int position = alphaIndexer.get(s);
+                personList.setSelection(position);
+                overlay.setText(s);
+                overlay.setVisibility(View.VISIBLE);
+                handler.removeCallbacks(overlayThread);
+                // 延迟一秒后执行，让overlay为不可见
+                handler.postDelayed(overlayThread, 1000);
+            }
+        }
+    }
+
+    // 设置overlay不可见
+    private class OverlayThread implements Runnable {
+        @Override
+        public void run() {
+            overlay.setVisibility(View.GONE);
+        }
+    }
+
+    // 获得汉语拼音首字母
+    private String getAlpha(String str) {
+        if (str == null) {
+            return "#";
+        }
+        if (str.trim().length() == 0) {
+            return "#";
+        }
+        char c = str.trim().substring(0, 1).charAt(0);
+        // 正则表达式，判断首字母是否是英文字母
+        Pattern pattern = Pattern.compile("^[A-Za-z]+$");
+        if (pattern.matcher(c + "").matches()) {
+            return (c + "").toUpperCase();
+        } else if (str.equals("0")) {
+            return "定位";
+        } else if (str.equals("1")) {
+            return "热门";
+        } else if (str.equals("2")) {
+            return "全部";
+        } else {
+            return "#";
+        }
+    }
+
+    @Override
+    public void onScrollStateChanged(AbsListView view, int scrollState) {
+        if (scrollState == SCROLL_STATE_TOUCH_SCROLL
+                || scrollState == SCROLL_STATE_FLING) {
+            isScroll = true;
+        }
+    }
+
+    @Override
+    public void onScroll(AbsListView view, int firstVisibleItem,
+                         int visibleItemCount, int totalItemCount) {
+        if (!isScroll) {
+            return;
+        }
+
+        if (mReady) {
+            String text;
+            String name = allCity_lists.get(firstVisibleItem).cityName;
+            String pinyin = allCity_lists.get(firstVisibleItem).pinyin;
+
+            if (firstVisibleItem < 4) {
+                text = name;
+            } else {
+                text = PingYinUtil.converterToFirstSpell(pinyin)
+                        .substring(0, 1).toUpperCase();
+            }
+            LogUtils.i("lmf", "firstVisibleItem:" + firstVisibleItem + " text:" + text);
+            overlay.setText(text);
+            overlay.setVisibility(View.VISIBLE);
+            handler.removeCallbacks(overlayThread);
+            // 延迟一秒后执行，让overlay为不可见
+            handler.postDelayed(overlayThread, 1000);
+        }
+    }
+}

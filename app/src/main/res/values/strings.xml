@@ -1,0 +1,97 @@
+<resources>
+    <string name="app_name">灵智博睿</string>
+
+    <!--tab-->
+    <string name="tab_main">首页</string>
+    <string name="tab_job">全部兼职</string>
+    <string name="tab_message">信息中心</string>
+    <string name="tab_personal">个人中心</string>
+    <string name="tab_type">类型</string>
+    <string name="tab_zone">区域</string>
+    <string name="tab_sort">综合排序</string>
+    <string name="tab_filter">筛选</string>
+    <string name="tab_all">不限</string>
+    <string name="tab_man">男</string>
+    <string name="tab_woman">女</string>
+    <string name="tab_morning">上午</string>
+    <string name="tab_afternoon">下午</string>
+    <string name="tab_evening">晚上</string>
+    <string name="tab_assign">指定</string>
+    <string name="tab_long">长期兼职</string>
+    <string name="tab_short">短期兼职</string>
+    <string name="tab_weekend">周末兼职</string>
+    <!--tab-->
+
+    <!--menu-->
+    <string name="menu_login">登录</string>
+    <!--menu-->
+
+    <!--title-->
+    <string name="title_forgetPassWord">忘记密码</string>
+    <string name="title_register">注册</string>
+    <string name="title_selectCity">请选择城市</string>
+    <string name="title_searchJob">搜索</string>
+    <string name="title_jobInfo">职位信息</string>
+    <string name="title_signUp">在线报名</string>
+    <string name="title_applicantList">申请人列表</string>
+    <string name="title_allJobs">全部兼职</string>
+    <string name="title_filter">筛选</string>
+    <!--title-->
+
+    <!--标签-->
+    <string name="label_remember">记住密码</string>
+    <string name="label_forget"><u>忘记密码</u></string>
+    <string name="label_register">账号注册</string>
+    <string name="label_looking">随便看看</string>
+    <string name="label_account">账　号</string>
+    <string name="label_code">验证码</string>
+    <string name="label_inviteCode">邀请码</string>
+    <string name="label_passWord">密　码</string>
+    <string name="label_newPassWord">新密码</string>
+    <string name="label_getCode">获取验证码</string>
+    <string name="label_login">登录</string>
+    <string name="label_agree">我已经阅读并同意</string>
+    <string name="label_protocol">灵智博睿用户协议</string>
+    <string name="label_main1">快结兼职</string>
+    <string name="label_main2">附近兼职</string>
+    <string name="label_main3">实习岗位</string>
+    <string name="label_main4">社会实践</string>
+    <!--标签-->
+
+    <!--hint-->
+    <string name="hint_inputTel">请输入手机号</string>
+    <string name="hint_inputCode">短信验证码</string>
+    <string name="hint_inputPassWord">请输入密码</string>
+    <string name="hint_inputNewPassWord">请输入新密码</string>
+    <string name="hint_inputInviteCode">请输入邀请码(没有可不填)</string>
+    <string name="hint_inputSearchCity">请输入城市名称或首字母查询</string>
+    <string name="hint_inputSearchJob">请输入您要搜索的职位</string>
+    <string name="hint_inputYourInfo">请输入自己的优点，特长和上班时间等，能提高被录用几率耶</string>
+    <!--hint-->
+
+    <!--btn-->
+    <string name="btn_confirm">确认</string>
+    <string name="btn_register">注册</string>
+    <string name="btn_submit">提交</string>
+    <!--btn-->
+
+    <!--intent-->
+    <string name="intent_value">value</string>
+    <!--intent-->
+
+    <!--城市列表-->
+    <string name="label_hot">热门</string>
+    <string name="label_all">全部</string>
+    <!--城市列表-->
+
+    <!--SharedPreference-->
+    <string name="sp_isRemember">isRemember</string>
+    <string name="sp_isLogin">isLogin</string>
+    <string name="sp_passWord">passWord</string>
+    <string name="sp_phoneNum">phoneNum</string>
+    <!--SharedPreference-->
+
+    <!--dialog-->
+    <string name="dialog_msg">请稍后...</string>
+    <!--dialog-->
+</resources>

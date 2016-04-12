@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBg"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/title"
+        layout="@layout/pub_layout_title_bar" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:paddingBottom="4dp"
+        android:paddingLeft="10dp"
+        android:paddingTop="4dp">
+
+        <EditText
+            android:id="@+id/edt_search_job"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dip"
+            android:background="@drawable/style_edittext_search"
+            android:drawableLeft="@drawable/ic_search_gray"
+            android:drawablePadding="5dp"
+            android:hint="@string/hint_inputSearchJob"
+            android:padding="6dp"
+            android:textColor="#515151"
+            android:textSize="12sp" />
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/list_interestingJob"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp" />
+</LinearLayout>
