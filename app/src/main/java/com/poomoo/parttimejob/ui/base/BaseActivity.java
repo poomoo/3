@@ -1,7 +1,7 @@
 /**
  * Copyright (c) 2016. 李苜菲 Inc. All rights reserved.
  */
-package com.poomoo.parttimejob.ui.activity;
+package com.poomoo.parttimejob.ui.base;
 
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -34,11 +34,16 @@ public abstract class BaseActivity extends AppCompatActivity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(onBindLayout());
         application = (MyApplication) this.getApplication();
+
     }
 
     protected abstract String onSetTitle();
 
     protected abstract int onBindLayout();
+
+    protected void setBack() {
+        getHeaderView();
+    }
 
     /**
      * 统一头部条

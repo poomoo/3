@@ -16,4 +16,7 @@
         <attr name="type" />
     </declare-styleable>
 
+    <attr name="tab_item_selected" format="reference|color" />
+    <attr name="tab_item_unselected" format="reference|color" />
+    <attr name="tab_item_underline" format="reference|color" />
 </resources>

@@ -7,12 +7,13 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 
 import com.poomoo.commlib.LogUtils;
 import com.poomoo.commlib.MyUtils;
 import com.poomoo.parttimejob.R;
 import com.poomoo.parttimejob.ui.activity.CityListActivity;
+import com.poomoo.parttimejob.ui.activity.MainActivity;
+import com.poomoo.parttimejob.ui.base.BaseFragment;
 import com.poomoo.parttimejob.ui.custom.NoScrollListView;
 import com.poomoo.parttimejob.ui.custom.RefreshLayout;
 
@@ -73,5 +74,13 @@ public class MainFragment extends BaseFragment implements RefreshLayout.OnLoadLi
     void city() {
         MyUtils.showToast(getActivity().getApplicationContext(), "城市");
         openActivity(CityListActivity.class);
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (!hidden)
+            MainActivity.instance.setBackGround2();
+
     }
 }

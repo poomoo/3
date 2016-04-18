@@ -4,7 +4,14 @@
 package com.poomoo.commlib;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.net.ConnectivityManager;
 import android.telephony.TelephonyManager;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.AbsoluteSizeSpan;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.RelativeSizeSpan;
 import android.widget.Toast;
 
 import java.text.DateFormat;
@@ -16,6 +23,8 @@ import java.util.Date;
  * 日期: 2016/3/18 14:32.
  */
 public class MyUtils {
+    private static final String TAG = "MyUtils";
+
     public static void showToast(Context context, String msg) {
         Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
     }
@@ -67,5 +76,50 @@ public class MyUtils {
     public static Date ConvertToDate(String strDate) throws Exception {
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         return df.parse(strDate);
+    }
+
+
+    private static ConnectivityManager mCnnManager;
+
+    public static ConnectivityManager getCnnManager(Context context) {
+        if (mCnnManager == null)
+            mCnnManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        return mCnnManager;
+    }
+
+    /**
+     * 检测是否有网络
+     *
+     * @return
+     */
+    public static boolean hasInternet(Context context) {
+        return getCnnManager(context).getActiveNetworkInfo() != null && getCnnManager(context).getActiveNetworkInfo().isAvailable();
+    }
+
+    /**
+     * 格式化报酬显示
+     *
+     * @param pay
+     * @return
+     */
+    public static SpannableString formatPay(Context context,String pay) {
+        SpannableString ss;
+        ss = new SpannableString(pay);
+        int len = pay.length();
+        int pos = 0;
+        for (int i = 0; i < len; i++) {
+            char a = pay.charAt(i);
+            LogUtils.d(TAG, "formatPay:" + i + "a:" + a);
+            if (!(a >= '0' && a <= '9')) {
+                LogUtils.d(TAG, "数字结束的位置:" + i);
+                pos = i;
+                break;
+            }
+        }
+        ss.setSpan(new ForegroundColorSpan(Color.parseColor("#1fa3e7")), 0, pos, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        ss.setSpan(new RelativeSizeSpan(1f), 0, pos, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        ss.setSpan(new ForegroundColorSpan(Color.parseColor("#8e8e8e")), pos, len, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        ss.setSpan(new RelativeSizeSpan(0.7f), pos, len, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        return ss;
     }
 }

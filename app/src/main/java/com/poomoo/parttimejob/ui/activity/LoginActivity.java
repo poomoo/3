@@ -11,8 +11,8 @@ import com.poomoo.commlib.MyUtils;
 import com.poomoo.commlib.SPUtils;
 import com.poomoo.model.response.RUserBO;
 import com.poomoo.parttimejob.R;
-import com.poomoo.parttimejob.application.MyApplication;
 import com.poomoo.parttimejob.presentation.LoginPresenter;
+import com.poomoo.parttimejob.ui.base.BaseActivity;
 import com.poomoo.parttimejob.ui.view.LoginView;
 
 import butterknife.Bind;

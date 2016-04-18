@@ -20,6 +20,11 @@
     <string name="tab_long">长期兼职</string>
     <string name="tab_short">短期兼职</string>
     <string name="tab_weekend">周末兼职</string>
+    <string name="tab_apply_all">全部</string>
+    <string name="tab_apply_signed">已报名</string>
+    <string name="tab_apply_hired">已录用</string>
+    <string name="tab_apply_toPost">已到岗</string>
+    <string name="tab_apply_settlement">已结算</string>
     <!--tab-->
 
     <!--menu-->
@@ -28,6 +33,7 @@
 
     <!--title-->
     <string name="title_forgetPassWord">忘记密码</string>
+    <string name="title_changePassWord">修改密码</string>
     <string name="title_register">注册</string>
     <string name="title_selectCity">请选择城市</string>
     <string name="title_searchJob">搜索</string>
@@ -36,6 +42,10 @@
     <string name="title_applicantList">申请人列表</string>
     <string name="title_allJobs">全部兼职</string>
     <string name="title_filter">筛选</string>
+    <string name="title_myApply">我的申请</string>
+    <string name="title_myCollection">我的收藏</string>
+    <string name="title_myFeedBack">意见反馈</string>
+    <string name="title_more">更多</string>
     <!--title-->
 
     <!--标签-->
@@ -67,6 +77,8 @@
     <string name="hint_inputSearchCity">请输入城市名称或首字母查询</string>
     <string name="hint_inputSearchJob">请输入您要搜索的职位</string>
     <string name="hint_inputYourInfo">请输入自己的优点，特长和上班时间等，能提高被录用几率耶</string>
+    <string name="hint_inputYourEmail">请输入您的邮箱</string>
+    <string name="hint_inputYourFeedBack">请输入您的邮反馈信息</string>
     <!--hint-->
 
     <!--btn-->
@@ -93,5 +105,10 @@
 
     <!--dialog-->
     <string name="dialog_msg">请稍后...</string>
+    <string name="loading">加载中...</string>
+    <string name="load_failed">加载失败</string>
+    <string name="invalid_network">无效的网络</string>
+    <string name="load_no_more">没有更多了</string>
+    <string name="refreshing">刷新中</string>
     <!--dialog-->
 </resources>

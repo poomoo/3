@@ -4,6 +4,7 @@ package com.poomoo.api;
 
 
 import com.poomoo.api.api.CommApi;
+import com.poomoo.api.api.JobApi;
 import com.poomoo.api.api.UserApi;
 
 import java.util.concurrent.TimeUnit;
@@ -21,6 +22,7 @@ import retrofit2.RxJavaCallAdapterFactory;
 public class Network {
     private static UserApi userApi;
     private static CommApi commApi;
+    private static JobApi jobApi;
     //    private static OkHttpClient okHttpClient = new OkHttpClient();
     private static Converter.Factory gsonConverterFactory = GsonConverterFactory.create();
     private static CallAdapter.Factory rxJavaCallAdapterFactory = RxJavaCallAdapterFactory.create();
@@ -57,5 +59,22 @@ public class Network {
             commApi = retrofit.create(CommApi.class);
         }
         return commApi;
+    }
+
+    public static JobApi getJobApi() {
+        if (jobApi == null) {
+            HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
+            loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+            OkHttpClient.Builder clientBuilder = new OkHttpClient.Builder().addInterceptor(loggingInterceptor);
+            clientBuilder.connectTimeout(1, TimeUnit.MINUTES);
+            Retrofit retrofit = new Retrofit.Builder()
+                    .client(clientBuilder.build())
+                    .baseUrl(NetConfig.url)
+                    .addConverterFactory(gsonConverterFactory)
+                    .addCallAdapterFactory(rxJavaCallAdapterFactory)
+                    .build();
+            jobApi = retrofit.create(JobApi.class);
+        }
+        return jobApi;
     }
 }

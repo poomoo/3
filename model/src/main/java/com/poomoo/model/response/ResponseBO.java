@@ -16,8 +16,7 @@ public class ResponseBO<T> {
     public String otherData = "";    // "otherData":"扩展结果集"
     public String msg = "";    // "msg":"请求成功",
     public int rsCode = 0;    // "rsCode":"1" 1:成功，-1：失败，-2：必要参数为空
-    public T obj;
-    public List<T> objList = new ArrayList<>();
+    public List<T> records = new ArrayList<>();
     public int totalCount;
 
     public ResponseBO(int rsCode, String msg) {
@@ -32,8 +31,7 @@ public class ResponseBO<T> {
                 ", otherData='" + otherData + '\'' +
                 ", msg='" + msg + '\'' +
                 ", rsCode=" + rsCode +
-                ", obj=" + obj +
-                ", objList=" + objList +
+                ", records=" + records +
                 ", totalCount=" + totalCount +
                 '}';
     }

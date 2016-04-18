@@ -14,6 +14,7 @@ import com.poomoo.commlib.MyUtils;
 import com.poomoo.commlib.TimeCountDownUtil;
 import com.poomoo.parttimejob.R;
 import com.poomoo.parttimejob.presentation.ForgetPassWordPresenter;
+import com.poomoo.parttimejob.ui.base.BaseActivity;
 import com.poomoo.parttimejob.ui.view.ForgetPassWordView;
 
 import butterknife.Bind;

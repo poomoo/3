@@ -3,20 +3,23 @@
  */
 package com.poomoo.parttimejob.ui.activity;
 
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.KeyEvent;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 
 import com.poomoo.commlib.LogUtils;
 import com.poomoo.commlib.MyConfig;
 import com.poomoo.commlib.MyUtils;
+import com.poomoo.commlib.StatusBarUtil;
 import com.poomoo.parttimejob.R;
+import com.poomoo.parttimejob.ui.base.BaseActivity;
 import com.poomoo.parttimejob.ui.fragment.JobFragment;
 import com.poomoo.parttimejob.ui.fragment.MainFragment;
+import com.poomoo.parttimejob.ui.fragment.PersonalFragment;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -25,17 +28,23 @@ import butterknife.OnClick;
  * 日期: 2016/3/22 16:08.
  */
 public class MainActivity extends BaseActivity {
+    @Bind(R.id.llayout_main)
+    LinearLayout mainLlayout;
 
     private MainFragment mainFragment;
     private JobFragment jobFragment;
+    private PersonalFragment personalFragment;
     private Fragment curFragment;
     private long exitTime = 0;
+    public static MainActivity instance;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setDefaultFragment();
         ButterKnife.bind(this);
+        instance = this;
+        StatusBarUtil.setTransparent(this);
     }
 
     @Override
@@ -50,19 +59,25 @@ public class MainActivity extends BaseActivity {
 
     private void setDefaultFragment() {
         // TODO 自动生成的方法存根
-        FragmentManager fragmentManager = getFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-
         mainFragment = new MainFragment();
         curFragment = mainFragment;
-        fragmentTransaction.add(R.id.flayout_main, curFragment);
-        fragmentTransaction.commit();
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.flayout_main, curFragment)
+                .commit();
+    }
+
+    @Override
+    protected void onResume() {
+        LogUtils.i(TAG, "onResume");
+        super.onResume();
     }
 
     @OnClick({R.id.rbtn_main, R.id.rbtn_job, R.id.rbtn_message, R.id.rbtn_personal})
     void change(RadioButton radioButton) {
         switch (radioButton.getId()) {
             case R.id.rbtn_main:
+                switchFragment(mainFragment);
+                curFragment = mainFragment;
                 break;
             case R.id.rbtn_job:
                 if (jobFragment == null)
@@ -73,20 +88,28 @@ public class MainActivity extends BaseActivity {
             case R.id.rbtn_message:
                 break;
             case R.id.rbtn_personal:
+                if (personalFragment == null)
+                    personalFragment = new PersonalFragment();
+                switchFragment(personalFragment);
+                curFragment = personalFragment;
                 break;
         }
     }
 
     private void switchFragment(Fragment to) {
-        LogUtils.i(TAG, "switchFragment---" + to);
-        FragmentManager fragmentManager = getFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         if (!to.isAdded()) { // 先判断是否被add过
-            fragmentTransaction.hide(curFragment).add(R.id.flayout_main, to); // 隐藏当前的fragment，add下一个到Activity中
+            getSupportFragmentManager().beginTransaction()
+                    .hide(curFragment)
+                    .add(R.id.flayout_main, to)
+                    .commitAllowingStateLoss();
+            // 隐藏当前的fragment，add下一个到Activity中
         } else {
-            fragmentTransaction.hide(curFragment).show(to); // 隐藏当前的fragment，显示下一个
+            getSupportFragmentManager().beginTransaction()
+                    .hide(curFragment)
+                    .show(to)
+                    .commitAllowingStateLoss();
+            // 隐藏当前的fragment，显示下一个
         }
-        fragmentTransaction.commitAllowingStateLoss();
     }
 
     @Override
@@ -106,5 +129,13 @@ public class MainActivity extends BaseActivity {
         } else {
             finish();
         }
+    }
+
+    public void setBackGround1() {
+        mainLlayout.setBackgroundResource(R.drawable.bg_personal);
+    }
+
+    public void setBackGround2() {
+        mainLlayout.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
     }
 }

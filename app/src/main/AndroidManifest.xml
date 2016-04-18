@@ -9,6 +9,8 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <!-- 这个权限用于访问GPS定位-->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <application
         android:name=".application.MyApplication"
         android:allowBackup="true"
@@ -28,10 +30,14 @@
         <activity android:name=".ui.activity.ForgetPassWordActivity" />
         <activity android:name=".ui.activity.RegisterActivity" />
         <!--<activity android:name=".ui.activity.MainActivity" />-->
-        <activity android:name=".ui.activity.CityListActivity" />
         <activity android:name=".ui.activity.ApplicantListActivity" />
         <activity android:name=".ui.activity.ApplicantInfoActivity" />
         <activity android:name=".ui.activity.FilterActivity" />
+        <activity android:name=".ui.activity.MyApplyActivity" />
+        <activity android:name=".ui.activity.MyCollectionActivity" />
+        <activity android:name=".ui.activity.FeedBackActivity" />
+        <activity android:name=".ui.activity.MoreActivity" />
+        <activity android:name=".ui.activity.ChangePassWordActivity" />
     </application>
 
 </manifest>

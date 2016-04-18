@@ -6,6 +6,7 @@ package com.poomoo.parttimejob.ui.activity;
 import android.os.Bundle;
 
 import com.poomoo.parttimejob.R;
+import com.poomoo.parttimejob.ui.base.BaseActivity;
 import com.poomoo.parttimejob.ui.view.ApplicantInfoView;
 
 /**

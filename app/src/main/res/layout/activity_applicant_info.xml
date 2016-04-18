@@ -139,7 +139,7 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_job_intension" />
+                    android:src="@drawable/ic_job_intention" />
 
                 <TextView
                     android:layout_width="wrap_content"

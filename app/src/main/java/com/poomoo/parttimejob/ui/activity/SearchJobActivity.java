@@ -6,6 +6,7 @@ package com.poomoo.parttimejob.ui.activity;
 import android.os.Bundle;
 
 import com.poomoo.parttimejob.R;
+import com.poomoo.parttimejob.ui.base.BaseActivity;
 import com.poomoo.parttimejob.ui.view.SearchJobView;
 
 /**
@@ -18,6 +19,7 @@ public class SearchJobActivity extends BaseActivity implements SearchJobView {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setBack();
     }
 
     @Override

@@ -8,6 +8,7 @@ import android.widget.ListView;
 
 import com.poomoo.parttimejob.R;
 import com.poomoo.parttimejob.adapter.ApplicantListAdapter;
+import com.poomoo.parttimejob.ui.base.BaseActivity;
 import com.poomoo.parttimejob.ui.view.ApplicantListView;
 
 import java.util.ArrayList;
@@ -31,8 +32,8 @@ public class ApplicantListActivity extends BaseActivity implements ApplicantList
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setBack();
         ButterKnife.bind(this);
-
         init();
     }
 

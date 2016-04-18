@@ -7,15 +7,14 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RadioButton;
-import android.widget.Switch;
 
 import com.poomoo.commlib.LogUtils;
 import com.poomoo.commlib.MyUtils;
 import com.poomoo.parttimejob.R;
 import com.poomoo.parttimejob.ui.activity.FilterActivity;
+import com.poomoo.parttimejob.ui.activity.MainActivity;
+import com.poomoo.parttimejob.ui.base.BaseFragment;
 
-import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -30,6 +29,7 @@ public class JobFragment extends BaseFragment {
         ButterKnife.bind(this, view);
         return view;
     }
+
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -47,10 +47,18 @@ public class JobFragment extends BaseFragment {
             case R.id.rbtn_sort:
                 break;
             case R.id.txt_filter:
-                LogUtils.i(TAG, "点击筛选:" + view.getId()+":"+R.id.txt_filter);
+                LogUtils.i(TAG, "点击筛选:" + view.getId() + ":" + R.id.txt_filter);
                 openActivity(FilterActivity.class);
                 break;
         }
+
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (!hidden)
+            MainActivity.instance.setBackGround2();
 
     }
 }
