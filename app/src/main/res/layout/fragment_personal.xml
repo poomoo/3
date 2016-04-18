@@ -7,14 +7,16 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="240dp"
+        android:layout_height="200dp"
         android:background="@drawable/bg_personal"
         android:paddingTop="20dp">
 
         <LinearLayout
+            android:id="@+id/llayout_toResume"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/placed"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/bar"
+            android:layout_centerInParent="true"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:gravity="center_vertical"
@@ -54,13 +56,9 @@
                 android:src="@drawable/ic_right_arrow" />
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/placed"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true" />
 
         <LinearLayout
+            android:id="@+id/bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"

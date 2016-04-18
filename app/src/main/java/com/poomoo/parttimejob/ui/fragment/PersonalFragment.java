@@ -10,11 +10,14 @@ import android.view.ViewGroup;
 
 import com.poomoo.model.response.RJobBO;
 import com.poomoo.parttimejob.R;
+import com.poomoo.parttimejob.ui.activity.AuthActivity;
 import com.poomoo.parttimejob.ui.activity.FeedBackActivity;
+import com.poomoo.parttimejob.ui.activity.JobIntentionActivity;
 import com.poomoo.parttimejob.ui.activity.MainActivity;
 import com.poomoo.parttimejob.ui.activity.MoreActivity;
 import com.poomoo.parttimejob.ui.activity.MyApplyActivity;
 import com.poomoo.parttimejob.ui.activity.MyCollectionActivity;
+import com.poomoo.parttimejob.ui.activity.ResumeActivity;
 import com.poomoo.parttimejob.ui.base.BaseFragment;
 
 import butterknife.ButterKnife;
@@ -66,15 +69,20 @@ public class PersonalFragment extends BaseFragment {
         openActivity(MyApplyActivity.class, bundle);
     }
 
-    @OnClick({R.id.rlayout_myCollection, R.id.rlayout_myAuth, R.id.rlayout_setting, R.id.rlayout_feedBack, R.id.rlayout_more})
+    @OnClick({R.id.llayout_toResume, R.id.rlayout_myCollection, R.id.rlayout_myAuth, R.id.rlayout_setting, R.id.rlayout_feedBack, R.id.rlayout_more})
     void OnClick(View view) {
         switch (view.getId()) {
+            case R.id.llayout_toResume:
+                openActivity(ResumeActivity.class);
+                break;
             case R.id.rlayout_myCollection:
                 openActivity(MyCollectionActivity.class);
                 break;
             case R.id.rlayout_myAuth:
+                openActivity(AuthActivity.class);
                 break;
             case R.id.rlayout_setting:
+                openActivity(JobIntentionActivity.class);
                 break;
             case R.id.rlayout_feedBack:
                 openActivity(FeedBackActivity.class);

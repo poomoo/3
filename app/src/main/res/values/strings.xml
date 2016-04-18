@@ -46,6 +46,9 @@
     <string name="title_myCollection">我的收藏</string>
     <string name="title_myFeedBack">意见反馈</string>
     <string name="title_more">更多</string>
+    <string name="title_resume">个人简历</string>
+    <string name="title_auth">实名认证</string>
+    <string name="title_jobIntention">求职意向设置</string>
     <!--title-->
 
     <!--标签-->
@@ -78,7 +81,16 @@
     <string name="hint_inputSearchJob">请输入您要搜索的职位</string>
     <string name="hint_inputYourInfo">请输入自己的优点，特长和上班时间等，能提高被录用几率耶</string>
     <string name="hint_inputYourEmail">请输入您的邮箱</string>
+    <string name="hint_inputYourQQ">请输入QQ</string>
     <string name="hint_inputYourFeedBack">请输入您的邮反馈信息</string>
+    <string name="hint_inputYourRealName">请输入真实姓名</string>
+    <string name="hint_click2choose">点击选择</string>
+    <string name="hint_inputYourResume">请输入自我简历,应聘会加分耶</string>
+    <string name="hint_inputYourExperience">请输入工作经验,应聘会加分耶</string>
+    <string name="hint_inputYourSchool">请输入学校</string>
+    <string name="hint_inputYourJoinSchoolYear">请输入入学年份(例如:2010-11)</string>
+    <string name="hint_inputYourIdNum">请输入身份证号码</string>
+    <string name="hint_inputYourInteresting">若还有感兴趣的工作，你也可以告诉我们</string>
     <!--hint-->
 
     <!--btn-->
