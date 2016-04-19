@@ -82,9 +82,8 @@ public class FreeTimeView extends View implements View.OnTouchListener {
 
     @Override
     protected void onDraw(Canvas canvas) {
-//        LogUtils.i(TAG, "onDraw:");
-        canvas.drawRect(0, 0, surface.width, surface.weekHeight, surface.weekBgPaint);
-        canvas.drawRect(0, surface.weekHeight, surface.cellWidth, surface.height, surface.weekBgPaint);
+        canvas.drawRect(0, 0, surface.width, surface.weekHeight, surface.weekBgPaint);//星期背景色
+        canvas.drawRect(0, surface.weekHeight, surface.cellWidth, surface.height, surface.weekBgPaint);//时间背景色
         // 画框
         canvas.drawPath(surface.boxPath, surface.borderPaint);//内框
         // 星期

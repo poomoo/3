@@ -42,7 +42,7 @@
                 android:checked="true"
                 android:gravity="center"
                 android:text="@string/tab_all"
-                android:textColor="@drawable/selector_text_filter_background"
+                android:textColor="@color/selector_text_filter_background"
                 android:textSize="16sp" />
 
             <RadioButton
@@ -54,7 +54,7 @@
                 android:button="@null"
                 android:gravity="center"
                 android:text="@string/tab_man"
-                android:textColor="@drawable/selector_text_filter_background"
+                android:textColor="@color/selector_text_filter_background"
                 android:textSize="16sp" />
 
             <RadioButton
@@ -66,7 +66,7 @@
                 android:button="@null"
                 android:gravity="center"
                 android:text="@string/tab_woman"
-                android:textColor="@drawable/selector_text_filter_background"
+                android:textColor="@color/selector_text_filter_background"
                 android:textSize="16sp" />
 
         </RadioGroup>
@@ -95,7 +95,7 @@
                 android:checked="true"
                 android:gravity="center"
                 android:text="@string/tab_all"
-                android:textColor="@drawable/selector_text_filter_background"
+                android:textColor="@color/selector_text_filter_background"
                 android:textSize="16sp" />
 
 
@@ -108,7 +108,7 @@
                 android:button="@null"
                 android:gravity="center"
                 android:text="@string/tab_morning"
-                android:textColor="@drawable/selector_text_filter_background"
+                android:textColor="@color/selector_text_filter_background"
                 android:textSize="16sp" />
 
             <CheckBox
@@ -120,7 +120,7 @@
                 android:button="@null"
                 android:gravity="center"
                 android:text="@string/tab_afternoon"
-                android:textColor="@drawable/selector_text_filter_background"
+                android:textColor="@color/selector_text_filter_background"
                 android:textSize="16sp" />
 
             <CheckBox
@@ -132,7 +132,7 @@
                 android:button="@null"
                 android:gravity="center"
                 android:text="@string/tab_evening"
-                android:textColor="@drawable/selector_text_filter_background"
+                android:textColor="@color/selector_text_filter_background"
                 android:textSize="16sp" />
         </LinearLayout>
 
@@ -180,7 +180,7 @@
                 android:checked="true"
                 android:gravity="center"
                 android:text="@string/tab_all"
-                android:textColor="@drawable/selector_text_filter_background"
+                android:textColor="@color/selector_text_filter_background"
                 android:textSize="16sp" />
 
             <RadioButton
@@ -192,7 +192,7 @@
                 android:button="@null"
                 android:gravity="center"
                 android:text="@string/tab_assign"
-                android:textColor="@drawable/selector_text_filter_background"
+                android:textColor="@color/selector_text_filter_background"
                 android:textSize="16sp" />
 
         </RadioGroup>
@@ -222,7 +222,7 @@
                 android:checked="true"
                 android:gravity="center"
                 android:text="@string/tab_all"
-                android:textColor="@drawable/selector_text_filter_background"
+                android:textColor="@color/selector_text_filter_background"
                 android:textSize="16sp" />
 
             <RadioButton
@@ -234,7 +234,7 @@
                 android:button="@null"
                 android:gravity="center"
                 android:text="@string/tab_long"
-                android:textColor="@drawable/selector_text_filter_background"
+                android:textColor="@color/selector_text_filter_background"
                 android:textSize="16sp" />
 
             <RadioButton
@@ -246,7 +246,7 @@
                 android:button="@null"
                 android:gravity="center"
                 android:text="@string/tab_short"
-                android:textColor="@drawable/selector_text_filter_background"
+                android:textColor="@color/selector_text_filter_background"
                 android:textSize="16sp" />
 
             <RadioButton
@@ -258,7 +258,7 @@
                 android:button="@null"
                 android:gravity="center"
                 android:text="@string/tab_weekend"
-                android:textColor="@drawable/selector_text_filter_background"
+                android:textColor="@color/selector_text_filter_background"
                 android:textSize="16sp" />
 
         </RadioGroup>

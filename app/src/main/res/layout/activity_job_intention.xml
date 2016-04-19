@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:zhy="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorBg"
@@ -16,6 +17,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
+            <GridView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:numColumns="4" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -47,6 +53,15 @@
                         android:textSize="18sp" />
                 </LinearLayout>
 
+                <com.zhy.view.flowlayout.TagFlowLayout
+                    android:id="@+id/id_flowlayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginTop="10dp"
+                    zhy:max_select="1" />
+
                 <RadioGroup
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -67,7 +82,7 @@
                         android:checked="true"
                         android:gravity="center"
                         android:text="@string/tab_all"
-                        android:textColor="@drawable/selector_text_filter_background"
+                        android:textColor="@color/selector_text_filter_background"
                         android:textSize="14sp" />
 
                     <TextView
@@ -84,7 +99,7 @@
                         android:button="@null"
                         android:gravity="center"
                         android:text="调研"
-                        android:textColor="@drawable/selector_text_filter_background"
+                        android:textColor="@color/selector_text_filter_background"
                         android:textSize="14sp" />
 
                     <TextView
@@ -101,7 +116,7 @@
                         android:button="@null"
                         android:gravity="center"
                         android:text="送餐员"
-                        android:textColor="@drawable/selector_text_filter_background"
+                        android:textColor="@color/selector_text_filter_background"
                         android:textSize="14sp" />
 
                     <TextView
@@ -117,7 +132,7 @@
                         android:button="@null"
                         android:gravity="center"
                         android:text="促销"
-                        android:textColor="@drawable/selector_text_filter_background"
+                        android:textColor="@color/selector_text_filter_background"
                         android:textSize="14sp" />
 
                 </RadioGroup>
@@ -140,7 +155,7 @@
                         android:button="@null"
                         android:gravity="center"
                         android:text="礼仪"
-                        android:textColor="@drawable/selector_text_filter_background"
+                        android:textColor="@color/selector_text_filter_background"
                         android:textSize="14sp" />
 
                     <TextView
@@ -156,7 +171,7 @@
                         android:button="@null"
                         android:gravity="center"
                         android:text="安保"
-                        android:textColor="@drawable/selector_text_filter_background"
+                        android:textColor="@color/selector_text_filter_background"
                         android:textSize="14sp" />
 
                     <TextView
@@ -172,7 +187,7 @@
                         android:button="@null"
                         android:gravity="center"
                         android:text="销售"
-                        android:textColor="@drawable/selector_text_filter_background"
+                        android:textColor="@color/selector_text_filter_background"
                         android:textSize="14sp" />
 
                     <TextView
@@ -188,7 +203,7 @@
                         android:button="@null"
                         android:gravity="center"
                         android:text="服务员"
-                        android:textColor="@drawable/selector_text_filter_background"
+                        android:textColor="@color/selector_text_filter_background"
                         android:textSize="14sp" />
 
                 </RadioGroup>
@@ -211,7 +226,7 @@
                         android:button="@null"
                         android:gravity="center"
                         android:text="零时工"
-                        android:textColor="@drawable/selector_text_filter_background"
+                        android:textColor="@color/selector_text_filter_background"
                         android:textSize="14sp" />
 
                     <TextView
@@ -227,7 +242,7 @@
                         android:button="@null"
                         android:gravity="center"
                         android:text="校内"
-                        android:textColor="@drawable/selector_text_filter_background"
+                        android:textColor="@color/selector_text_filter_background"
                         android:textSize="14sp" />
 
                     <TextView
@@ -243,7 +258,7 @@
                         android:button="@null"
                         android:gravity="center"
                         android:text="设计"
-                        android:textColor="@drawable/selector_text_filter_background"
+                        android:textColor="@color/selector_text_filter_background"
                         android:textSize="14sp" />
 
                     <TextView
@@ -259,7 +274,7 @@
                         android:button="@null"
                         android:gravity="center"
                         android:text="文员"
-                        android:textColor="@drawable/selector_text_filter_background"
+                        android:textColor="@color/selector_text_filter_background"
                         android:textSize="14sp" />
 
                 </RadioGroup>
@@ -282,7 +297,7 @@
                         android:button="@null"
                         android:gravity="center"
                         android:text="派单"
-                        android:textColor="@drawable/selector_text_filter_background"
+                        android:textColor="@color/selector_text_filter_background"
                         android:textSize="14sp" />
 
                     <TextView
@@ -298,7 +313,7 @@
                         android:button="@null"
                         android:gravity="center"
                         android:text="模特"
-                        android:textColor="@drawable/selector_text_filter_background"
+                        android:textColor="@color/selector_text_filter_background"
                         android:textSize="14sp" />
 
                     <TextView
@@ -314,7 +329,7 @@
                         android:button="@null"
                         android:gravity="center"
                         android:text="实习"
-                        android:textColor="@drawable/selector_text_filter_background"
+                        android:textColor="@color/selector_text_filter_background"
                         android:textSize="14sp" />
 
                     <TextView
@@ -330,7 +345,7 @@
                         android:button="@null"
                         android:gravity="center"
                         android:text="家教"
-                        android:textColor="@drawable/selector_text_filter_background"
+                        android:textColor="@color/selector_text_filter_background"
                         android:textSize="14sp" />
 
                 </RadioGroup>
@@ -353,7 +368,7 @@
                         android:button="@null"
                         android:gravity="center"
                         android:text="演出"
-                        android:textColor="@drawable/selector_text_filter_background"
+                        android:textColor="@color/selector_text_filter_background"
                         android:textSize="14sp" />
 
                     <TextView
@@ -369,7 +384,7 @@
                         android:button="@null"
                         android:gravity="center"
                         android:text="客服"
-                        android:textColor="@drawable/selector_text_filter_background"
+                        android:textColor="@color/selector_text_filter_background"
                         android:textSize="14sp" />
 
                     <TextView
@@ -385,7 +400,7 @@
                         android:button="@null"
                         android:gravity="center"
                         android:text="翻译"
-                        android:textColor="@drawable/selector_text_filter_background"
+                        android:textColor="@color/selector_text_filter_background"
                         android:textSize="14sp" />
 
                     <TextView
@@ -401,7 +416,7 @@
                         android:button="@null"
                         android:gravity="center"
                         android:text="其他"
-                        android:textColor="@drawable/selector_text_filter_background"
+                        android:textColor="@color/selector_text_filter_background"
                         android:textSize="14sp" />
 
                 </RadioGroup>
@@ -447,6 +462,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/llayout_zone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -511,12 +527,12 @@
 
                 <EditText
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="200dp"
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
                     android:layout_marginTop="10dp"
                     android:background="@drawable/style_edittext_introduce_myself"
-                    android:gravity="center_vertical"
+                    android:gravity="top"
                     android:hint="@string/hint_inputYourInteresting"
                     android:textSize="14sp" />
             </LinearLayout>
