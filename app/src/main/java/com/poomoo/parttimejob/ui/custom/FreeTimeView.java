@@ -1,17 +1,22 @@
 package com.poomoo.parttimejob.ui.custom;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Typeface;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.util.SparseArray;
 import android.view.MotionEvent;
 import android.view.View;
 
 import com.poomoo.commlib.LogUtils;
+import com.poomoo.parttimejob.R;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -26,6 +31,7 @@ public class FreeTimeView extends View implements View.OnTouchListener {
     private Surface surface;
     private int column = 8; //表格列数
     private int row = 4; //表格行数(出去星期)
+    private SparseArray<Boolean> sparseArray = new SparseArray<>();
 
     //给控件设置监听事件
     private OnItemClickListener onItemClickListener;
@@ -43,6 +49,8 @@ public class FreeTimeView extends View implements View.OnTouchListener {
     private void init() {
         surface = new Surface();
         surface.density = getResources().getDisplayMetrics().density;
+        for (int i = 0; i < row * column; i++)
+            sparseArray.put(i, false);
         setBackgroundColor(surface.bgColor2);
         setOnTouchListener(this);
     }
@@ -62,9 +70,9 @@ public class FreeTimeView extends View implements View.OnTouchListener {
     @Override
     protected void onLayout(boolean changed, int left, int top, int right,
                             int bottom) {
-        Log.i(TAG, "[onLayout] changed:"
-                + (changed ? "new size" : "not change") + " left:" + left
-                + " top:" + top + " right:" + right + " bottom:" + bottom);
+//        Log.i(TAG, "[onLayout] changed:"
+//                + (changed ? "new size" : "not change") + " left:" + left
+//                + " top:" + top + " right:" + right + " bottom:" + bottom);
         if (changed) {
             surface.init();
         }
@@ -74,12 +82,11 @@ public class FreeTimeView extends View implements View.OnTouchListener {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        LogUtils.i(TAG, "onDraw:");
+//        LogUtils.i(TAG, "onDraw:");
+        canvas.drawRect(0, 0, surface.width, surface.weekHeight, surface.weekBgPaint);
+        canvas.drawRect(0, surface.weekHeight, surface.cellWidth, surface.height, surface.weekBgPaint);
         // 画框
-        canvas.drawPath(surface.box1Path, surface.border1Paint);//外框
-        canvas.drawPath(surface.box2Path, surface.border2Paint);//内框
-//        if (1 == 1)
-//            return;
+        canvas.drawPath(surface.boxPath, surface.borderPaint);//内框
         // 星期
         float weekTextY = surface.weekHeight * 3 / 4f;
 
@@ -89,35 +96,41 @@ public class FreeTimeView extends View implements View.OnTouchListener {
                     + (surface.cellWidth - surface.weekPaint
                     .measureText(surface.weekText[i])) * 1 / 2f;
             surface.weekPaint.setColor(surface.textColor);
-            drawWeekBg(canvas, i);
             canvas.drawText(surface.weekText[i], weekTextX, weekTextY,
                     surface.weekPaint);
         }
 
         for (int i = 8; i < column * row; i++) {
             //文字
-
             if (i == 8) {
                 int x = getXByIndex(i);
-//                drawTimeBg(canvas, i);
                 float timeTextX = (x - 1) * surface.cellWidth + (surface.cellWidth - surface.weekPaint.measureText("上午")) * 1 / 2f;
                 float timeTextY = surface.weekHeight + surface.cellHeight * 3 / 5f;
                 canvas.drawText("上午", timeTextX, timeTextY, surface.weekPaint);
 
             } else if (i == 16) {
                 int x = getXByIndex(i);
-//                drawTimeBg(canvas, i);
                 float timeTextX = (x - 1) * surface.cellWidth + (surface.cellWidth - surface.weekPaint.measureText("上午")) * 1 / 2f;
                 float timeTextY = surface.weekHeight + surface.cellHeight + surface.cellHeight * 3 / 5f;
                 canvas.drawText("下午", timeTextX, timeTextY, surface.weekPaint);
             } else if (i == 24) {
                 int x = getXByIndex(i);
-//                drawTimeBg(canvas, i);
                 float timeTextX = (x - 1) * surface.cellWidth + (surface.cellWidth - surface.weekPaint.measureText("上午")) * 1 / 2f;
                 float timeTextY = surface.weekHeight + 2 * surface.cellHeight + surface.cellHeight * 3 / 5f;
                 canvas.drawText("晚上", timeTextX, timeTextY, surface.weekPaint);
+            } else {
+                Bitmap bmp;
+                if (sparseArray.get(i)) {
+                    //图标
+                    bmp = BitmapFactory.decodeResource(getResources(), R.drawable.ic_selected);
+                    drawCellIcon(canvas, i, bmp);
+                } else {//撤销
+                    bmp = BitmapFactory.decodeResource(getResources(), R.drawable.ic_selected);
+                    bmp = Bitmap.createBitmap(bmp.getWidth(), bmp.getHeight(), Bitmap.Config.ARGB_8888);
+                    drawCellIcon(canvas, i, bmp);
+                }
             }
-//            else drawCellBg(canvas, i);
+
         }
         super.onDraw(canvas);
     }
@@ -125,82 +138,14 @@ public class FreeTimeView extends View implements View.OnTouchListener {
     /**
      * @param canvas
      * @param index
+     * @param bitmap
      */
-    private void drawWeekBg(Canvas canvas, int index) {
-        int x = getXByIndex(index);
-        float left;
-        float top;
-        float right;
-        float bottom;
-        if (x == 1) {
-            left = surface.border1Width;
-            right = surface.cellWidth - surface.border2Width;
-        } else if (x == 8) {
-            left = surface.cellWidth * (x - 1) + surface.border2Width;
-            right = surface.cellWidth * x - surface.border1Width;
-        } else {
-            left = surface.cellWidth * (x - 1) + surface.border2Width;
-            right = left + surface.cellWidth - 2 * surface.border2Width;
-        }
-        top = surface.border1Width;
-        bottom = surface.weekHeight - surface.border2Width;
-        LogUtils.d(TAG, "drawWeekBg" + x + " border1Width:" + surface.border1Width + "border2Width:" + surface.border2Width);
-        LogUtils.d(TAG, "left" + left + " top:" + top + "right:" + right + "bottom" + bottom + "surface.cellWidth:" + surface.cellWidth + "surface.weekHeight:" + surface.weekHeight);
-        canvas.drawRect(left, top, right, bottom, surface.weekBgPaint);
-    }
-
-    /**
-     * @param canvas
-     * @param index
-     */
-    private void drawTimeBg(Canvas canvas, int index) {
+    private void drawCellIcon(Canvas canvas, int index, Bitmap bitmap) {
         int x = getXByIndex(index);
         int y = getYByIndex(index);
-        LogUtils.d(TAG, "drawTimeBg x:" + x + "y:" + y);
-        float left;
-        float top;
-        float right;
-        float bottom;
-
-        left = surface.cellWidth * (x - 1) + surface.border1Width;
-        top = surface.weekHeight + (y - 2) * surface.cellHeight + surface.border2Width;
-        right = left + surface.cellWidth - surface.border2Width;
-        if (y == 4)
-            bottom = top + surface.cellHeight - surface.border1Width;
-        else
-            bottom = top + surface.cellHeight - surface.border2Width;
-        canvas.drawRect(left, top, right, bottom, surface.weekBgPaint);
-    }
-
-    /**
-     * @param canvas
-     * @param index
-     * @param text
-     */
-    private void drawCellText(Canvas canvas, int index, String text) {
-        int x = getXByIndex(index);
-        int y = getYByIndex(index);
-
-        float cellX = (surface.cellWidth * (x - 1)) + (surface.cellWidth - surface.weekPaint.measureText(text)) * 1 / 5f;
-        float cellY = surface.weekHeight + (y - 1) * surface.cellHeight + surface.cellHeight * 2 / 5f;
-        canvas.drawText(text, cellX, cellY, surface.weekPaint);
-    }
-
-    /**
-     * @param canvas
-     * @param index
-     */
-    private void drawCellBg(Canvas canvas, int index) {
-        int x = getXByIndex(index);
-        int y = getYByIndex(index);
-        float radius;
-
-        radius = Math.min(surface.cellWidth, surface.cellHeight) / 3f;
-
-        float cellX = (surface.cellWidth * (x - 1)) + surface.cellWidth / 2f;
-        float cellY = surface.weekHeight + (y - 1) * surface.cellHeight + surface.cellHeight / 1.6f;
-
-        canvas.drawCircle(cellX, cellY, radius, surface.datePaint);
+        float cellX = (surface.cellWidth * (x - 1)) + (surface.cellWidth) * 1 / 4f;
+        float cellY = surface.weekHeight + (y - 2) * surface.cellHeight + surface.cellHeight * 2 / 5f;
+        canvas.drawBitmap(bitmap, cellX, cellY, surface.datePaint);
     }
 
 
@@ -213,12 +158,32 @@ public class FreeTimeView extends View implements View.OnTouchListener {
     }
 
     private void setSelectedDateByCoor(float x, float y) {
-        if (y > surface.weekHeight) {
+        if (x > surface.cellWidth && y > surface.weekHeight) {
             int m = (int) (Math.floor(x / surface.cellWidth) + 1);
             int n = (int) (Math.floor((y - (surface.weekHeight)) / Float.valueOf(surface.cellHeight)) + 1);
-            downIndex = (n - 1) * 8 + m - 1;
+            downIndex = (n - 1) * 8 + m - 1 + 8;//起始下标从9开始
+            LogUtils.d(TAG, "downIndex:" + downIndex);
+            if (sparseArray.get(downIndex)) {
+                sparseArray.put(downIndex, false);
+            } else {
+                sparseArray.put(downIndex, true);
+            }
+            invalidate();
+        } else if (x > surface.cellWidth) {
+            int m = (int) (Math.floor(x / surface.cellWidth) + 1);
+            int n = (int) (Math.floor(y / Float.valueOf(surface.weekHeight)) + 1);
+            downIndex = (n - 1) * 8 + m - 1;//起始下标从1开始
+            if (sparseArray.get(downIndex + n * 8) || sparseArray.get(downIndex + (n + 1) * 8) || sparseArray.get(downIndex + (n + 2) * 8)) {
+                sparseArray.put(downIndex + n * 8, false);
+                sparseArray.put(downIndex + (n + 1) * 8, false);
+                sparseArray.put(downIndex + (n + 2) * 8, false);
+            } else {
+                sparseArray.put(downIndex + n * 8, true);
+                sparseArray.put(downIndex + (n + 1) * 8, true);
+                sparseArray.put(downIndex + (n + 2) * 8, true);
+            }
+            invalidate();
         }
-        invalidate();
     }
 
     /**
@@ -241,12 +206,9 @@ public class FreeTimeView extends View implements View.OnTouchListener {
         public Paint datePaint;
         public Paint weekBgPaint;
 
-        public Path box1Path; // 外边框
-        public Path box2Path; // 内边框
-        public Paint border1Paint;// 外边框
-        public Paint border2Paint;// 内边框
-        public float border1Width;
-        public float border2Width;
+        public Path boxPath;
+        public Paint borderPaint;
+        public float borderWidth;
 
         public final String[] weekText = {"周", "一", "二", "三", "四", "五", "六", "日"};
 
@@ -264,57 +226,42 @@ public class FreeTimeView extends View implements View.OnTouchListener {
             weekPaint.setTextSize(weekTextSize);
 
             datePaint = new Paint();
+            datePaint.setColor(bgColor2);
             datePaint.setAntiAlias(true);
-            datePaint.setTypeface(Typeface.DEFAULT_BOLD);
+            datePaint.setStyle(Paint.Style.FILL);
 
             weekBgPaint = new Paint();
             weekBgPaint.setColor(bgColor1);
             weekBgPaint.setAntiAlias(true);
             weekBgPaint.setStyle(Paint.Style.FILL);
 
-            box1Path = new Path();
-            box1Path.rLineTo(width, 0);
-
-            box2Path = new Path();
-            box2Path.moveTo(0, weekHeight);
-            box2Path.rLineTo(width, 0);
+            boxPath = new Path();
+            boxPath.rLineTo(width, 0);
+            boxPath.moveTo(0, weekHeight);
+            boxPath.rLineTo(width, 0);
             for (int i = 0; i < row; i++) {
                 //横线
-                if (i == row - 1) {
-                    box1Path.moveTo(0, weekHeight + i * cellHeight);
-                    box1Path.rLineTo(width, 0);
-                } else {
-                    box2Path.moveTo(0, weekHeight + i * cellHeight);
-                    box2Path.rLineTo(width, 0);
-                }
-
+                if (i == row - 1)
+                    boxPath.moveTo(0, weekHeight + i * cellHeight - 2);
+                else
+                    boxPath.moveTo(0, weekHeight + i * cellHeight);
+                boxPath.rLineTo(width, 0);
             }
             for (int i = 0; i < column + 1; i++) {
                 //竖线
-                if (i == 0 || i == column) {
-                    box1Path.moveTo(i * cellWidth, 0);
-                    box1Path.rLineTo(0, height);
-                } else {
-                    box2Path.moveTo(i * cellWidth, 0);
-                    box2Path.rLineTo(0, height);
-                }
-
+                if (i == column)
+                    boxPath.moveTo(i * cellWidth - 2, 0);
+                else
+                    boxPath.moveTo(i * cellWidth, 0);
+                boxPath.rLineTo(0, height);
             }
             //外
-            border1Paint = new Paint();
-            border1Paint.setColor(borderColor);
-            border1Paint.setStyle(Paint.Style.STROKE);
-            border1Width = (float) (1.8 * density);
-            border1Width = border1Width < 1 ? 1 : border1Width;
-            border1Paint.setStrokeWidth(border1Width);
-            //内
-            border2Paint = new Paint();
-            border2Paint.setColor(borderColor);
-            border2Paint.setStyle(Paint.Style.STROKE);
-            border2Width = (float) (0.5 * density);
-            border2Width = border2Width < 1 ? 1 : border2Width;
-            border2Paint.setStrokeWidth(border2Width);
-            LogUtils.i(TAG, "init border1Width:" + border1Width + "border2Width:" + border2Width);
+            borderPaint = new Paint();
+            borderPaint.setColor(borderColor);
+            borderPaint.setStyle(Paint.Style.STROKE);
+            borderWidth = (float) (0.5 * density);
+            borderWidth = borderWidth < 1 ? 1 : borderWidth;
+            borderPaint.setStrokeWidth(borderWidth);
         }
     }
 
@@ -325,7 +272,7 @@ public class FreeTimeView extends View implements View.OnTouchListener {
 
     //监听接口
     public interface OnItemClickListener {
-        void OnItemClick();
+        void OnItemClick(int index);
     }
 
     @Override
@@ -333,9 +280,13 @@ public class FreeTimeView extends View implements View.OnTouchListener {
         switch (event.getAction()) {
             case MotionEvent.ACTION_UP:
                 setSelectedDateByCoor(event.getX(), event.getY());
-                onItemClickListener.OnItemClick();
+//                onItemClickListener.OnItemClick(downIndex);
                 break;
         }
         return true;
+    }
+
+    public SparseArray<Boolean> getSparseArray() {
+        return sparseArray;
     }
 }
