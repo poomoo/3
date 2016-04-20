@@ -8,11 +8,9 @@ import android.os.Parcelable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.RadioGroup;
 
 import java.util.HashSet;
 import java.util.Iterator;
@@ -54,8 +52,8 @@ public class TagFlowLayout extends FlowLayout implements TagAdapter.OnDataChange
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        changeAdapter();
         int cCount = getChildCount();
-
         for (int i = 0; i < cCount; i++) {
             TagView tagView = (TagView) getChildAt(i);
             if (tagView.getVisibility() == View.GONE) continue;
@@ -96,46 +94,37 @@ public class TagFlowLayout extends FlowLayout implements TagAdapter.OnDataChange
         mTagAdapter = adapter;
         mTagAdapter.setOnDataChangedListener(this);
         mSelectedView.clear();
-        changeAdapter();
+//        changeAdapter();
 
     }
 
     private void changeAdapter() {
         removeAllViews();
         TagAdapter adapter = mTagAdapter;
-        TagView tagViewContainer = null;
+        TagView tagViewContainer;
         HashSet preCheckedList = mTagAdapter.getPreCheckedList();
-        int len = adapter.getCount() % 4 == 0 ? adapter.getCount() / 4 : adapter.getCount() / 4 + 1;
-        for (int i = 0; i < len; i++) {
+        int cellWidth = getMeasuredWidth() / 4;
+        int spaceWidth = cellWidth / 6;
+        cellWidth = (getMeasuredWidth() - spaceWidth * 3) / 4;
+        Log.d(TAG, "cellWidth:" + cellWidth + "getMeasuredWidth:" + getMeasuredWidth() + "getWidth()" + getWidth());
+        for (int i = 0; i < adapter.getCount(); i++) {
+            View tagView = adapter.getView(this, i, adapter.getItem(i));
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(cellWidth, LayoutParams.WRAP_CONTENT);
+            if ((i + 1) % 4 == 0)
+                layoutParams.setMargins(0, dip2px(getContext(), 10), 0, 0);
+            else
+                layoutParams.setMargins(0, dip2px(getContext(), 10), spaceWidth, 0);
+            tagView.setLayoutParams(layoutParams);
             tagViewContainer = new TagView(getContext());
-            TagView.LayoutParams params = new TagView.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
-            params.setMargins(dip2px(getContext(), 20), dip2px(getContext(), 10), dip2px(getContext(), 20), 0);
-            tagViewContainer.setLayoutParams(params);
-//            tagViewContainer.setGravity(Gravity.CENTER_HORIZONTAL);
-//            tagViewContainer.setOrientation(RadioGroup.HORIZONTAL);
-            for (int j = i * 4; j < i * 4 + 4; j++) {
-                if (j >= adapter.getCount())
-                    return;
-                View tagView = adapter.getView(this, j, adapter.getItem(j));
-                tagView.setDuplicateParentStateEnabled(true);
-//                tagView.setLayoutParams(new RadioGroup.LayoutParams(0, LayoutParams.WRAP_CONTENT, 1));
-//                if (tagView.getLayoutParams() != null) {
-//                    tagViewContainer.setLayoutParams(new RadioGroup.LayoutParams(0, LayoutParams.WRAP_CONTENT, 1));
-//                    tagViewContainer.setLayoutParams(new MarginLayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
-//                } else {
-//                    MarginLayoutParams lp = new MarginLayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-//                    lp.setMargins(dip2px(getContext(), 5),
-//                            dip2px(getContext(), 5),
-//                            dip2px(getContext(), 5),
-//                            dip2px(getContext(), 5));
-//                    tagViewContainer.setLayoutParams(lp);
-//                }
-                tagViewContainer.addView(tagView);
-            }
+            tagView.setDuplicateParentStateEnabled(true);
+            tagViewContainer.setLayoutParams(tagView.getLayoutParams());
+            tagViewContainer.addView(tagView);
             addView(tagViewContainer);
+
             if (preCheckedList.contains(i)) {
                 tagViewContainer.setChecked(true);
             }
+
             if (mTagAdapter.setSelected(i, adapter.getItem(i))) {
                 mSelectedView.add(i);
                 tagViewContainer.setChecked(true);
@@ -183,7 +172,21 @@ public class TagFlowLayout extends FlowLayout implements TagAdapter.OnDataChange
     }
 
     public Set<Integer> getSelectedList() {
-        return new HashSet<Integer>(mSelectedView);
+        return new HashSet<>(mSelectedView);
+    }
+
+    public void reSet() {
+        Iterator<Integer> iterator = mSelectedView.iterator();
+        Integer preIndex = iterator.next();
+        TagView pre = (TagView) getChildAt(preIndex);
+        pre.setChecked(false);
+        mSelectedView.remove(preIndex);
+        TagView defaultView = (TagView) getChildAt(0);
+        defaultView.setChecked(true);
+        mSelectedView.add(0);
+        if (mOnSelectListener != null) {
+            mOnSelectListener.onSelected(new HashSet<>(mSelectedView));
+        }
     }
 
     private void doSelect(TagView child, int position) {
@@ -204,12 +207,17 @@ public class TagFlowLayout extends FlowLayout implements TagAdapter.OnDataChange
                     child.setChecked(true);
                     mSelectedView.add(position);
                 }
-            } else {
+            } else if (position != 0) {
                 child.setChecked(false);
                 mSelectedView.remove(position);
+                if (mSelectedView.size() == 0) {
+                    TagView defaultView = (TagView) getChildAt(0);
+                    defaultView.setChecked(true);
+                    mSelectedView.add(0);
+                }
             }
             if (mOnSelectListener != null) {
-                mOnSelectListener.onSelected(new HashSet<Integer>(mSelectedView));
+                mOnSelectListener.onSelected(new HashSet<>(mSelectedView));
             }
         }
     }

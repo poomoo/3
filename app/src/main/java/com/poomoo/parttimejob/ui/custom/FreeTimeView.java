@@ -55,6 +55,12 @@ public class FreeTimeView extends View implements View.OnTouchListener {
         setOnTouchListener(this);
     }
 
+    public void clearAll() {
+        for (int i = 0; i < row * column; i++)
+            sparseArray.put(i, false);
+        invalidate();
+    }
+
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         surface.width = getResources().getDisplayMetrics().widthPixels * 6 / 7;

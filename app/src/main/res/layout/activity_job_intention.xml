@@ -54,12 +54,11 @@
                 </LinearLayout>
 
                 <com.zhy.view.flowlayout.TagFlowLayout
-                    android:id="@+id/id_flowlayout"
+                    android:id="@+id/flayout_type"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
                     android:layout_marginRight="20dp"
-                    android:layout_marginTop="10dp"
                     zhy:max_select="1" />
 
                 <RadioGroup
@@ -69,7 +68,8 @@
                     android:layout_marginRight="20dp"
                     android:layout_marginTop="10dp"
                     android:gravity="center_horizontal"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:visibility="gone">
 
 
                     <RadioButton
@@ -144,7 +144,8 @@
                     android:layout_marginRight="20dp"
                     android:layout_marginTop="10dp"
                     android:gravity="center_horizontal"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:visibility="gone">
 
 
                     <RadioButton
@@ -215,7 +216,8 @@
                     android:layout_marginRight="20dp"
                     android:layout_marginTop="10dp"
                     android:gravity="center_horizontal"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:visibility="gone">
 
 
                     <RadioButton
@@ -286,7 +288,8 @@
                     android:layout_marginRight="20dp"
                     android:layout_marginTop="10dp"
                     android:gravity="center_horizontal"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:visibility="gone">
 
 
                     <RadioButton
@@ -357,7 +360,8 @@
                     android:layout_marginRight="20dp"
                     android:layout_marginTop="10dp"
                     android:gravity="center_horizontal"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:visibility="gone">
 
 
                     <RadioButton
@@ -458,6 +462,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
                     android:layout_marginTop="10dp" />
             </LinearLayout>
 
@@ -492,6 +497,14 @@
                         android:textColor="@color/black"
                         android:textSize="18sp" />
                 </LinearLayout>
+
+                <com.zhy.view.flowlayout.TagFlowLayout
+                    android:id="@+id/flayout_zone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    zhy:max_select="1" />
             </LinearLayout>
 
             <LinearLayout
@@ -542,6 +555,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp"
+                android:onClick="toConfirm"
                 android:layout_marginTop="20dp"
                 android:text="@string/btn_confirm" />
         </LinearLayout>

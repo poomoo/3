@@ -30,6 +30,7 @@ public class MyConfig {
     public static final String passWordEmpty = "密码为空";
     public static final String passWordIllegal = "密码不能少于6位数";
     public static final String exitApp = "再按一次退出";
+    public static final String[] jobType = {"不限", "调研", "送餐员", "促销", "礼仪", "安保", "销售", "服务员", "零时工", "校内", "设计", "文员", "派单", "模特", "实习", "家教", "演出", "客服", "翻译", "其他"};
 
 
 }

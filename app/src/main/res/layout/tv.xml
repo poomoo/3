@@ -2,9 +2,10 @@
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_margin="5dp"
     android:background="@drawable/selector_filter"
-    android:text="Helloworld"
-    android:textColor="@color/selector_text_filter_background">
+    android:gravity="center"
+    android:text="不限"
+    android:textColor="@color/selector_text_filter_background"
+    android:textSize="14sp">
 
 </TextView>
