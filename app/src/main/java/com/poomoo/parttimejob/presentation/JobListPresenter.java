@@ -7,9 +7,10 @@ import com.poomoo.api.AbsAPICallback;
 import com.poomoo.api.ApiException;
 import com.poomoo.api.NetConfig;
 import com.poomoo.api.Network;
+import com.poomoo.model.base.BaseJobBO;
 import com.poomoo.model.request.QApplyBO;
 import com.poomoo.model.request.QCollectionBO;
-import com.poomoo.model.response.RJobBO;
+import com.poomoo.model.response.RApplyJobBO;
 import com.poomoo.parttimejob.ui.view.JobListView;
 
 import java.util.List;
@@ -39,14 +40,14 @@ public class JobListPresenter extends BasePresenter {
         mSubscriptions.add(Network.getJobApi().getApplyList(qApplyBO)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new AbsAPICallback<List<RJobBO>>() {
+                .subscribe(new AbsAPICallback<List<BaseJobBO>>() {
                     @Override
                     protected void onError(ApiException e) {
                         jobListView.failed(e.getMessage());
                     }
 
                     @Override
-                    public void onNext(List<RJobBO> list) {
+                    public void onNext(List<BaseJobBO> list) {
                         jobListView.succeed(list);
                     }
                 }));
@@ -62,14 +63,14 @@ public class JobListPresenter extends BasePresenter {
         mSubscriptions.add(Network.getJobApi().getCollectionList(qCollectionBO)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new AbsAPICallback<List<RJobBO>>() {
+                .subscribe(new AbsAPICallback<List<BaseJobBO>>() {
                     @Override
                     protected void onError(ApiException e) {
                         jobListView.failed(e.getMessage());
                     }
 
                     @Override
-                    public void onNext(List<RJobBO> list) {
+                    public void onNext(List<BaseJobBO> list) {
                         jobListView.succeed(list);
                     }
                 }));

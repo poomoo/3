@@ -6,9 +6,10 @@ package com.poomoo.parttimejob.ui.activity;
 import android.os.Bundle;
 import android.view.View;
 
-import com.poomoo.model.response.RJobBO;
+import com.poomoo.model.base.BaseJobBO;
+import com.poomoo.model.response.RApplyJobBO;
 import com.poomoo.parttimejob.R;
-import com.poomoo.parttimejob.adapter.ApplysAdapter;
+import com.poomoo.parttimejob.adapter.JobsAdapter;
 import com.poomoo.parttimejob.adapter.BaseListAdapter;
 import com.poomoo.parttimejob.presentation.JobListPresenter;
 import com.poomoo.parttimejob.ui.base.BaseListActivity;
@@ -21,7 +22,7 @@ import java.util.List;
  * 作者: 李苜菲
  * 日期: 2016/4/16 15:32.
  */
-public class MyCollectionActivity extends BaseListActivity<RJobBO> implements BaseListAdapter.OnItemClickListener, JobListView {
+public class MyCollectionActivity extends BaseListActivity<BaseJobBO> implements BaseListAdapter.OnItemClickListener, JobListView {
     private JobListPresenter jobListPresenter;
 
     @Override
@@ -35,8 +36,8 @@ public class MyCollectionActivity extends BaseListActivity<RJobBO> implements Ba
     }
 
     @Override
-    protected BaseListAdapter<RJobBO> onSetupAdapter() {
-        return new ApplysAdapter(this, BaseListAdapter.ONLY_FOOTER, false);
+    protected BaseListAdapter<BaseJobBO> onSetupAdapter() {
+        return new JobsAdapter(this, BaseListAdapter.ONLY_FOOTER, false);
     }
 
     @Override
@@ -57,7 +58,7 @@ public class MyCollectionActivity extends BaseListActivity<RJobBO> implements Ba
     }
 
     @Override
-    public void succeed(List<RJobBO> list) {
+    public void succeed(List<BaseJobBO> list) {
         onLoadFinishState(action);
         onLoadResultData(list);
     }

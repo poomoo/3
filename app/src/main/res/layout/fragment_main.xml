@@ -13,10 +13,10 @@
         <!--左边-->
         <LinearLayout
             android:id="@+id/llayout_citys"
-            android:clickable="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
+            android:clickable="true"
             android:gravity="center"
             android:orientation="horizontal">
 
@@ -60,122 +60,133 @@
 
     </RelativeLayout>
 
-    <com.poomoo.parttimejob.ui.custom.RefreshLayout
-        android:id="@+id/refreshLayout"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_refresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ScrollView
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-            <LinearLayout
+            <android.support.design.widget.CoordinatorLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/layout_coordinator"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_height="match_parent"
+                android:background="@color/colorBg">
 
-                <com.poomoo.parttimejob.ui.custom.SlideShowView
-                    android:id="@+id/flipper_ad"
-                    android:layout_width="match_parent"
-                    android:layout_height="160dp" />
-
-                <LinearLayout
+                <android.support.design.widget.AppBarLayout
+                    android:id="@+id/appBarLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/white"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:focusable="true"
-                    android:focusableInTouchMode="true"
-                    android:paddingBottom="10dp"
-                    android:paddingTop="10dp">
+                    android:background="@color/colorBg"
+                    app:elevation="0dp">
 
-                    <RadioButton
-                        android:layout_width="0dp"
+                    <com.poomoo.parttimejob.ui.custom.SlideShowView
+                        android:id="@+id/flipper_ad"
+                        android:layout_width="match_parent"
+                        android:layout_height="180dp"
+                        app:layout_scrollFlags="scroll" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:button="@null"
-                        android:drawableTop="@drawable/ic_1"
-                        android:gravity="center"
-                        android:text="@string/label_main1" />
+                        android:layout_marginBottom="10dp"
+                        android:background="@color/white"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingBottom="10dp"
+                        android:paddingTop="10dp"
+                        app:layout_scrollFlags="scroll">
 
-                    <RadioButton
-                        android:layout_width="0dp"
+                        <RadioButton
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:button="@null"
+                            android:drawableTop="@drawable/ic_1"
+                            android:gravity="center"
+                            android:text="@string/label_main1" />
+
+                        <RadioButton
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:button="@null"
+                            android:drawableTop="@drawable/ic_2"
+                            android:gravity="center"
+                            android:text="@string/label_main2" />
+
+                        <RadioButton
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:button="@null"
+                            android:drawableTop="@drawable/ic_3"
+                            android:gravity="center"
+                            android:text="@string/label_main3" />
+
+                        <RadioButton
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:button="@null"
+                            android:drawableTop="@drawable/ic_4"
+                            android:gravity="center"
+                            android:text="@string/label_main4" />
+                    </LinearLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:button="@null"
-                        android:drawableTop="@drawable/ic_2"
-                        android:gravity="center"
-                        android:text="@string/label_main2" />
+                        android:layout_marginBottom="2dp"
+                        android:background="@color/white"
+                        android:orientation="horizontal">
 
-                    <RadioButton
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:button="@null"
-                        android:drawableTop="@drawable/ic_3"
-                        android:gravity="center"
-                        android:text="@string/label_main3" />
+                        <TextView
+                            android:id="@+id/txt_left"
+                            android:layout_width="10dp"
+                            android:layout_height="40dp"
+                            android:layout_alignParentLeft="true"
+                            android:layout_centerVertical="true"
+                            android:background="@color/colorPrimary" />
 
-                    <RadioButton
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:button="@null"
-                        android:drawableTop="@drawable/ic_4"
-                        android:gravity="center"
-                        android:text="@string/label_main4" />
-                </LinearLayout>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="20dp"
+                            android:layout_toRightOf="@+id/txt_left"
+                            android:text="你可能感兴趣的"
+                            android:textColor="@color/black"
+                            android:textSize="16sp" />
 
-                <TextView
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginRight="20dp"
+                            android:text="更多"
+                            android:textColor="@color/black"
+                            android:textSize="16sp" />
+                    </RelativeLayout>
+
+                </android.support.design.widget.AppBarLayout>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recycle_main"
                     android:layout_width="match_parent"
-                    android:layout_height="8dp" />
+                    android:layout_height="match_parent"
+                    android:cacheColorHint="@color/transparent"
+                    android:clipToPadding="false"
+                    android:scrollbars="vertical"
+                    app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/white"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/txt_left"
-                        android:layout_width="10dp"
-                        android:layout_height="40dp"
-                        android:layout_alignParentLeft="true"
-                        android:layout_centerVertical="true"
-                        android:background="@color/colorPrimary" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="20dp"
-                        android:layout_toRightOf="@+id/txt_left"
-                        android:text="你可能感兴趣的"
-                        android:textColor="@color/black"
-                        android:textSize="16sp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginRight="20dp"
-                        android:text="更多"
-                        android:textColor="@color/black"
-                        android:textSize="16sp" />
-                </RelativeLayout>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp" />
-
-                <com.poomoo.parttimejob.ui.custom.NoScrollListView
-                    android:id="@+id/list_main"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-
-            </LinearLayout>
-        </ScrollView>
-    </com.poomoo.parttimejob.ui.custom.RefreshLayout>
+            </android.support.design.widget.CoordinatorLayout>
+        </LinearLayout>
+    </android.support.v4.widget.SwipeRefreshLayout>
 </LinearLayout>

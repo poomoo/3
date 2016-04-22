@@ -4,6 +4,7 @@
 package com.poomoo.commlib;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.telephony.TelephonyManager;
@@ -17,6 +18,7 @@ import android.widget.Toast;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.TreeSet;
 
 /**
  * 作者: 李苜菲
@@ -102,7 +104,7 @@ public class MyUtils {
      * @param pay
      * @return
      */
-    public static SpannableString formatPay(Context context,String pay) {
+    public static SpannableString formatPay(Context context, String pay) {
         SpannableString ss;
         ss = new SpannableString(pay);
         int len = pay.length();
@@ -122,4 +124,5 @@ public class MyUtils {
         ss.setSpan(new RelativeSizeSpan(0.7f), pos, len, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         return ss;
     }
+
 }

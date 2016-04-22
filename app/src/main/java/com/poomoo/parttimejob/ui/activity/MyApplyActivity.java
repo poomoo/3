@@ -4,10 +4,9 @@
 package com.poomoo.parttimejob.ui.activity;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 
 import com.poomoo.commlib.LogUtils;
-import com.poomoo.model.response.RJobBO;
+import com.poomoo.model.response.RApplyJobBO;
 import com.poomoo.parttimejob.R;
 import com.poomoo.parttimejob.ui.base.BaseActivity;
 import com.poomoo.parttimejob.ui.fragment.JobListFragment;
@@ -47,11 +46,11 @@ public class MyApplyActivity extends BaseActivity {
         TabFragment mTab = new TabFragment() {
             @Override
             public void onSetupTabs() {
-                addTab(getResources().getString(R.string.tab_apply_all), JobListFragment.class, RJobBO.JOB_ALL);
-                addTab(getResources().getString(R.string.tab_apply_signed), JobListFragment.class, RJobBO.JOB_SIGNED);
-                addTab(getResources().getString(R.string.tab_apply_hired), JobListFragment.class, RJobBO.JOB_HIRED);
-                addTab(getResources().getString(R.string.tab_apply_toPost), JobListFragment.class, RJobBO.JOB_TOPOST);
-                addTab(getResources().getString(R.string.tab_apply_settlement), JobListFragment.class, RJobBO.JOB_SETTLEMENT);
+                addTab(getResources().getString(R.string.tab_apply_all), JobListFragment.class, RApplyJobBO.JOB_ALL);
+                addTab(getResources().getString(R.string.tab_apply_signed), JobListFragment.class, RApplyJobBO.JOB_SIGNED);
+                addTab(getResources().getString(R.string.tab_apply_hired), JobListFragment.class, RApplyJobBO.JOB_HIRED);
+                addTab(getResources().getString(R.string.tab_apply_toPost), JobListFragment.class, RApplyJobBO.JOB_TOPOST);
+                addTab(getResources().getString(R.string.tab_apply_settlement), JobListFragment.class, RApplyJobBO.JOB_SETTLEMENT);
             }
         };
         getSupportFragmentManager().beginTransaction()

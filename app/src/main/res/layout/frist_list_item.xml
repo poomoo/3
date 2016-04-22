@@ -3,6 +3,7 @@
     android:id="@+id/locate"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginLeft="10dp"
     android:gravity="center_vertical"
     android:orientation="vertical">
 
@@ -10,21 +11,21 @@
         android:id="@+id/locateHint"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dip"
         android:gravity="center_vertical"
         android:paddingBottom="10dp"
         android:text="定位城市"
-        android:textSize="12sp" />
+        android:textSize="14sp" />
 
     <TextView
         android:id="@+id/lng_city"
-        android:layout_width="80dp"
-        android:layout_height="40dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:background="@drawable/style_label_city"
         android:clickable="true"
         android:drawableLeft="@drawable/ic_search_gray"
         android:focusable="false"
         android:gravity="center"
+        android:padding="8dp"
         android:text="贵阳"
         android:textSize="16sp" />
 

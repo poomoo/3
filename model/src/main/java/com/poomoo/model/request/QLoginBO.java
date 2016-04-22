@@ -3,6 +3,8 @@
  */
 package com.poomoo.model.request;
 
+import com.poomoo.model.base.BaseRequestBO;
+
 /**
  * 登录
  * 作者: 李苜菲

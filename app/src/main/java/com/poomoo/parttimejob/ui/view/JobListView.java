@@ -3,7 +3,8 @@
  */
 package com.poomoo.parttimejob.ui.view;
 
-import com.poomoo.model.response.RJobBO;
+import com.poomoo.model.base.BaseJobBO;
+import com.poomoo.model.response.RApplyJobBO;
 
 import java.util.List;
 
@@ -12,7 +13,7 @@ import java.util.List;
  * 日期: 2016/4/15 16:30.
  */
 public interface JobListView {
-    void succeed(List<RJobBO> list);
+    void succeed(List<BaseJobBO> list);
 
     void failed(String msg);
 }

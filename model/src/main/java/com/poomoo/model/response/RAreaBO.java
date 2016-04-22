@@ -21,16 +21,44 @@ public class RAreaBO {
         public int cityId;
         public String cityName;//
         public List<area> areaList;//区域集合
-        public String isHot;//--是否为热门城市，0否，1是
+        public String isHot = "0";//--是否为热门城市，0否，1是
 
         public city(String cityName, String pinyin) {
             this.cityName = cityName;
             this.pinyin = pinyin;
+        }
+
+        @Override
+        public String toString() {
+            return "city{" +
+                    "pinyin='" + pinyin + '\'' +
+                    ", cityId=" + cityId +
+                    ", cityName='" + cityName + '\'' +
+                    ", areaList=" + areaList +
+                    ", isHot='" + isHot + '\'' +
+                    '}';
         }
     }
 
     public class area {
         public String areaName;
         public int areaId;
+
+        @Override
+        public String toString() {
+            return "area{" +
+                    "areaName='" + areaName + '\'' +
+                    ", areaId=" + areaId +
+                    '}';
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "RAreaBO{" +
+                "provinceId='" + provinceId + '\'' +
+                ", provinceName='" + provinceName + '\'' +
+                ", cityList=" + cityList +
+                '}';
     }
 }

@@ -10,6 +10,7 @@
     <!-- 这个权限用于访问GPS定位-->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 
     <application
         android:name=".application.MyApplication"
@@ -19,7 +20,7 @@
         android:supportsRtl="true"
         android:theme="@style/NoTitleTheme">
         <activity
-            android:name=".ui.activity.MainActivity"
+            android:name=".ui.activity.SplashActivity"
             android:theme="@style/NoTitleTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -27,9 +28,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".ui.activity.LoginActivity" />
         <activity android:name=".ui.activity.ForgetPassWordActivity" />
         <activity android:name=".ui.activity.RegisterActivity" />
-        <!--<activity android:name=".ui.activity.MainActivity" />-->
+        <activity android:name=".ui.activity.MainActivity" />
+        <activity android:name=".ui.activity.CityListActivity" />
         <activity android:name=".ui.activity.ApplicantListActivity" />
         <activity android:name=".ui.activity.ApplicantInfoActivity" />
         <activity android:name=".ui.activity.FilterActivity" />
@@ -41,6 +44,27 @@
         <activity android:name=".ui.activity.ResumeActivity" />
         <activity android:name=".ui.activity.AuthActivity" />
         <activity android:name=".ui.activity.JobIntentionActivity" />
+
+        <!--<service-->
+        <!--android:name="com.baidu.location.f"-->
+        <!--android:enabled="true"-->
+        <!--android:process=":remote"/>-->
+        <!--&lt;!&ndash; meta-data需要写在application中 &ndash;&gt;-->
+        <!--<meta-data-->
+        <!--android:name="com.baidu.lbsapi.API_KEY"-->
+        <!--android:value="R4R2RGZ04niTRG5sTvsKKziDG3UmKKsB" />-->
+
+        <service
+            android:name="com.baidu.location.f"
+            android:enabled="true"
+            android:process=":remote">
+            <intent-filter>
+                <action android:name="com.baidu.location.service_v2.2"></action>
+            </intent-filter>
+        </service>
+        <meta-data
+            android:name="com.baidu.lbsapi.API_KEY"
+            android:value="R4R2RGZ04niTRG5sTvsKKziDG3UmKKsB" />
     </application>
 
 </manifest>

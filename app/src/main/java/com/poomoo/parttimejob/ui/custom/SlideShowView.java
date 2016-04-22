@@ -1,7 +1,6 @@
 package com.poomoo.parttimejob.ui.custom;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Handler;
@@ -18,17 +17,16 @@ import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
 
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
+import com.bumptech.glide.Glide;
+import com.poomoo.commlib.LogUtils;
 import com.poomoo.parttimejob.R;
+import com.poomoo.parttimejob.listener.AdvertisementListener;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-
-import com.poomoo.parttimejob.listener.AdvertisementListener;
 
 
 /**
@@ -40,12 +38,8 @@ public class SlideShowView extends FrameLayout {
 
     private String TAG = "SlideShowView";
 
-    private final DisplayImageOptions defaultOptions;
     private final MyPagerAdapter myPagerAdapter;
     private final MyPageChangeListener myPageChangeListener;
-
-    // 使用universal-image-loader插件读取网络图片，需要工程导入universal-image-loader-1.8.6-with-sources.jar
-    private ImageLoader imageLoader = ImageLoader.getInstance();
 
     //轮播图图片数量
     private final static int IMAGE_COUNT = 5;
@@ -87,22 +81,17 @@ public class SlideShowView extends FrameLayout {
         }
 
     };
+    private float ratio = 2f;
+    private boolean isfirst = true;
 
     public SlideShowView(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.context = context;
-        defaultOptions = new DisplayImageOptions.Builder() //
-                .cacheInMemory(true) //
-                .cacheOnDisk(true) //
-                .bitmapConfig(Bitmap.Config.RGB_565)// 设置最低配置
-                .build();//
         myPagerAdapter = new MyPagerAdapter();
         myPageChangeListener = new MyPageChangeListener();
-
         initData();
-        if (isAutoPlay) {
+        if (isAutoPlay)
             startPlay();
-        }
     }
 
     public void setPics(String[] urls, AdvertisementListener listener) {
@@ -113,7 +102,6 @@ public class SlideShowView extends FrameLayout {
             startPlay();
         }
     }
-
 
     /**
      * 开始轮播图切换
@@ -132,14 +120,15 @@ public class SlideShowView extends FrameLayout {
     private void initData() {
         imageViewsList = new ArrayList<>();
         // 一步任务获取图片
-        new GetListTask().execute("");
-//        initUI(context);
+//        new GetListTask().execute("");
+        initUI(context);
     }
 
     /**
      * 初始化Views等UI
      */
     private void initUI(Context context) {
+        LogUtils.d(TAG, "initUI:");
         if (imageUrls == null || imageUrls.length == 0)
             return;
         this.removeAllViews();
@@ -151,10 +140,9 @@ public class SlideShowView extends FrameLayout {
         dotViewsList = new ArrayList<>();
         for (int i = 0; i < imageUrls.length; i++) {
             ImageView view = new ImageView(context);
-            view.setTag(imageUrls[i]);
-            view.setImageResource(R.mipmap.ic_launcher);
+            view.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
 //            view.setAdjustViewBounds(true);
-            view.setScaleType(ScaleType.CENTER_CROP);
+            view.setScaleType(ScaleType.FIT_XY);
             imageViewsList.add(view);
 
             ImageView dotView = new ImageView(context);
@@ -168,7 +156,7 @@ public class SlideShowView extends FrameLayout {
         viewPager = (ViewPager) findViewById(R.id.viewPager);
         viewPager.setFocusable(true);
         viewPager.setAdapter(myPagerAdapter);
-        viewPager.setOnPageChangeListener(myPageChangeListener);
+        viewPager.addOnPageChangeListener(myPageChangeListener);
     }
 
     /**
@@ -186,7 +174,7 @@ public class SlideShowView extends FrameLayout {
         public Object instantiateItem(ViewGroup container, final int position) {
 //            LogUtils.i(TAG, "instantiateItem:" + position);
             ImageView imageView = imageViewsList.get(position);
-            imageLoader.displayImage(imageView.getTag() + "", imageView, defaultOptions);
+            Glide.with(context).load(imageUrls[position]).into(imageView);
             imageView.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -317,10 +305,10 @@ public class SlideShowView extends FrameLayout {
                 // 这里一般调用服务端接口获取一组轮播图片，下面是从百度找的几个图片
 
                 imageUrls = new String[]{
-                        "http://b.hiphotos.baidu.com/album/pic/item/caef76094b36acafe72d0e667cd98d1000e99c5f.jpg?psign=e72d0e667cd98d1001e93901213fb80e7aec54e737d1b867",
-                        "http://img3.redocn.com/20101213/20101211_0e830c2124ac3d92718fXrUdsYf49nDl.jpg",
-                        "http://pic41.nipic.com/20140509/4746986_145156378323_2.jpg",
-                        "http://pic32.nipic.com/20130829/12906030_124355855000_2.png"
+                        "http://img1.3lian.com/img013/v4/96/d/53.jpg",
+                        "http://p1.gexing.com/G1/M00/2B/71/rBACE1NghIvyY0VfAAC2vmi1Uzo574.jpg",
+                        "http://img1.3lian.com/img013/v4/96/d/51.jpg",
+                        "http://img.sc115.com/uploads/sc/psd/140312/1403122.jpg"
                 };
                 return true;
             } catch (Exception e) {

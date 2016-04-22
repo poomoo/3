@@ -1,6 +1,7 @@
 package com.poomoo.api.api;
 
-import com.poomoo.model.request.BaseRequestBO;
+import com.poomoo.model.base.BaseRequestBO;
+import com.poomoo.model.response.RAdBO;
 import com.poomoo.model.response.RAreaBO;
 
 import java.util.List;
@@ -18,4 +19,7 @@ public interface CommApi {
 
     @POST("lzrb/app/call.htm")
     Observable<List<RAreaBO>> getCitys(@Body BaseRequestBO data);
+
+    @POST("lzrb/app/call.htm")
+    Observable<List<RAdBO>> getAdvertisements(@Body BaseRequestBO data);
 }

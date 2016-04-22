@@ -8,7 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.poomoo.model.response.RJobBO;
+import com.poomoo.model.response.RApplyJobBO;
 import com.poomoo.parttimejob.R;
 import com.poomoo.parttimejob.ui.activity.AuthActivity;
 import com.poomoo.parttimejob.ui.activity.FeedBackActivity;
@@ -54,16 +54,16 @@ public class PersonalFragment extends BaseFragment {
         Bundle bundle = new Bundle();
         switch (view.getId()) {
             case R.id.llayout_signed:
-                bundle.putInt(getString(R.string.intent_value), RJobBO.JOB_SIGNED);
+                bundle.putInt(getString(R.string.intent_value), RApplyJobBO.JOB_SIGNED);
                 break;
             case R.id.llayout_hired:
-                bundle.putInt(getString(R.string.intent_value), RJobBO.JOB_HIRED);
+                bundle.putInt(getString(R.string.intent_value), RApplyJobBO.JOB_HIRED);
                 break;
             case R.id.llayout_toPost:
-                bundle.putInt(getString(R.string.intent_value), RJobBO.JOB_TOPOST);
+                bundle.putInt(getString(R.string.intent_value), RApplyJobBO.JOB_TOPOST);
                 break;
             case R.id.llayout_settleMent:
-                bundle.putInt(getString(R.string.intent_value), RJobBO.JOB_SETTLEMENT);
+                bundle.putInt(getString(R.string.intent_value), RApplyJobBO.JOB_SETTLEMENT);
                 break;
         }
         openActivity(MyApplyActivity.class, bundle);

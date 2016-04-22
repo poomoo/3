@@ -101,9 +101,9 @@ public class LoginActivity extends BaseActivity implements LoginView {
      */
     public void toFindPassWord(View view) {
         tel = nameEdt.getText().toString().trim();
-        Bundle bundle=new Bundle();
-        bundle.putString(getString(R.string.intent_value),tel);
-        openActivity(ForgetPassWordActivity.class,bundle);
+        Bundle bundle = new Bundle();
+        bundle.putString(getString(R.string.intent_value), tel);
+        openActivity(ForgetPassWordActivity.class, bundle);
     }
 
     /**
@@ -113,6 +113,16 @@ public class LoginActivity extends BaseActivity implements LoginView {
      */
     public void toRegister(View view) {
         openActivity(RegisterActivity.class);
+    }
+
+    /**
+     * 随便看看
+     *
+     * @param view
+     */
+    public void toVisit(View view) {
+        openActivity(MainActivity.class);
+        finish();
     }
 
     @Override

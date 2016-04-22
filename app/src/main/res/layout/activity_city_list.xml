@@ -38,6 +38,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/llayout_placed"
+        android:layout_marginLeft="10dp"
         android:layout_marginTop="7dp"
         android:cacheColorHint="#00000000"
         android:divider="#00000000"

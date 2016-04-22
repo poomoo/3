@@ -10,22 +10,26 @@
         android:layout_height="wrap_content"
         app:elevation="0dp">
 
-        <include
-            layout="@layout/pub_layout_title_bar"
-            app:layout_scrollFlags="scroll" />
-
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:background="@color/colorPrimary"
-            app:layout_scrollFlags="scroll" />
+            android:background="@color/colorPrimary" />
 
+        <TextView
+            android:id="@+id/txt_test"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="测试滚动"
+            android:textSize="20sp"
+            app:layout_scrollFlags="scroll" />
     </android.support.design.widget.AppBarLayout>
 
-    <FrameLayout
-        android:id="@+id/frame_container"
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rvToDoList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"></android.support.v7.widget.RecyclerView>
 
 </android.support.design.widget.CoordinatorLayout>

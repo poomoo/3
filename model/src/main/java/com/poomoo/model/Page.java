@@ -7,7 +7,7 @@ import java.util.ArrayList;
  */
 public class Page<T> {
 
-    public static final int PAGE_SIZE = 20;
+    public static final int PAGE_SIZE = 10;
 
     private Integer pageNum;
     private Integer recordCount;

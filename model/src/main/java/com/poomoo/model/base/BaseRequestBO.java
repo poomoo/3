@@ -1,7 +1,7 @@
 /**
  * Copyright (c) 2016. 李苜菲 Inc. All rights reserved.
  */
-package com.poomoo.model.request;
+package com.poomoo.model.base;
 
 /**
  * 作者: 李苜菲

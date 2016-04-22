@@ -91,8 +91,8 @@ public class RefreshLayout extends SwipeRefreshLayout implements
      * 获取ListView对象
      */
     private void getListView() {
-        mListView = (NoScrollListView) findViewById(R.id.list_main);
-        mListView.setOnScrollListener(this);
+//        mListView = (NoScrollListView) findViewById(R.id.list_main);
+//        mListView.setOnScrollListener(this);
 //        View childView = getChildAt(1);
 //        LogUtils.i("childView:" + childView + "childView:" + childView.findViewById(R.id.list_main));
 //        if (childView.findViewById(R.id.list_main) instanceof ListView) {

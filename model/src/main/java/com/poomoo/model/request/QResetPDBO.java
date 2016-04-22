@@ -3,6 +3,8 @@
  */
 package com.poomoo.model.request;
 
+import com.poomoo.model.base.BaseRequestBO;
+
 /**
  * 重置密码
  * 作者: 李苜菲

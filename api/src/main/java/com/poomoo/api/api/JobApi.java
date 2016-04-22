@@ -3,9 +3,11 @@
  */
 package com.poomoo.api.api;
 
+import com.poomoo.model.base.BaseJobBO;
 import com.poomoo.model.request.QApplyBO;
 import com.poomoo.model.request.QCollectionBO;
-import com.poomoo.model.response.RJobBO;
+import com.poomoo.model.request.QRecommendBO;
+import com.poomoo.model.response.RApplyJobBO;
 
 import java.util.List;
 
@@ -19,8 +21,11 @@ import rx.Observable;
  */
 public interface JobApi {
     @POST("lzrb/app/call.htm")
-    Observable<List<RJobBO>> getApplyList(@Body QApplyBO data);
+    Observable<List<BaseJobBO>> getRecommendList(@Body QRecommendBO data);
 
     @POST("lzrb/app/call.htm")
-    Observable<List<RJobBO>> getCollectionList(@Body QCollectionBO data);
+    Observable<List<BaseJobBO>> getApplyList(@Body QApplyBO data);
+
+    @POST("lzrb/app/call.htm")
+    Observable<List<BaseJobBO>> getCollectionList(@Body QCollectionBO data);
 }

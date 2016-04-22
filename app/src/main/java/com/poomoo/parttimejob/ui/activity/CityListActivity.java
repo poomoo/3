@@ -39,9 +39,13 @@ import com.poomoo.api.Network;
 import com.poomoo.commlib.LogUtils;
 import com.poomoo.commlib.MyUtils;
 import com.poomoo.commlib.PingYinUtil;
-import com.poomoo.model.request.BaseRequestBO;
+import com.poomoo.commlib.StringHelper;
+import com.poomoo.model.base.BaseRequestBO;
 import com.poomoo.model.response.RAreaBO;
 import com.poomoo.parttimejob.R;
+import com.poomoo.parttimejob.database.AreaInfo;
+import com.poomoo.parttimejob.database.CityInfo;
+import com.poomoo.parttimejob.database.DataBaseHelper;
 import com.poomoo.parttimejob.ui.base.BaseActivity;
 import com.poomoo.parttimejob.ui.custom.MyLetterListView;
 
@@ -72,9 +76,11 @@ public class CityListActivity extends BaseActivity implements OnScrollListener {
     private Handler handler;
     private OverlayThread overlayThread; // 显示首字母对话框
     private List<RAreaBO.city> allCity_lists; // 所有城市列表
-    private List<RAreaBO.city> city_lists;// 城市列表
+    private List<RAreaBO.city> city_lists = new ArrayList<>();// 城市列表
     private List<RAreaBO.city> city_hot;
     private List<RAreaBO.city> city_result;
+    private List<CityInfo> cityInfos = new ArrayList<>();//保存城市
+    private List<AreaInfo> areaInfos = new ArrayList<>();//保存区域
     //    private List<String> city_history;
     private EditText sh;
     private TextView tv_noresult;
@@ -86,10 +92,12 @@ public class CityListActivity extends BaseActivity implements OnScrollListener {
     private String locateCity; // 定位城市
     private int locateProcess = 1; // 记录当前定位的状态 正在定位-定位成功-定位失败
     private boolean isNeedFresh;
+    private WindowManager windowManager;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setBack();
         initView();
     }
 
@@ -104,8 +112,6 @@ public class CityListActivity extends BaseActivity implements OnScrollListener {
     }
 
     protected void initView() {
-        initTitleBar();
-
         personList = (ListView) findViewById(R.id.list_view);
         resultList = (ListView) findViewById(R.id.search_result);
         sh = (EditText) findViewById(R.id.sh);
@@ -113,20 +119,14 @@ public class CityListActivity extends BaseActivity implements OnScrollListener {
         letterListView = (MyLetterListView) findViewById(R.id.MyLetterListView01);
 
         initData();
-        getCityList();
+        cityInfos = DataBaseHelper.getCityList();
+        if (cityInfos.size() > 0) {
+            initCityList();
+            getCityList(true);
+        } else
+            getCityList(false);
     }
 
-    protected void initTitleBar() {
-        HeaderViewHolder headerViewHolder = getHeaderView();
-        headerViewHolder.titleTxt.setText(R.string.title_selectCity);
-        headerViewHolder.backImg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-                getActivityOutToRight();
-            }
-        });
-    }
 
     private void initData() {
         locateCity = application.getLocateCity();
@@ -267,21 +267,19 @@ public class CityListActivity extends BaseActivity implements OnScrollListener {
         mMyLocationListener = new MyLocationListener();
         mLocationClient.registerLocationListener(mMyLocationListener);
         initLocation();
-        LogUtils.i("location", "1mLocationClient.start()");
         mLocationClient.start();
-        LogUtils.i("location", "2mLocationClient.start()");
     }
 
     private void cityInit() {
         RAreaBO rAreaBO = new RAreaBO();
-        RAreaBO.city city = rAreaBO.new city("定位", "0");
+        RAreaBO.city city = rAreaBO.new city("定位城市", "0");
         allCity_lists.add(city);
 //        city = rAreaBO.new city("历史", "1"); // 最近访问的城市
 //        allCity_lists.add(city);
-        city = rAreaBO.new city("热门", "1"); // 热门城市
+        city = rAreaBO.new city("热门城市", "1"); // 热门城市
         allCity_lists.add(city);
-        city = rAreaBO.new city("全部", "2"); // 全部城市
-        allCity_lists.add(city);
+//        city = rAreaBO.new city("全部", "2"); // 全部城市
+//        allCity_lists.add(city);
     }
 
     /**
@@ -292,16 +290,43 @@ public class CityListActivity extends BaseActivity implements OnScrollListener {
         RAreaBO rAreaBO = new RAreaBO();
         RAreaBO.city city;
         for (int i = 0; i < len; i++) {
+            LogUtils.d(TAG, "isHot:" + city_lists.get(i).isHot);
             if (city_lists.get(i).isHot.equals("1")) {
                 city = rAreaBO.new city(city_lists.get(i).cityName, "2");
                 city_hot.add(city);
+                LogUtils.d(TAG, "add");
             }
 
         }
     }
 
-    private void getCityList() {
-        showProgressDialog(getString(R.string.dialog_msg));
+    private void initCityList() {
+        int len = cityInfos.size();
+        for (int i = 0; i < len; i++)
+            city_lists.add(new RAreaBO().new city(cityInfos.get(i).getCityName(), ""));
+
+        setPinYin(city_lists);
+//        hotCityInit();
+        Collections.sort(city_lists, comparator);
+        allCity_lists.addAll(city_lists);
+        adapter.notifyDataSetChanged();
+        sections = new String[allCity_lists.size()];
+        for (int i = 0; i < allCity_lists.size(); i++) {
+            // 当前汉语拼音首字母
+            String currentStr = getAlpha(allCity_lists.get(i).pinyin);
+            // 上一个汉语拼音首字母，如果不存在为" "
+            String previewStr = (i - 1) >= 0 ? getAlpha(allCity_lists.get(i - 1).pinyin) : " ";
+            if (!previewStr.equals(currentStr)) {
+                String name = getAlpha(allCity_lists.get(i).pinyin);
+                alphaIndexer.put(name, i);
+                sections[i] = name;
+            }
+        }
+    }
+
+    private void getCityList(boolean flag) {
+        if (!flag)
+            showProgressDialog(getString(R.string.dialog_msg));
         BaseRequestBO baseRequestBO = new BaseRequestBO(NetConfig.COMMACTION, NetConfig.CITY);
         Network.getCommApi().getCitys(baseRequestBO)
                 .subscribeOn(Schedulers.io())
@@ -316,15 +341,35 @@ public class CityListActivity extends BaseActivity implements OnScrollListener {
                     @Override
                     public void onNext(List<RAreaBO> rAreaBOs) {
                         closeProgressDialog();
+                        city_lists=new ArrayList<>();
                         for (RAreaBO rAreaBO : rAreaBOs) {
+                            LogUtils.d(TAG, rAreaBO + "");
                             int len = rAreaBO.cityList.size();
-                            for (int i = 0; i < len; i++)
+                            for (int i = 0; i < len; i++) {
+                                CityInfo cityInfo = new CityInfo();
+                                cityInfo.setCityId(rAreaBO.cityList.get(i).cityId);
+                                cityInfo.setCityName(rAreaBO.cityList.get(i).cityName);
+
                                 city_lists.add(rAreaBO.cityList.get(i));
+                                int len2 = rAreaBO.cityList.get(i).areaList.size();
+                                areaInfos = new ArrayList<>();
+                                for (int j = 0; j < len2; j++)
+                                    areaInfos.add(new AreaInfo(city_lists.get(i).areaList.get(j).areaId, city_lists.get(i).areaList.get(j).areaName, cityInfo));
+                                DataBaseHelper.saveArea(areaInfos);
+                                cityInfo.setAreaInfoList(areaInfos);
+                                cityInfos.add(cityInfo);
+                            }
+
                         }
-                        hotCityInit();
+                        DataBaseHelper.saveCity(cityInfos);
+
+                        setPinYin(city_lists);
+                        LogUtils.i(TAG, "city_lists:" + city_lists.toString());
+//                        hotCityInit();
                         Collections.sort(city_lists, comparator);
+                        allCity_lists=new ArrayList<>();
                         allCity_lists.addAll(city_lists);
-                        LogUtils.i("lmf", "allCity_lists:" + allCity_lists.toString());
+                        LogUtils.i(TAG, "allCity_lists:" + allCity_lists.toString());
                         adapter.notifyDataSetChanged();
                         sections = new String[allCity_lists.size()];
                         for (int i = 0; i < allCity_lists.size(); i++) {
@@ -352,6 +397,12 @@ public class CityListActivity extends BaseActivity implements OnScrollListener {
                 city_result.add(city);
         }
         Collections.sort(city_result, comparator);
+    }
+
+    public void setPinYin(List<RAreaBO.city> list) {
+        int i = 0;
+        for (RAreaBO.city rAreaBO : list)
+            list.get(i++).pinyin = StringHelper.getPinYinHeadChar(rAreaBO.cityName);
     }
 
     /**
@@ -400,7 +451,7 @@ public class CityListActivity extends BaseActivity implements OnScrollListener {
         public void onReceiveLocation(BDLocation location) {
             LogUtils.i("location", "location.getLongitude():" + location.getLongitude() + "location.getLatitude():"
                     + location.getLatitude() + "location.getCity():" + location.getCity());
-//            MyUtils.showToast(getApplicationContext(), "city:" + location.getCity());
+            MyUtils.showToast(getApplicationContext(), "city:" + location.getCity());
             if (!isNeedFresh)
                 return;
 
@@ -415,7 +466,7 @@ public class CityListActivity extends BaseActivity implements OnScrollListener {
             locateProcess = 2; // 定位成功
             personList.setAdapter(adapter);
             adapter.notifyDataSetChanged();
-//            mLocationClient.unRegisterLocationListener(mMyLocationListener);
+            mLocationClient.unRegisterLocationListener(mMyLocationListener);
         }
     }
 
@@ -470,7 +521,7 @@ public class CityListActivity extends BaseActivity implements OnScrollListener {
         private List<RAreaBO.city> list;
         private List<RAreaBO.city> hotList;
         //        private List<String> hisCity;
-        final int VIEW_TYPE = 5;
+        final int VIEW_TYPE = 3;
 
         public ListAdapter(Context context, List<RAreaBO.city> list,
                            List<RAreaBO.city> hotList) {
@@ -489,7 +540,7 @@ public class CityListActivity extends BaseActivity implements OnScrollListener {
 
         @Override
         public int getItemViewType(int position) {
-            return position < 4 ? position : 4;
+            return position < 2 ? position : 2;
         }
 
         @Override
@@ -539,14 +590,13 @@ public class CityListActivity extends BaseActivity implements OnScrollListener {
                         }
                     }
                 });
-                ProgressBar pbLocate = (ProgressBar) convertView
-                        .findViewById(R.id.pbLocate);
+                ProgressBar pbLocate = (ProgressBar) convertView.findViewById(R.id.pbLocate);
                 if (locateProcess == 1) { // 正在定位
                     locateHint.setText("正在定位");
                     city.setVisibility(View.GONE);
                     pbLocate.setVisibility(View.VISIBLE);
                 } else if (locateProcess == 2) { // 定位成功
-                    locateHint.setText("当前定位城市");
+                    locateHint.setText(list.get(position).cityName);
                     LogUtils.i(TAG, "定位成功:" + "currentCity:" + currentCity + "city:" + city);
                     city.setVisibility(View.VISIBLE);
                     city.setText(locateCity);
@@ -603,8 +653,7 @@ public class CityListActivity extends BaseActivity implements OnScrollListener {
 //            }
             else if (viewType == 1) {
                 convertView = inflater.inflate(R.layout.recent_city, null);
-                GridView hotCity = (GridView) convertView
-                        .findViewById(R.id.recent_city);
+                GridView hotCity = (GridView) convertView.findViewById(R.id.recent_city);
                 hotCity.setOnItemClickListener(new OnItemClickListener() {
 
                     @Override
@@ -645,10 +694,12 @@ public class CityListActivity extends BaseActivity implements OnScrollListener {
                 hotCity.setAdapter(new HotCityAdapter(context, this.hotList));
                 TextView hotHint = (TextView) convertView
                         .findViewById(R.id.recentHint);
-                hotHint.setText(getString(R.string.label_hot));
-            } else if (viewType == 2) {
-                convertView = inflater.inflate(R.layout.total_item, null);
-            } else {
+                hotHint.setText(list.get(position).cityName);
+            }
+//            else if (viewType == 2) {
+//                convertView = inflater.inflate(R.layout.total_item, null);
+//            }
+            else {
                 if (convertView == null) {
                     convertView = inflater.inflate(R.layout.list_item, null);
                     holder = new ViewHolder();
@@ -658,12 +709,12 @@ public class CityListActivity extends BaseActivity implements OnScrollListener {
                 } else {
                     holder = (ViewHolder) convertView.getTag();
                 }
-                if (position >= 5) {
-                    LogUtils.i("lmf", "position:" + position + "cityName:" + list.get(position).cityName);
+                if (position >= 2) {
+                    LogUtils.i(TAG, "position:" + position + "cityName:" + list.get(position).cityName);
                     holder.name.setText(list.get(position).cityName);
                     String currentStr = getAlpha(list.get(position).pinyin);
                     String previewStr = (position - 1) >= 0 ? getAlpha(list.get(position - 1).pinyin) : " ";
-                    LogUtils.i("lmf", "currentStr:" + currentStr + " previewStr:" + previewStr);
+                    LogUtils.i(TAG, "currentStr:" + currentStr + " previewStr:" + previewStr);
                     if (!previewStr.equals(currentStr)) {
                         holder.alpha.setVisibility(View.VISIBLE);
                         holder.alpha.setText(currentStr);
@@ -771,9 +822,9 @@ public class CityListActivity extends BaseActivity implements OnScrollListener {
                 WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
                         | WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
                 PixelFormat.TRANSLUCENT);
-        WindowManager windowManager = (WindowManager) this
-                .getSystemService(Context.WINDOW_SERVICE);
+        windowManager = (WindowManager) this.getSystemService(Context.WINDOW_SERVICE);
         windowManager.addView(overlay, lp);
+        LogUtils.d(TAG,"initOverlay"+windowManager+":"+overlay);
     }
 
     private boolean isScroll = false;
@@ -818,12 +869,14 @@ public class CityListActivity extends BaseActivity implements OnScrollListener {
         if (pattern.matcher(c + "").matches()) {
             return (c + "").toUpperCase();
         } else if (str.equals("0")) {
-            return "定位";
+            return "定位城市";
         } else if (str.equals("1")) {
-            return "热门";
-        } else if (str.equals("2")) {
-            return "全部";
-        } else {
+            return "热门城市";
+        }
+//        else if (str.equals("2")) {
+//            return "全部";
+//        }
+        else {
             return "#";
         }
     }
@@ -854,12 +907,19 @@ public class CityListActivity extends BaseActivity implements OnScrollListener {
                 text = PingYinUtil.converterToFirstSpell(pinyin)
                         .substring(0, 1).toUpperCase();
             }
-            LogUtils.i("lmf", "firstVisibleItem:" + firstVisibleItem + " text:" + text);
+            LogUtils.i(TAG, "firstVisibleItem:" + firstVisibleItem + " text:" + text);
             overlay.setText(text);
             overlay.setVisibility(View.VISIBLE);
             handler.removeCallbacks(overlayThread);
             // 延迟一秒后执行，让overlay为不可见
             handler.postDelayed(overlayThread, 1000);
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        windowManager.removeViewImmediate(overlay);
+        super.onDestroy();
+        LogUtils.d(TAG,"onDestroy:"+windowManager+":"+overlay);
     }
 }

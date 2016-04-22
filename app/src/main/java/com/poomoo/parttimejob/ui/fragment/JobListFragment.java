@@ -4,8 +4,9 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.poomoo.commlib.MyUtils;
-import com.poomoo.model.response.RJobBO;
-import com.poomoo.parttimejob.adapter.ApplysAdapter;
+import com.poomoo.model.base.BaseJobBO;
+import com.poomoo.model.response.RApplyJobBO;
+import com.poomoo.parttimejob.adapter.JobsAdapter;
 import com.poomoo.parttimejob.adapter.BaseListAdapter;
 import com.poomoo.parttimejob.presentation.JobListPresenter;
 import com.poomoo.parttimejob.ui.base.BaseListFragment;
@@ -17,7 +18,7 @@ import java.util.List;
 /**
  * 我的申请
  */
-public class JobListFragment extends BaseListFragment<RJobBO> implements BaseListAdapter.OnItemClickListener, JobListView {
+public class JobListFragment extends BaseListFragment<BaseJobBO> implements BaseListAdapter.OnItemClickListener, JobListView {
     public int mCatalog;
 
     private JobListPresenter jobListPresenter;
@@ -25,12 +26,12 @@ public class JobListFragment extends BaseListFragment<RJobBO> implements BaseLis
     @Override
     public void onCreate(Bundle bundle) {
         super.onCreate(bundle);
-        mCatalog = getArguments().getInt("BUNDLE_TYPE", RJobBO.JOB_ALL);
+        mCatalog = getArguments().getInt("BUNDLE_TYPE", RApplyJobBO.JOB_ALL);
     }
 
     @Override
-    protected BaseListAdapter<RJobBO> onSetupAdapter() {
-        return new ApplysAdapter(getActivity(), BaseListAdapter.ONLY_FOOTER, true);
+    protected BaseListAdapter<BaseJobBO> onSetupAdapter() {
+        return new JobsAdapter(getActivity(), BaseListAdapter.ONLY_FOOTER, true);
     }
 
     @Override
@@ -54,7 +55,7 @@ public class JobListFragment extends BaseListFragment<RJobBO> implements BaseLis
     }
 
     @Override
-    public void succeed(List<RJobBO> list) {
+    public void succeed(List<BaseJobBO> list) {
         onLoadFinishState(action);
         onLoadResultData(list);
     }

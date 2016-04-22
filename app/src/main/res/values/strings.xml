@@ -105,7 +105,7 @@
     <!--intent-->
 
     <!--城市列表-->
-    <string name="label_hot">热门</string>
+    <string name="label_hot">热门城市</string>
     <string name="label_all">全部</string>
     <!--城市列表-->
 
@@ -114,6 +114,10 @@
     <string name="sp_isLogin">isLogin</string>
     <string name="sp_passWord">passWord</string>
     <string name="sp_phoneNum">phoneNum</string>
+    <string name="sp_userId">userId</string>
+    <string name="sp_nickName">nickName</string>
+    <string name="sp_realName">realName</string>
+    <string name="sp_idCardNum">idCardNum</string>
     <!--SharedPreference-->
 
     <!--dialog-->

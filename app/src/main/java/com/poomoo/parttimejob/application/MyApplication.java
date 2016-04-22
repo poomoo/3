@@ -1,14 +1,12 @@
 package com.poomoo.parttimejob.application;
 
 import android.app.Activity;
-import android.app.Application;
-import android.graphics.Bitmap;
+import android.database.sqlite.SQLiteDatabase;
 
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.poomoo.commlib.CrashHandler;
-import com.poomoo.parttimejob.R;
+
+import org.litepal.LitePalApplication;
+import org.litepal.tablemanager.Connector;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +16,7 @@ import java.util.List;
  * 作者: 李苜菲
  * 日期: 2015/11/11 11:26.
  */
-public class MyApplication extends Application {
+public class MyApplication extends LitePalApplication {
     // 用户信息
     private String userId = "";//用户编号
     private String nickName = "";//用户昵称
@@ -37,6 +35,7 @@ public class MyApplication extends Application {
     private String updateDtv = "";//修改时间
     private String locateCity = "";//定位城市
     private String currCity = "";//展示城市
+    private int currCityId;//展示城市id
 
     private static MyApplication instance;//当前对象
     private List<Activity> activityList;//activity栈
@@ -45,27 +44,27 @@ public class MyApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
-        initImageLoader();
+//        initImageLoader();
         CrashHandler crashHandler = CrashHandler.getInstance();
         // 注册crashHandler
         crashHandler.init(getApplicationContext());
-
+        SQLiteDatabase db = Connector.getDatabase();//新建表
     }
 
     private void initImageLoader() {
-        DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder() //
-                .showImageForEmptyUri(R.mipmap.ic_launcher) //
-                .showImageOnFail(R.mipmap.ic_launcher) //
-                .cacheInMemory(true) //
-                .cacheOnDisk(true) //
-                .bitmapConfig(Bitmap.Config.RGB_565)// 设置最低配置
-                .build();//
-        ImageLoaderConfiguration config = new ImageLoaderConfiguration//
-                .Builder(getApplicationContext())//
-                .defaultDisplayImageOptions(defaultOptions)//
-                .writeDebugLogs()//
-                .build();//
-        ImageLoader.getInstance().init(config);
+//        DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder() //
+//                .showImageForEmptyUri(R.mipmap.ic_launcher) //
+//                .showImageOnFail(R.mipmap.ic_launcher) //
+//                .cacheInMemory(true) //
+//                .cacheOnDisk(true) //
+//                .bitmapConfig(Bitmap.Config.RGB_565)// 设置最低配置
+//                .build();//
+//        ImageLoaderConfiguration config = new ImageLoaderConfiguration//
+//                .Builder(getApplicationContext())//
+//                .defaultDisplayImageOptions(defaultOptions)//
+//                .writeDebugLogs()//
+//                .build();//
+//        ImageLoader.getInstance().init(config);
     }
 
     public List<Activity> getActivityList() {
@@ -219,5 +218,13 @@ public class MyApplication extends Application {
 
     public void setCurrCity(String currCity) {
         this.currCity = currCity;
+    }
+
+    public int getCurrCityId() {
+        return currCityId;
+    }
+
+    public void setCurrCityId(int currCityId) {
+        this.currCityId = currCityId;
     }
 }
