@@ -22,18 +22,27 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dip"
+            android:imeOptions="actionSearch"
+            android:singleLine="true"
             android:background="@drawable/style_edittext_search"
             android:drawableLeft="@drawable/ic_search_gray"
             android:drawablePadding="5dp"
+            android:inputType="text"
             android:hint="@string/hint_inputSearchJob"
             android:padding="6dp"
             android:textColor="#515151"
             android:textSize="12sp" />
     </LinearLayout>
 
-    <ListView
-        android:id="@+id/list_interestingJob"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_search"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp" />
+    <!--ErrorLayout-->
+    <com.poomoo.parttimejob.ui.custom.ErrorLayout
+        android:id="@+id/error_frame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="invisible" />
 </LinearLayout>

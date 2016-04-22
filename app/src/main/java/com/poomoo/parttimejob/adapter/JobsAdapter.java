@@ -11,7 +11,6 @@ import android.widget.TextView;
 import com.poomoo.commlib.MyDateFormat;
 import com.poomoo.commlib.MyUtils;
 import com.poomoo.model.base.BaseJobBO;
-import com.poomoo.model.response.RApplyJobBO;
 import com.poomoo.parttimejob.R;
 
 
@@ -39,7 +38,7 @@ public class JobsAdapter extends BaseListAdapter<BaseJobBO> {
         JobsViewHolder holder = (JobsViewHolder) h;
         BaseJobBO item = items.get(position);
         holder.jobNameTxt.setText(item.jobName);
-        holder.payTxt.setText(MyUtils.formatPay(mContext, item.pay));
+        holder.payTxt.setText(MyUtils.formatPay(item.pay,true));
         holder.areaTxt.setText(item.areaName);
         holder.dateTxt.setText(TextUtils.isEmpty(item.applyDt)? MyDateFormat.format(item.publishDt):item.applyDt);
         //是否显示工作种类
@@ -64,7 +63,7 @@ public class JobsAdapter extends BaseListAdapter<BaseJobBO> {
     }
 
     public static final class JobsViewHolder extends RecyclerView.ViewHolder {
-        @Bind(R.id.txt_jobName)
+        @Bind(R.id.txt_jobInfoName)
         TextView jobNameTxt;
         @Bind(R.id.txt_JobPay)
         TextView payTxt;

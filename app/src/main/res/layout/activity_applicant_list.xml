@@ -7,8 +7,8 @@
 
     <include layout="@layout/pub_layout_title_bar" />
 
-    <ListView
-        android:id="@+id/list_applicant"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_applicant"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 

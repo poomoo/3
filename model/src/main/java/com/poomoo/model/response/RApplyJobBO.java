@@ -17,7 +17,7 @@ public class RApplyJobBO extends BaseJobBO {
     public static final int JOB_TOPOST=3;
     public static final int JOB_SETTLEMENT =4;
 
-    public RApplyJobBO(String areaName, String jobId, int status, String pay, String jobName, String applyDt) {
+    public RApplyJobBO(String areaName, int jobId, int status, String pay, String jobName, String applyDt) {
         super.areaName = areaName;
         super.jobId = jobId;
         super.status = status;

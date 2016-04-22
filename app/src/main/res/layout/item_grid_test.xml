@@ -4,12 +4,10 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <TextView
+    <ImageView
+        android:id="@+id/img_grid"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/selector_filter"
-        android:text="@string/tab_all"
-        android:textColor="@color/selector_text_filter_background"
-        android:textSize="14sp" />
+        android:layout_margin="4dp" />
 
 </LinearLayout>

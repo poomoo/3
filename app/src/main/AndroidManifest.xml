@@ -32,6 +32,8 @@
         <activity android:name=".ui.activity.ForgetPassWordActivity" />
         <activity android:name=".ui.activity.RegisterActivity" />
         <activity android:name=".ui.activity.MainActivity" />
+        <activity android:name=".ui.activity.SearchJobActivity" />
+        <activity android:name=".ui.activity.JobInfoActivity" />
         <activity android:name=".ui.activity.CityListActivity" />
         <activity android:name=".ui.activity.ApplicantListActivity" />
         <activity android:name=".ui.activity.ApplicantInfoActivity" />
@@ -44,15 +46,6 @@
         <activity android:name=".ui.activity.ResumeActivity" />
         <activity android:name=".ui.activity.AuthActivity" />
         <activity android:name=".ui.activity.JobIntentionActivity" />
-
-        <!--<service-->
-        <!--android:name="com.baidu.location.f"-->
-        <!--android:enabled="true"-->
-        <!--android:process=":remote"/>-->
-        <!--&lt;!&ndash; meta-data需要写在application中 &ndash;&gt;-->
-        <!--<meta-data-->
-        <!--android:name="com.baidu.lbsapi.API_KEY"-->
-        <!--android:value="R4R2RGZ04niTRG5sTvsKKziDG3UmKKsB" />-->
 
         <service
             android:name="com.baidu.location.f"

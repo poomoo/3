@@ -60,7 +60,7 @@ public class TestActivity extends BaseActivity {
         adapter = new JobsAdapter(this, BaseListAdapter.ONLY_FOOTER, false);
         listView.setAdapter(adapter);
         for (int i = 0; i < 10; i++) {
-            rApplyJobBO = new RApplyJobBO("金阳" + i, i + "", i, 100 * (i + 1) + "￥/天", "第" + i + "份工作", i + "分钟前");
+            rApplyJobBO = new RApplyJobBO("金阳" + i, i, i, 100 * (i + 1) + "￥/天", "第" + i + "份工作", i + "分钟前");
             rApplyJobBOs.add(rApplyJobBO);
         }
         adapter.addItems(rApplyJobBOs);

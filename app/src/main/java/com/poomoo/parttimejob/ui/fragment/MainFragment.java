@@ -24,7 +24,9 @@ import com.poomoo.parttimejob.adapter.JobsAdapter;
 import com.poomoo.parttimejob.listener.AdvertisementListener;
 import com.poomoo.parttimejob.presentation.MainPresenter;
 import com.poomoo.parttimejob.ui.activity.CityListActivity;
+import com.poomoo.parttimejob.ui.activity.JobInfoActivity;
 import com.poomoo.parttimejob.ui.activity.MainActivity;
+import com.poomoo.parttimejob.ui.activity.SearchJobActivity;
 import com.poomoo.parttimejob.ui.base.BaseFragment;
 import com.poomoo.parttimejob.ui.custom.ErrorLayout;
 import com.poomoo.parttimejob.ui.custom.SlideShowView;
@@ -46,7 +48,7 @@ import butterknife.OnClick;
 public class MainFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener, BaseListAdapter.OnLoadingListener, BaseListAdapter.OnItemClickListener, MainView {
     @Bind(R.id.swipe_refresh)
     SwipeRefreshLayout swipeRefreshLayout;
-    @Bind(R.id.recycle_main)
+    @Bind(R.id.recycler_main)
     RecyclerView recyclerView;
     @Bind(R.id.appBarLayout)
     AppBarLayout appBarLayout;
@@ -95,6 +97,7 @@ public class MainFragment extends BaseFragment implements SwipeRefreshLayout.OnR
 //        }
 //        adapter.addItems(rApplyJobBOs);
         adapter.setOnLoadingListener(this);
+        adapter.setOnItemClickListener(this);
         appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
             @Override
             public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
@@ -117,10 +120,16 @@ public class MainFragment extends BaseFragment implements SwipeRefreshLayout.OnR
         mainPresenter.queryRecommendJobs(currPage);
     }
 
-    @OnClick(R.id.llayout_citys)
-    void city() {
-        MyUtils.showToast(getActivity().getApplicationContext(), "城市");
-        openActivity(CityListActivity.class);
+    @OnClick({R.id.llayout_citys, R.id.img_search})
+    void click(View view) {
+        switch (view.getId()) {
+            case R.id.llayout_citys:
+                openActivity(CityListActivity.class);
+                break;
+            case R.id.img_search:
+                openActivity(SearchJobActivity.class);
+                break;
+        }
     }
 
     @Override
@@ -162,7 +171,7 @@ public class MainFragment extends BaseFragment implements SwipeRefreshLayout.OnR
 
     @Override
     public void loadRecommendsSucceed(List<BaseJobBO> rAdBOs) {
-        LogUtils.d(TAG,"loadRecommendsSucceed:"+rAdBOs);
+        LogUtils.d(TAG, "loadRecommendsSucceed:" + rAdBOs);
         swipeRefreshLayout.setRefreshing(false);
         if (rAdBOs == null) return;
 
@@ -203,6 +212,8 @@ public class MainFragment extends BaseFragment implements SwipeRefreshLayout.OnR
 
     @Override
     public void onItemClick(int position, long id, View view) {
-
+        Bundle bundle = new Bundle();
+        bundle.putInt(getString(R.string.intent_value), adapter.getItem(position).jobId);
+        openActivity(JobInfoActivity.class, bundle);
     }
 }

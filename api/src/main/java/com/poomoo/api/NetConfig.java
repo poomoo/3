@@ -23,6 +23,8 @@ public class NetConfig {
     /*action 20000*/
     public final static String JOBACTION = "20000";//职位相关统一业务编号
     public final static String RECOMMENDLIST = "20002";//推荐职位
+    public final static String SEARCHLIST = "20003";//搜素职位
+    public final static String JOBINFO = "20004";//职位详情
     public final static String APPLYLIST = "20007";//我的申请
     public final static String COLLECTIONLIST = "20008";//我的收藏
 

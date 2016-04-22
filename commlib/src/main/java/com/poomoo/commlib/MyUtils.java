@@ -104,7 +104,7 @@ public class MyUtils {
      * @param pay
      * @return
      */
-    public static SpannableString formatPay(Context context, String pay) {
+    public static SpannableString formatPay(String pay, boolean color) {
         SpannableString ss;
         ss = new SpannableString(pay);
         int len = pay.length();
@@ -118,10 +118,13 @@ public class MyUtils {
                 break;
             }
         }
-        ss.setSpan(new ForegroundColorSpan(Color.parseColor("#1fa3e7")), 0, pos, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        if (color) {
+            ss.setSpan(new ForegroundColorSpan(Color.parseColor("#1fa3e7")), 0, pos, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            ss.setSpan(new ForegroundColorSpan(Color.parseColor("#8e8e8e")), pos, len, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        }
         ss.setSpan(new RelativeSizeSpan(1f), 0, pos, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        ss.setSpan(new ForegroundColorSpan(Color.parseColor("#8e8e8e")), pos, len, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         ss.setSpan(new RelativeSizeSpan(0.7f), pos, len, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
         return ss;
     }
 

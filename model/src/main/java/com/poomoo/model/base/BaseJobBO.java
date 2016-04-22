@@ -10,7 +10,7 @@ import com.poomoo.model.Entity;
  * 日期: 2016/4/15 15:20.
  */
 public class BaseJobBO extends Entity {
-    public String jobId;//职位编号
+    public int jobId;//职位编号
     public String companyId;//企业编号
     public String jobName;//职位名称
     public String firstCateId;//大类别编号（一级分类）

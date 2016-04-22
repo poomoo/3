@@ -14,8 +14,14 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.poomoo.model.Page;
 import com.poomoo.parttimejob.R;
+import com.poomoo.parttimejob.adapter.BaseListAdapter;
 import com.poomoo.parttimejob.application.MyApplication;
+import com.poomoo.parttimejob.ui.custom.ErrorLayout;
+
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * 作者: 李苜菲
@@ -172,4 +178,6 @@ public abstract class BaseActivity extends AppCompatActivity {
             progressDialog = null;
         }
     }
+
+
 }
