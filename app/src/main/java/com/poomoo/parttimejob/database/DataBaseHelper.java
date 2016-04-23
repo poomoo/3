@@ -9,6 +9,7 @@ import com.poomoo.commlib.LogUtils;
 
 import org.litepal.crud.DataSupport;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -25,7 +26,7 @@ public class DataBaseHelper {
      */
     public static void saveCity(List<CityInfo> cityInfos) {
         for (CityInfo cityInfo : cityInfos) {
-            Cursor cursor = DataSupport.findBySQL("select * from cityinfo where cityId =?", cityInfo.getCityId() + "");
+            Cursor cursor = DataSupport.findBySQL("select * from CityInfo where cityId =?", cityInfo.getCityId() + "");
             if (cursor.getCount() == 0)
                 cityInfo.save();
             cursor.close();
@@ -40,12 +41,27 @@ public class DataBaseHelper {
      */
     public static void saveArea(List<AreaInfo> areaInfos) {
         for (AreaInfo areaInfo : areaInfos) {
-            Cursor cursor = DataSupport.findBySQL("select * from areainfo where cityInfo_id = ? and areaId=?", areaInfo.getCityInfo().getCityId() + "", areaInfo.getAreaId() + "");
+            Cursor cursor = DataSupport.findBySQL("select * from AreaInfo where cityInfo_id = ? and areaId=?", areaInfo.getCityInfo().getCityId() + "", areaInfo.getAreaId() + "");
             if (cursor.getCount() == 0)
                 areaInfo.save();
             cursor.close();
         }
         LogUtils.d(TAG, "saveArea完成");
+    }
+
+    /**
+     * 保存类型到本地
+     *
+     * @param typeInfos
+     */
+    public static void saveType(List<TypeInfo> typeInfos) {
+        for (TypeInfo typeInfo : typeInfos) {
+            Cursor cursor = DataSupport.findBySQL("select * from TypeInfo where cateId = ?", typeInfo.getCateId() + "");
+            if (cursor.getCount() == 0)
+                typeInfo.save();
+            cursor.close();
+        }
+        LogUtils.d(TAG, "saveType完成");
     }
 
     /**
@@ -64,8 +80,39 @@ public class DataBaseHelper {
      * @param cityId
      * @return
      */
-    public static List<AreaInfo> getAreaList(String cityId) {
-        List<AreaInfo> areaList = DataSupport.where("cityId = ?", cityId).find(AreaInfo.class);
+    public static List<AreaInfo> getAreaList(int cityId) {
+        List<AreaInfo> areaList = DataSupport.where("cityinfo_id = ?", cityId + "").find(AreaInfo.class);
         return areaList;
+    }
+
+    /**
+     * 全部兼职用
+     *
+     * @param cityName
+     * @param cityId
+     * @return
+     */
+    public static List<String> getCityAndArea(String cityName, int cityId) {
+        List<String> list = new ArrayList<>();
+        cityName = "全" + cityName + "#";
+        list.add(cityName);
+        List<AreaInfo> areaInfos = getAreaList(cityId);
+        for (AreaInfo areaInfo : areaInfos)
+            list.add(areaInfo.getAreaName() + "#" + areaInfo.getAreaId());
+        return list;
+    }
+
+    /**
+     * 全部兼职用
+     *
+     * @return
+     */
+    public static List<String> getType() {
+        List<String> list = new ArrayList<>();
+        list.add("不限#");
+        List<TypeInfo> typeInfos = DataSupport.findAll(TypeInfo.class);
+        for (TypeInfo typeInfo : typeInfos)
+            list.add(typeInfo.getName() + "#" + typeInfo.getCateId());
+        return list;
     }
 }

@@ -4,7 +4,6 @@
 package com.poomoo.parttimejob.ui.base;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -55,7 +54,7 @@ public abstract class BaseListActivity<T extends Entity> extends BaseActivity im
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh);
-        mListView = (RecyclerView) findViewById(R.id.list_view);
+        mListView = (RecyclerView) findViewById(R.id.recycler_view);
         mErrorLayout = (ErrorLayout) findViewById(R.id.error_frame);
 
 
@@ -99,7 +98,7 @@ public abstract class BaseListActivity<T extends Entity> extends BaseActivity im
      * @return
      */
     public int setDividerSize() {
-        return (int) getResources().getDimension(R.dimen.divider_height);
+        return (int) getResources().getDimension(R.dimen.divider_height5);
     }
 
     public int setDividerColor() {

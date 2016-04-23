@@ -7,8 +7,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -76,7 +74,7 @@ public class SearchJobActivity extends BaseActivity implements SearchJobView, Ba
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         recyclerView.addItemDecoration(new HorizontalDividerItemDecoration.Builder(this)
                 .color(getResources().getColor(R.color.transparent))
-                .size((int) getResources().getDimension(R.dimen.divider_height))
+                .size((int) getResources().getDimension(R.dimen.divider_height5))
                 .build());
         adapter = new JobsAdapter(this, BaseListAdapter.ONLY_FOOTER, false);
         adapter.setOnItemClickListener(this);

@@ -37,6 +37,16 @@ public class MyApplication extends LitePalApplication {
     private String currCity = "";//展示城市
     private int currCityId;//展示城市id
 
+    private double lat;//纬度
+    private double lng;//经度
+    private String cateId;//类别编号
+    private String areaId;//区域编号
+    private int sexReq = 0;//性别要求
+    private int workSycle = 0;//工作周期（0：不限，1：长期兼职，2：短期兼职，3：周末兼职）
+    private String workday ;//工作时间（多选），1上午，2下午，3晚上
+    private String startWorkDt;//开始上班时间
+    private int orderType = 1;//排序类型；1综合排序，2最新发布，3离我最近
+
     private static MyApplication instance;//当前对象
     private List<Activity> activityList;//activity栈
 
@@ -226,5 +236,77 @@ public class MyApplication extends LitePalApplication {
 
     public void setCurrCityId(int currCityId) {
         this.currCityId = currCityId;
+    }
+
+    public double getLat() {
+        return lat;
+    }
+
+    public void setLat(double lat) {
+        this.lat = lat;
+    }
+
+    public double getLng() {
+        return lng;
+    }
+
+    public void setLng(double lng) {
+        this.lng = lng;
+    }
+
+    public String getCateId() {
+        return cateId;
+    }
+
+    public void setCateId(String cateId) {
+        this.cateId = cateId;
+    }
+
+    public String getAreaId() {
+        return areaId;
+    }
+
+    public void setAreaId(String areaId) {
+        this.areaId = areaId;
+    }
+
+    public int getSexReq() {
+        return sexReq;
+    }
+
+    public void setSexReq(int sexReq) {
+        this.sexReq = sexReq;
+    }
+
+    public int getWorkSycle() {
+        return workSycle;
+    }
+
+    public void setWorkSycle(int workSycle) {
+        this.workSycle = workSycle;
+    }
+
+    public String getWorkday() {
+        return workday;
+    }
+
+    public void setWorkday(String workday) {
+        this.workday = workday;
+    }
+
+    public String getStartWorkDt() {
+        return startWorkDt;
+    }
+
+    public void setStartWorkDt(String startWorkDt) {
+        this.startWorkDt = startWorkDt;
+    }
+
+    public int getOrderType() {
+        return orderType;
+    }
+
+    public void setOrderType(int orderType) {
+        this.orderType = orderType;
     }
 }

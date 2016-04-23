@@ -58,7 +58,7 @@ public abstract class BaseListFragment<T extends Entity> extends BaseFragment
         super.onViewCreated(view, savedInstanceState);
 
         mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh);
-        mListView = (RecyclerView) view.findViewById(R.id.list_view);
+        mListView = (RecyclerView) view.findViewById(R.id.recycler_view);
         mErrorLayout = (ErrorLayout) view.findViewById(R.id.error_frame);
 
 
@@ -120,7 +120,7 @@ public abstract class BaseListFragment<T extends Entity> extends BaseFragment
      * @return
      */
     public int setDividerSize() {
-        return (int) getResources().getDimension(R.dimen.divider_height);
+        return (int) getResources().getDimension(R.dimen.divider_height5);
     }
 
     public int setDividerColor() {

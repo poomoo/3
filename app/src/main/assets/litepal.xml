@@ -8,6 +8,7 @@
     <list>
         <mapping class="com.poomoo.parttimejob.database.AreaInfo" />
         <mapping class="com.poomoo.parttimejob.database.CityInfo" />
+        <mapping class="com.poomoo.parttimejob.database.TypeInfo" />
     </list>
 
 </litepal>

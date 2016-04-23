@@ -26,7 +26,7 @@ import butterknife.ButterKnife;
  * 日期: 2015/11/26 10:22.
  */
 public class TestActivity extends BaseActivity {
-    @Bind(R.id.list_view)
+    @Bind(R.id.recycler_view)
     RecyclerView listView;
 
     private JobsAdapter adapter;
@@ -54,7 +54,7 @@ public class TestActivity extends BaseActivity {
         listView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         listView.addItemDecoration(new HorizontalDividerItemDecoration.Builder(this)
                 .color(getResources().getColor(R.color.transparent))
-                .size((int) getResources().getDimension(R.dimen.divider_height))
+                .size((int) getResources().getDimension(R.dimen.divider_height5))
                 .build());
 
         adapter = new JobsAdapter(this, BaseListAdapter.ONLY_FOOTER, false);

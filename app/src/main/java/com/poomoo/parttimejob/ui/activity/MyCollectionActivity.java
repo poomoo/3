@@ -7,11 +7,10 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.poomoo.model.base.BaseJobBO;
-import com.poomoo.model.response.RApplyJobBO;
 import com.poomoo.parttimejob.R;
 import com.poomoo.parttimejob.adapter.JobsAdapter;
 import com.poomoo.parttimejob.adapter.BaseListAdapter;
-import com.poomoo.parttimejob.presentation.JobListPresenter;
+import com.poomoo.parttimejob.presentation.ApplyListPresenter;
 import com.poomoo.parttimejob.ui.base.BaseListActivity;
 import com.poomoo.parttimejob.ui.view.JobListView;
 
@@ -23,7 +22,7 @@ import java.util.List;
  * 日期: 2016/4/16 15:32.
  */
 public class MyCollectionActivity extends BaseListActivity<BaseJobBO> implements BaseListAdapter.OnItemClickListener, JobListView {
-    private JobListPresenter jobListPresenter;
+    private ApplyListPresenter applyListPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,8 +30,8 @@ public class MyCollectionActivity extends BaseListActivity<BaseJobBO> implements
         setBack();
         mListView.setPadding(0, setDividerSize(), 0, 0);
         mAdapter.setOnItemClickListener(this);
-        jobListPresenter = new JobListPresenter(this);
-        jobListPresenter.getCollectionList(1);
+        applyListPresenter = new ApplyListPresenter(this);
+        applyListPresenter.getCollectionList(1);
     }
 
     @Override
@@ -48,13 +47,13 @@ public class MyCollectionActivity extends BaseListActivity<BaseJobBO> implements
     @Override
     public void onRefresh() {
         super.onRefresh();
-        jobListPresenter.getCollectionList(1);
+        applyListPresenter.getCollectionList(1);
     }
 
     @Override
     public void onLoadActiveClick() {
         super.onLoadActiveClick();
-        jobListPresenter.getCollectionList(1);
+        applyListPresenter.getCollectionList(1);
     }
 
     @Override

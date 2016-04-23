@@ -6,9 +6,7 @@ package com.poomoo.parttimejob.ui.activity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
-import android.widget.ListView;
 
 import com.poomoo.commlib.LogUtils;
 import com.poomoo.model.response.RApplicantBO;
@@ -60,7 +58,7 @@ public class ApplicantListActivity extends BaseActivity implements ApplicantList
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         recyclerView.addItemDecoration(new HorizontalDividerItemDecoration.Builder(this)
                 .color(getResources().getColor(R.color.transparent))
-                .size((int) getResources().getDimension(R.dimen.divider_height))
+                .size((int) getResources().getDimension(R.dimen.divider_height5))
                 .build());
         adapter = new ApplicantListAdapter(this, BaseListAdapter.ONLY_FOOTER);
         adapter.setOnItemClickListener(this);

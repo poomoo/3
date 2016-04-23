@@ -44,6 +44,8 @@ public class SplashActivity extends BaseActivity {
             public void run() {
                 if (!(boolean) SPUtils.get(getApplicationContext(), getString(R.string.sp_isLogin), false)) {
                     openActivity(LoginActivity.class);
+                    application.setCurrCity("贵阳市");
+                    application.setCurrCityId(1);
                     finish();
                 } else {
                     application.setUserId((String) SPUtils.get(getApplicationContext(), getString(R.string.sp_userId), ""));
@@ -51,6 +53,7 @@ public class SplashActivity extends BaseActivity {
                     application.setRealName((String) SPUtils.get(getApplicationContext(), getString(R.string.sp_realName), ""));
                     application.setTel((String) SPUtils.get(getApplicationContext(), getString(R.string.sp_phoneNum), ""));
                     application.setIdCardNum((String) SPUtils.get(getApplicationContext(), getString(R.string.sp_idCardNum), ""));
+
                     openActivity(MainActivity.class);
                     finish();
                 }

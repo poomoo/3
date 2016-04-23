@@ -1,4 +1,5 @@
 <resources>
     <dimen name="avatar_radius">8dp</dimen>
-    <dimen name="divider_height">5dp</dimen>
+    <dimen name="divider_height5">5dp</dimen>
+    <dimen name="divider_height1">1dp</dimen>
 </resources>

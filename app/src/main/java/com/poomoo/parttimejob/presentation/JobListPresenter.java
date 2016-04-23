@@ -7,11 +7,12 @@ import com.poomoo.api.AbsAPICallback;
 import com.poomoo.api.ApiException;
 import com.poomoo.api.NetConfig;
 import com.poomoo.api.Network;
+import com.poomoo.model.Page;
 import com.poomoo.model.base.BaseJobBO;
-import com.poomoo.model.request.QApplyBO;
-import com.poomoo.model.request.QCollectionBO;
-import com.poomoo.model.response.RApplyJobBO;
-import com.poomoo.parttimejob.ui.view.JobListView;
+import com.poomoo.model.request.QAllJobBO;
+import com.poomoo.model.request.QJobTypeBO;
+import com.poomoo.model.response.RTypeBO;
+import com.poomoo.parttimejob.ui.view.JobView;
 
 import java.util.List;
 
@@ -20,59 +21,65 @@ import rx.schedulers.Schedulers;
 
 /**
  * 作者: 李苜菲
- * 日期: 2016/4/15 16:29.
+ * 日期: 2016/4/23 15:54.
  */
 public class JobListPresenter extends BasePresenter {
-    private JobListView jobListView;
+    private JobView jobView;
 
-    public JobListPresenter(JobListView jobListView) {
-        this.jobListView = jobListView;
+    public JobListPresenter(JobView jobView) {
+        this.jobView = jobView;
     }
 
     /**
-     * 我的申请
-     *
-     * @param userId
-     * @param status
+     * 工作类型
      */
-    public void getApplyList(int userId, int status) {
-        QApplyBO qApplyBO = new QApplyBO(NetConfig.JOBACTION, NetConfig.APPLYLIST, userId, status);
-        mSubscriptions.add(Network.getJobApi().getApplyList(qApplyBO)
+    public void getType() {
+        QJobTypeBO qJobTypeBO = new QJobTypeBO(NetConfig.JOBACTION, NetConfig.JOBTYPE, 2);
+        mSubscriptions.add(Network.getJobApi().getType(qJobTypeBO)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new AbsAPICallback<List<BaseJobBO>>() {
+                .subscribe(new AbsAPICallback<List<RTypeBO>>() {
                     @Override
                     protected void onError(ApiException e) {
-                        jobListView.failed(e.getMessage());
+
                     }
 
                     @Override
-                    public void onNext(List<BaseJobBO> list) {
-                        jobListView.succeed(list);
+                    public void onNext(List<RTypeBO> rTypeBOs) {
+                        jobView.type(rTypeBOs);
                     }
                 }));
     }
 
     /**
-     * 我的收藏
-     *
-     * @param userId
+     * @param lat
+     * @param lng
+     * @param cityId
+     * @param cateId
+     * @param areaId
+     * @param sexReq
+     * @param workSycle
+     * @param workday
+     * @param startWorkDt
+     * @param orderType
+     * @param pageNum
      */
-    public void getCollectionList(int userId) {
-        QCollectionBO qCollectionBO = new QCollectionBO(NetConfig.JOBACTION, NetConfig.COLLECTIONLIST, userId);
-        mSubscriptions.add(Network.getJobApi().getCollectionList(qCollectionBO)
+    public void getJobList(double lat, double lng, int cityId, String cateId, String areaId, int sexReq, int workSycle, String workday, String startWorkDt, int orderType, int pageNum) {
+        QAllJobBO qAllJobBO = new QAllJobBO(NetConfig.JOBACTION, NetConfig.ALLJOBLIST, lat, lng, cityId, cateId, areaId, sexReq, workSycle, workday, startWorkDt, orderType, pageNum, Page.PAGE_SIZE);
+        mSubscriptions.add(Network.getJobApi().allJobList(qAllJobBO)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new AbsAPICallback<List<BaseJobBO>>() {
                     @Override
                     protected void onError(ApiException e) {
-                        jobListView.failed(e.getMessage());
+                        jobView.failed(e.getMessage());
                     }
 
                     @Override
-                    public void onNext(List<BaseJobBO> list) {
-                        jobListView.succeed(list);
+                    public void onNext(List<BaseJobBO> baseJobBOs) {
+                        jobView.succeed(baseJobBOs);
                     }
                 }));
     }
+
 }

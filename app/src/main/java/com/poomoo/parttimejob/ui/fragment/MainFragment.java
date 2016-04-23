@@ -28,7 +28,6 @@ import com.poomoo.parttimejob.ui.activity.JobInfoActivity;
 import com.poomoo.parttimejob.ui.activity.MainActivity;
 import com.poomoo.parttimejob.ui.activity.SearchJobActivity;
 import com.poomoo.parttimejob.ui.base.BaseFragment;
-import com.poomoo.parttimejob.ui.custom.ErrorLayout;
 import com.poomoo.parttimejob.ui.custom.SlideShowView;
 import com.poomoo.parttimejob.ui.view.MainView;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
@@ -81,7 +80,7 @@ public class MainFragment extends BaseFragment implements SwipeRefreshLayout.OnR
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         recyclerView.addItemDecoration(new HorizontalDividerItemDecoration.Builder(getActivity())
                 .color(getResources().getColor(R.color.transparent))
-                .size((int) getResources().getDimension(R.dimen.divider_height))
+                .size((int) getResources().getDimension(R.dimen.divider_height5))
                 .build());
 
         swipeRefreshLayout.setOnRefreshListener(this);

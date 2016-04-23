@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/transparentGray"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/llayout_type"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorBg"
+        android:orientation="vertical">
+
+        <ListView
+            android:id="@+id/list_type"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:divider="@color/colorBg"
+            android:dividerHeight="1dp" />
+
+        <Button
+            android:id="@+id/btn_typeConfirm"
+            style="@style/myButton"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginBottom="4dp"
+            android:text="@string/btn_confirm"
+            android:textSize="16sp" />
+    </LinearLayout>
+</LinearLayout>

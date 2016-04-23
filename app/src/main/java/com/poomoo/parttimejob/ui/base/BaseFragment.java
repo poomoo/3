@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
 import com.poomoo.parttimejob.R;
+import com.poomoo.parttimejob.application.MyApplication;
 
 /**
  * 作者: 李苜菲
@@ -15,6 +16,13 @@ import com.poomoo.parttimejob.R;
  */
 public abstract class BaseFragment extends Fragment {
     public String TAG = getClass().getSimpleName();
+    public MyApplication application;
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        application = (MyApplication) getActivity().getApplication();
+        super.onActivityCreated(savedInstanceState);
+    }
 
     /**
      * @param pClass

@@ -8,7 +8,7 @@ import com.poomoo.model.base.BaseJobBO;
 import com.poomoo.model.response.RApplyJobBO;
 import com.poomoo.parttimejob.adapter.JobsAdapter;
 import com.poomoo.parttimejob.adapter.BaseListAdapter;
-import com.poomoo.parttimejob.presentation.JobListPresenter;
+import com.poomoo.parttimejob.presentation.ApplyListPresenter;
 import com.poomoo.parttimejob.ui.base.BaseListFragment;
 import com.poomoo.parttimejob.ui.view.JobListView;
 
@@ -18,10 +18,10 @@ import java.util.List;
 /**
  * 我的申请
  */
-public class JobListFragment extends BaseListFragment<BaseJobBO> implements BaseListAdapter.OnItemClickListener, JobListView {
+public class MyApplyFragment extends BaseListFragment<BaseJobBO> implements BaseListAdapter.OnItemClickListener, JobListView {
     public int mCatalog;
 
-    private JobListPresenter jobListPresenter;
+    private ApplyListPresenter applyListPresenter;
 
     @Override
     public void onCreate(Bundle bundle) {
@@ -44,8 +44,8 @@ public class JobListFragment extends BaseListFragment<BaseJobBO> implements Base
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        jobListPresenter = new JobListPresenter(this);
-        jobListPresenter.getApplyList(1, mCatalog);
+        applyListPresenter = new ApplyListPresenter(this);
+        applyListPresenter.getApplyList(1, mCatalog);
     }
 
     @Override
@@ -74,7 +74,7 @@ public class JobListFragment extends BaseListFragment<BaseJobBO> implements Base
     @Override
     public void onRefresh() {
         super.onRefresh();
-        jobListPresenter.getApplyList(1, mCatalog);
+        applyListPresenter.getApplyList(1, mCatalog);
     }
 
 
@@ -84,7 +84,7 @@ public class JobListFragment extends BaseListFragment<BaseJobBO> implements Base
     @Override
     public void onLoadActiveClick() {
         super.onLoadActiveClick();
-        jobListPresenter.getApplyList(1, mCatalog);
+        applyListPresenter.getApplyList(1, mCatalog);
     }
 
 }
