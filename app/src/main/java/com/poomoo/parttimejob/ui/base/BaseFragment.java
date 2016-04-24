@@ -46,6 +46,16 @@ public abstract class BaseFragment extends Fragment {
     }
 
     /**
+     * @param pClass
+     * @param requestCode
+     */
+    protected void openActivityForResult(Class<?> pClass, int requestCode) {
+        Intent intent = new Intent(getActivity(), pClass);
+        startActivityForResult(intent, requestCode);
+        getActivityInFromRight();
+    }
+
+    /**
      * activity切换-> 向左进(覆盖)
      */
     protected void getActivityInFromRight() {

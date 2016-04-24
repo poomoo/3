@@ -25,6 +25,7 @@
                 android:padding="10dp">
 
                 <ImageView
+                    android:id="@+id/img_userAvatar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
@@ -266,7 +267,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
                     android:background="@null"
-                    android:hint="@string/hint_click2choose"
+                    android:hint="@string/hint_inputYourSchool"
                     android:textSize="18sp" />
 
                 <TextView
@@ -275,6 +276,7 @@
                     android:layout_weight="1" />
 
                 <ImageView
+                    android:visibility="gone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_right_arrow_gray" />

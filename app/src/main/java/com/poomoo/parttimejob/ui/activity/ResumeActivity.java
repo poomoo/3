@@ -4,9 +4,13 @@
 package com.poomoo.parttimejob.ui.activity;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageView;
 
 import com.poomoo.parttimejob.R;
 import com.poomoo.parttimejob.ui.base.BaseActivity;
+
+import butterknife.Bind;
 
 /**
  * 个人简历
@@ -14,12 +18,15 @@ import com.poomoo.parttimejob.ui.base.BaseActivity;
  * 日期: 2016/4/18 10:27.
  */
 public class ResumeActivity extends BaseActivity {
+    @Bind(R.id.img_userAvatar)
+    ImageView userAvatarImg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setBack();
-}
+        initView();
+    }
 
     @Override
     protected String onSetTitle() {
@@ -29,5 +36,15 @@ public class ResumeActivity extends BaseActivity {
     @Override
     protected int onBindLayout() {
         return R.layout.activity_resume;
+    }
+
+
+    private void initView() {
+        userAvatarImg.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                return false;
+            }
+        });
     }
 }

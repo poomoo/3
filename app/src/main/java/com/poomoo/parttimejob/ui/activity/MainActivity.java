@@ -3,6 +3,7 @@
  */
 package com.poomoo.parttimejob.ui.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.KeyEvent;
@@ -138,4 +139,12 @@ public class MainActivity extends BaseActivity {
     public void setBackGround2() {
         mainLlayout.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        /*然后在碎片中调用重写的onActivityResult方法*/
+        curFragment.onActivityResult(requestCode, resultCode, data);
+    }
+
 }

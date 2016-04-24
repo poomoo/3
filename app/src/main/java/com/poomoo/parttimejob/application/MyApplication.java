@@ -43,8 +43,8 @@ public class MyApplication extends LitePalApplication {
     private String areaId;//区域编号
     private int sexReq = 0;//性别要求
     private int workSycle = 0;//工作周期（0：不限，1：长期兼职，2：短期兼职，3：周末兼职）
-    private String workday ;//工作时间（多选），1上午，2下午，3晚上
-    private String startWorkDt;//开始上班时间
+    private String workday="" ;//工作时间（多选），1上午，2下午，3晚上
+    private String startWorkDt="";//开始上班时间
     private int orderType = 1;//排序类型；1综合排序，2最新发布，3离我最近
 
     private static MyApplication instance;//当前对象

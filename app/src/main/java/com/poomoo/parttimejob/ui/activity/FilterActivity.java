@@ -4,6 +4,7 @@
 package com.poomoo.parttimejob.ui.activity;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.CheckBox;
@@ -54,6 +55,12 @@ public class FilterActivity extends BaseActivity {
     TextView startWorkTimeTxt;//指定开始工作时间
     @Bind(R.id.rbtn_workPeriod_all)
     RadioButton periodAllRbtn;//工作周期 不限
+    @Bind(R.id.rbtn_workPeriod_long)
+    RadioButton periodLongRbtn;//工作周期 长
+    @Bind(R.id.rbtn_workPeriod_short)
+    RadioButton periodShortRbtn;//工作周期 短
+    @Bind(R.id.rbtn_workPeriod_weekEnd)
+    RadioButton periodWeekendRbtn;//工作周期 周末
 
     private TextView dateTxt;
     private CalendarView calendar;
@@ -68,15 +75,19 @@ public class FilterActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
         initTitleBar();
-        authTBtn.setOnToggleChanged(new ToggleButton.OnToggleChanged() {
-            @Override
-            public void onToggle(boolean on) {
-                if (on)
-                    MyUtils.showToast(getApplicationContext(), "认证开启");
-                else
-                    MyUtils.showToast(getApplicationContext(), "认证关闭");
-            }
-        });
+//        authTBtn.setOnToggleChanged(new ToggleButton.OnToggleChanged() {
+//            @Override
+//            public void onToggle(boolean on) {
+//                if (on)
+//                    MyUtils.showToast(getApplicationContext(), "认证开启");
+//                else
+//                    MyUtils.showToast(getApplicationContext(), "认证关闭");
+//            }
+//        });
+        initSex();
+        initWorkDay();
+        initStartWorkDay();
+        initWorkCycle();
     }
 
     @Override
@@ -96,6 +107,65 @@ public class FilterActivity extends BaseActivity {
     }
 
     /**
+     * 性別要求
+     */
+    private void initSex() {
+        if (application.getSexReq() == 1)
+            manRBtn.setChecked(true);
+        else if (application.getSexReq() == 2)
+            womanRBtn.setChecked(true);
+        else
+            sexAllRBtn.setChecked(true);
+    }
+
+    /**
+     * 上班時間
+     */
+    private void initWorkDay() {
+        if (TextUtils.isEmpty(application.getWorkday()))
+            timeAllRbtn.setChecked(true);
+        else {
+            timeAllRbtn.setChecked(false);
+            String temp[] = application.getWorkday().split(",");
+            for (int i = 0; i < temp.length; i++) {
+                if (temp[i].equals("1"))
+                    morningChk.setChecked(true);
+                if (temp[i].equals("2"))
+                    afternoonChk.setChecked(true);
+                if (temp[i].equals("3"))
+                    eveningChk.setChecked(true);
+            }
+        }
+
+    }
+
+    /**
+     * 開始工作時間
+     */
+    private void initStartWorkDay() {
+        if (TextUtils.isEmpty(application.getStartWorkDt()))
+            startTimeAllRbtn.setChecked(true);
+        else {
+            startTimeAllRbtn.setChecked(false);
+            startWorkTimeTxt.setText(application.getStartWorkDt());
+        }
+    }
+
+    /**
+     * 工作週期
+     */
+    private void initWorkCycle() {
+        if (application.getWorkSycle() == 0)
+            periodAllRbtn.setChecked(true);
+        else if (application.getWorkSycle() == 1)
+            periodLongRbtn.setChecked(true);
+        else if (application.getWorkSycle() == 2)
+            periodShortRbtn.setChecked(true);
+        else if (application.getWorkSycle() == 3)
+            periodWeekendRbtn.setChecked(true);
+    }
+
+    /**
      * 重置
      *
      * @param view
@@ -111,25 +181,43 @@ public class FilterActivity extends BaseActivity {
         authTBtn.setToggleOff();
         soonTBtn.setToggleOff();
         startWorkTimeTxt.setText("不限");
+
+        application.setSexReq(0);
+        application.setWorkday("");
+        application.setStartWorkDt("");
+        application.setWorkSycle(0);
     }
 
-    @OnClick({R.id.rbtn_time_all, R.id.chk_time_morning, R.id.chk_time_afternoon, R.id.chk_time_evening, R.id.rbtn_startTime_assign, R.id.rbtn_startTime_all})
+    @OnClick({R.id.rbtn_sex_all, R.id.rbtn_sex_man, R.id.rbtn_sex_woman, R.id.rbtn_time_all, R.id.chk_time_morning, R.id.chk_time_afternoon, R.id.chk_time_evening, R.id.rbtn_startTime_assign, R.id.rbtn_startTime_all, R.id.rbtn_workPeriod_all, R.id.rbtn_workPeriod_long, R.id.rbtn_workPeriod_short, R.id.rbtn_workPeriod_weekEnd})
     void checkChanged(View view) {
         switch (view.getId()) {
+            case R.id.rbtn_sex_all:
+                application.setSexReq(0);
+                break;
+            case R.id.rbtn_sex_man:
+                application.setSexReq(1);
+                break;
+            case R.id.rbtn_sex_woman:
+                application.setSexReq(2);
+                break;
             case R.id.rbtn_time_all:
                 setOtherChecked();
+                application.setWorkday("");
                 break;
             case R.id.chk_time_morning:
                 timeAllRbtn.setChecked(false);
                 isAllChecked();
+                application.setWorkday(application.getWorkday() + "1,");
                 break;
             case R.id.chk_time_afternoon:
                 timeAllRbtn.setChecked(false);
                 isAllChecked();
+                application.setWorkday(application.getWorkday() + "2,");
                 break;
             case R.id.chk_time_evening:
                 timeAllRbtn.setChecked(false);
                 isAllChecked();
+                application.setWorkday(application.getWorkday() + "3,");
                 break;
             case R.id.rbtn_startTime_assign:
                 calendar();
@@ -137,6 +225,19 @@ public class FilterActivity extends BaseActivity {
             case R.id.rbtn_startTime_all:
                 startWorkTimeTxt.setText("不限");
                 isAssignTime = false;
+                application.setStartWorkDt("");
+                break;
+            case R.id.rbtn_workPeriod_all:
+                application.setWorkSycle(0);
+                break;
+            case R.id.rbtn_workPeriod_long:
+                application.setWorkSycle(1);
+                break;
+            case R.id.rbtn_workPeriod_short:
+                application.setWorkSycle(2);
+                break;
+            case R.id.rbtn_workPeriod_weekEnd:
+                application.setWorkSycle(3);
                 break;
         }
     }
@@ -181,6 +282,7 @@ public class FilterActivity extends BaseActivity {
             @Override
             public void OnItemClick(Date downDate) {
                 String date = calendar.getYearAndMonth();
+                application.setStartWorkDt(date);
                 startWorkTimeTxt.setText(date);
                 ya = date.split("-");
                 dateTxt.setText(ya[0] + "年" + ya[1] + "月");
@@ -214,4 +316,14 @@ public class FilterActivity extends BaseActivity {
             }
         }
     };
+
+    /**
+     * 確定
+     *
+     * @param View
+     */
+    public void toConfirm(View View) {
+        setResult(1);
+        finish();
+    }
 }

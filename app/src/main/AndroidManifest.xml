@@ -20,7 +20,7 @@
         android:supportsRtl="true"
         android:theme="@style/NoTitleTheme">
         <activity
-            android:name=".ui.activity.SplashActivity"
+            android:name=".ui.activity.ResumeActivity"
             android:theme="@style/NoTitleTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -43,7 +43,7 @@
         <activity android:name=".ui.activity.FeedBackActivity" />
         <activity android:name=".ui.activity.MoreActivity" />
         <activity android:name=".ui.activity.ChangePassWordActivity" />
-        <activity android:name=".ui.activity.ResumeActivity" />
+        <!--<activity android:name=".ui.activity.ResumeActivity" />-->
         <activity android:name=".ui.activity.AuthActivity" />
         <activity android:name=".ui.activity.JobIntentionActivity" />
 

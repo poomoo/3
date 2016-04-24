@@ -3,6 +3,7 @@
  */
 package com.poomoo.parttimejob.ui.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -95,15 +96,9 @@ public class JobFragment extends BaseFragment implements JobView, BaseListAdapte
         adapter.setOnLoadingListener(this);
         adapter.setOnItemClickListener(this);
 
-        swipeRefreshLayout.post(new Runnable() {
-            @Override
-            public void run() {
-                swipeRefreshLayout.setRefreshing(true);
-            }
-        });
         jobListPresenter = new JobListPresenter(this);
         jobListPresenter.getType();
-        getJobList();
+        getJobList(true);
     }
 
     @OnClick({R.id.rbtn_type, R.id.rbtn_zone, R.id.rbtn_sort, R.id.txt_toFilter})
@@ -125,7 +120,7 @@ public class JobFragment extends BaseFragment implements JobView, BaseListAdapte
                 sortPopUpWindow.showAsDropDown(dividerTxt);
                 break;
             case R.id.txt_toFilter:
-                openActivity(FilterActivity.class);
+                openActivityForResult(FilterActivity.class,1);
                 break;
         }
 
@@ -143,13 +138,7 @@ public class JobFragment extends BaseFragment implements JobView, BaseListAdapte
             LogUtils.d(TAG, "selectCategory2:" + temp);
             application.setCateId(temp);
             currPage = 1;
-            swipeRefreshLayout.post(new Runnable() {
-                @Override
-                public void run() {
-                    swipeRefreshLayout.setRefreshing(true);
-                }
-            });
-            getJobList();
+            getJobList(true);
         }
     };
 
@@ -163,13 +152,7 @@ public class JobFragment extends BaseFragment implements JobView, BaseListAdapte
             temp=temp.substring(0, temp.length() - 1);
             application.setAreaId(temp);
             currPage = 1;
-            swipeRefreshLayout.post(new Runnable() {
-                @Override
-                public void run() {
-                    swipeRefreshLayout.setRefreshing(true);
-                }
-            });
-            getJobList();
+            getJobList(true);
         }
     };
 
@@ -178,13 +161,7 @@ public class JobFragment extends BaseFragment implements JobView, BaseListAdapte
         public void selectCategory(List<Integer> type) {
             application.setOrderType(type.get(0));
             currPage = 1;
-            swipeRefreshLayout.post(new Runnable() {
-                @Override
-                public void run() {
-                    swipeRefreshLayout.setRefreshing(true);
-                }
-            });
-            getJobList();
+            getJobList(true);
         }
     };
 
@@ -194,19 +171,26 @@ public class JobFragment extends BaseFragment implements JobView, BaseListAdapte
         openActivity(CityListActivity.class);
     }
 
-    private void getJobList() {
+    private void getJobList(boolean refresh) {
+        if(refresh)
+        swipeRefreshLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                swipeRefreshLayout.setRefreshing(true);
+            }
+        });
         jobListPresenter.getJobList(application.getLat(), application.getLng(), application.getCurrCityId(), application.getCateId(), application.getAreaId(), application.getSexReq(), application.getWorkSycle(), application.getWorkday(), application.getStartWorkDt(), application.getOrderType(), currPage);
     }
 
     @Override
     public void onLoading() {
-        getJobList();
+        getJobList(false);
     }
 
     @Override
     public void onRefresh() {
         currPage = 1;
-        getJobList();
+        getJobList(true);
     }
 
     @Override
@@ -270,13 +254,18 @@ public class JobFragment extends BaseFragment implements JobView, BaseListAdapte
 
     }
 
-
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
         if (!hidden)
             MainActivity.instance.setBackGround2();
 
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        getJobList(true);
     }
 
 }
