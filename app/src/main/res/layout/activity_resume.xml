@@ -291,6 +291,7 @@
                     android:textSize="16sp" />
 
                 <EditText
+                    android:id="@+id/edt_schoolName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
@@ -326,6 +327,7 @@
                     android:textSize="16sp" />
 
                 <EditText
+                    android:id="@+id/edt_email"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
@@ -350,6 +352,7 @@
                     android:textSize="16sp" />
 
                 <EditText
+                    android:id="@+id/edt_qqNum"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
@@ -374,10 +377,10 @@
                     android:textSize="16sp" />
 
                 <TextView
+                    android:id="@+id/txt_resumeTel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
-                    android:text="15597726686"
                     android:textSize="16sp" />
             </LinearLayout>
 

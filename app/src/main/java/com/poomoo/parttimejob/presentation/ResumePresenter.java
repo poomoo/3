@@ -9,6 +9,8 @@ import com.poomoo.api.NetConfig;
 import com.poomoo.api.Network;
 import com.poomoo.commlib.LogUtils;
 import com.poomoo.model.request.QResumeBO;
+import com.poomoo.model.request.QUserIdBO;
+import com.poomoo.model.response.RResumeBO;
 import com.poomoo.model.response.RUrl;
 import com.poomoo.model.response.ResponseBO;
 import com.poomoo.parttimejob.view.ResumeView;
@@ -79,8 +81,8 @@ public class ResumePresenter extends BasePresenter {
      * @param workExp
      */
     public void changeResume(int userId, String headPic, String realName, int sex, String height, String birthday, int provinceId, int cityId, int areaId, String schoolName, String email, String qqNum, String contactTel, String workResume, String workExp) {
-        QResumeBO qResumeBO = new QResumeBO(NetConfig.USERACTION, NetConfig.RESUME, userId, headPic, realName, sex, height, birthday, provinceId, cityId, areaId, schoolName, email, qqNum, contactTel, workResume, workExp);
-        mSubscriptions.add(Network.getUserApi().resume(qResumeBO)
+        QResumeBO qResumeBO = new QResumeBO(NetConfig.USERACTION, NetConfig.RESUMEUP, userId, headPic, realName, sex, height, birthday, provinceId, cityId, areaId, schoolName, email, qqNum, contactTel, workResume, workExp);
+        mSubscriptions.add(Network.getUserApi().resumeUp(qResumeBO)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new AbsAPICallback<ResponseBO>() {
@@ -92,6 +94,29 @@ public class ResumePresenter extends BasePresenter {
                     @Override
                     public void onNext(ResponseBO responseBO) {
                         resumeView.submitSucceed(responseBO.msg);
+                    }
+                }));
+    }
+
+    /**
+     * 下载简历
+     *
+     * @param userId
+     */
+    public void downResume(int userId) {
+        QUserIdBO qUserIdBO = new QUserIdBO(NetConfig.USERACTION, NetConfig.RESUMEDOWN, userId);
+        mSubscriptions.add(Network.getUserApi().resumeDown(qUserIdBO)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new AbsAPICallback<RResumeBO>() {
+                    @Override
+                    protected void onError(ApiException e) {
+                        resumeView.failed(e.getMessage());
+                    }
+
+                    @Override
+                    public void onNext(RResumeBO rResumeBO) {
+                        resumeView.downSucceed(rResumeBO);
                     }
                 }));
     }

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    android:id="@+id/llayout_auth"
     android:layout_height="match_parent"
     android:background="@color/colorBg"
     android:orientation="vertical">
@@ -20,15 +21,16 @@
             android:layout_height="wrap_content"
             android:text="姓　　　名"
             android:textColor="@color/black"
-            android:textSize="18sp" />
+            android:textSize="16sp" />
 
         <EditText
+            android:id="@+id/edt_authName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:background="@null"
             android:hint="@string/hint_inputYourRealName"
-            android:textSize="18sp" />
+            android:textSize="16sp" />
     </LinearLayout>
 
     <LinearLayout
@@ -45,15 +47,16 @@
             android:layout_height="wrap_content"
             android:text="学　　　校"
             android:textColor="@color/black"
-            android:textSize="18sp" />
+            android:textSize="16sp" />
 
         <EditText
+            android:id="@+id/edt_authSchoolName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:background="@null"
             android:hint="@string/hint_inputYourSchool"
-            android:textSize="18sp" />
+            android:textSize="16sp" />
     </LinearLayout>
 
     <LinearLayout
@@ -72,15 +75,16 @@
             android:layout_height="wrap_content"
             android:text="入 校  年 份"
             android:textColor="@color/black"
-            android:textSize="18sp" />
+            android:textSize="16sp" />
 
         <EditText
+            android:id="@+id/edt_authDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:background="@null"
             android:hint="@string/hint_inputYourJoinSchoolYear"
-            android:textSize="18sp" />
+            android:textSize="16sp" />
     </LinearLayout>
 
     <LinearLayout
@@ -97,20 +101,20 @@
             android:layout_height="wrap_content"
             android:text="手 机  号 码"
             android:textColor="@color/black"
-            android:textSize="18sp" />
+            android:textSize="16sp" />
 
         <TextView
+            android:id="@+id/txt_authTel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
-            android:text="15597756686"
-            android:textSize="18sp" />
+            android:textSize="16sp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="(已绑定)"
-            android:textSize="18sp" />
+            android:textSize="16sp" />
     </LinearLayout>
 
     <LinearLayout
@@ -127,15 +131,16 @@
             android:layout_height="wrap_content"
             android:text="身份证号码"
             android:textColor="@color/black"
-            android:textSize="18sp" />
+            android:textSize="16sp" />
 
         <EditText
+            android:id="@+id/edt_authIdNum"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:background="@null"
             android:hint="@string/hint_inputYourIdNum"
-            android:textSize="18sp" />
+            android:textSize="16sp" />
     </LinearLayout>
 
     <LinearLayout
@@ -179,6 +184,8 @@
                 android:layout_weight="1">
 
                 <ImageView
+                    android:id="@+id/img_idCard"
+                    android:onClick="selectIdImg"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_auth_pic" />

@@ -10,7 +10,7 @@ package com.poomoo.api;
 public class NetConfig {
     public static String RemoteUrl = "http://lzrb.91jiaoyou.cn/";
     public static String LocalUrl = "http://192.168.0.104:8088/";
-    public static String url = LocalUrl;
+    public static String url = RemoteUrl;
     public static String imageUrl = url + "lzrb/app/common/uploadPic.ajax";
 
 
@@ -20,7 +20,8 @@ public class NetConfig {
     public final static String REGISTER = "10004";//注册
     public final static String LOGIN = "10005";//登录
     public final static String RESET = "10008";//重置密码
-    public final static String RESUME = "10010";//修改简历
+    public final static String RESUMEDOWN = "10009";//修改简历
+    public final static String RESUMEUP = "10010";//修改简历
 
     /*action 20000*/
     public final static String JOBACTION = "20000";//职位相关统一业务编号

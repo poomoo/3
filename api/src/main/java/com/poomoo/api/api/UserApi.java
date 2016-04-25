@@ -8,6 +8,8 @@ import com.poomoo.model.request.QLoginBO;
 import com.poomoo.model.request.QRegisterBO;
 import com.poomoo.model.request.QResetPDBO;
 import com.poomoo.model.request.QResumeBO;
+import com.poomoo.model.request.QUserIdBO;
+import com.poomoo.model.response.RResumeBO;
 import com.poomoo.model.response.RUserBO;
 import com.poomoo.model.response.ResponseBO;
 
@@ -29,5 +31,8 @@ public interface UserApi {
     Observable<ResponseBO> reSetPassWord(@Body QResetPDBO data);
 
     @POST("lzrb/app/call.htm")
-    Observable<ResponseBO> resume(@Body QResumeBO data);
+    Observable<RResumeBO> resumeDown(@Body QUserIdBO data);
+
+    @POST("lzrb/app/call.htm")
+    Observable<ResponseBO> resumeUp(@Body QResumeBO data);
 }

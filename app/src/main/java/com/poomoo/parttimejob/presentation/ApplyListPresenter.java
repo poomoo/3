@@ -9,7 +9,7 @@ import com.poomoo.api.NetConfig;
 import com.poomoo.api.Network;
 import com.poomoo.model.base.BaseJobBO;
 import com.poomoo.model.request.QApplyBO;
-import com.poomoo.model.request.QCollectionBO;
+import com.poomoo.model.request.QUserIdBO;
 import com.poomoo.parttimejob.view.JobListView;
 
 import java.util.List;
@@ -58,8 +58,8 @@ public class ApplyListPresenter extends BasePresenter {
      * @param userId
      */
     public void getCollectionList(int userId) {
-        QCollectionBO qCollectionBO = new QCollectionBO(NetConfig.JOBACTION, NetConfig.COLLECTIONLIST, userId);
-        mSubscriptions.add(Network.getJobApi().getCollectionList(qCollectionBO)
+        QUserIdBO qUserIdBO = new QUserIdBO(NetConfig.JOBACTION, NetConfig.COLLECTIONLIST, userId);
+        mSubscriptions.add(Network.getJobApi().getCollectionList(qUserIdBO)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new AbsAPICallback<List<BaseJobBO>>() {

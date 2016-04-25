@@ -1,5 +1,6 @@
 package com.poomoo.parttimejob.view;
 
+import com.poomoo.model.response.RResumeBO;
 import com.poomoo.model.response.RUrl;
 
 /**
@@ -10,4 +11,8 @@ public interface ResumeView extends BaseView {
     void upLoadSucceed(RUrl rUrl);
 
     void submitSucceed(String msg);
+
+    void downSucceed(RResumeBO rResumeBO);
+
+    void downFailed(String msg);
 }

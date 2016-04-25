@@ -19,13 +19,16 @@ import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.poomoo.commlib.LogUtils;
 import com.poomoo.commlib.MyConfig;
 import com.poomoo.commlib.MyUtils;
 import com.poomoo.commlib.picUtils.Bimp;
 import com.poomoo.commlib.picUtils.FileUtils;
+import com.poomoo.model.response.RResumeBO;
 import com.poomoo.model.response.RUrl;
 import com.poomoo.parttimejob.R;
 import com.poomoo.parttimejob.database.DataBaseHelper;
@@ -60,6 +63,10 @@ public class ResumeActivity extends BaseActivity implements ResumeView {
     RoundImageView userAvatarImg;
     @Bind(R.id.edt_realName)
     EditText nameEdt;
+    @Bind(R.id.rBtn_man)
+    RadioButton manRbtn;
+    @Bind(R.id.rBtn_woman)
+    RadioButton womanRbtn;
     @Bind(R.id.txt_resumeHeight)
     TextView heightTxt;
     @Bind(R.id.txt_resumeDate)
@@ -70,6 +77,14 @@ public class ResumeActivity extends BaseActivity implements ResumeView {
     TextView cityTxt;
     @Bind(R.id.txt_area)
     TextView areaTxt;
+    @Bind(R.id.edt_schoolName)
+    EditText schoolNameEdt;
+    @Bind(R.id.edt_email)
+    EditText emailEdt;
+    @Bind(R.id.edt_qqNum)
+    EditText qqNumEdt;
+    @Bind(R.id.txt_resumeTel)
+    TextView telTxt;
     @Bind(R.id.edt_workResume)
     EditText workResumeEdt;
     @Bind(R.id.edt_workExp)
@@ -119,8 +134,8 @@ public class ResumeActivity extends BaseActivity implements ResumeView {
         super.onCreate(savedInstanceState);
         setBack();
         ButterKnife.bind(this);
-        initView();
         resumePresenter = new ResumePresenter(this);
+        initView();
     }
 
     @Override
@@ -143,6 +158,8 @@ public class ResumeActivity extends BaseActivity implements ResumeView {
                 return false;
             }
         });
+        showProgressDialog(getString(R.string.dialog_msg));
+        resumePresenter.downResume(application.getUserId());
     }
 
     private void select_pics() {
@@ -250,6 +267,7 @@ public class ResumeActivity extends BaseActivity implements ResumeView {
     HeightPopUpWindow.SelectCategory heightCategory = new HeightPopUpWindow.SelectCategory() {
         @Override
         public void selectCategory(String height) {
+            ResumeActivity.this.height = height;
             heightTxt.setText(height);
         }
     };
@@ -280,6 +298,7 @@ public class ResumeActivity extends BaseActivity implements ResumeView {
                 nDay = datePicker.getDayOfMonth();
 
                 playDt = nYear + "-" + nMonth + "-" + nDay;
+                birthday = playDt;
                 dateTxt.setText(playDt);
 
             }
@@ -335,7 +354,6 @@ public class ResumeActivity extends BaseActivity implements ResumeView {
 
         }
     };
-
 
     public void selectCity(View view) {
         if (cityPopUpWindow == null) {
@@ -412,6 +430,10 @@ public class ResumeActivity extends BaseActivity implements ResumeView {
             MyUtils.showToast(getApplicationContext(), MyConfig.workExpEmpty);
             return;
         }
+        email = emailEdt.getText().toString().trim();
+        qqNum = qqNumEdt.getText().toString().trim();
+        schoolName = schoolNameEdt.getText().toString().trim();
+        workResume = workResumeEdt.getText().toString().trim();
         showProgressDialog(getString(R.string.dialog_msg));
         resumePresenter.uploadPic(file);
     }
@@ -431,6 +453,44 @@ public class ResumeActivity extends BaseActivity implements ResumeView {
 
     @Override
     public void submitSucceed(String msg) {
+        closeProgressDialog();
+        MyUtils.showToast(getApplicationContext(), msg);
+        finish();
+    }
+
+    @Override
+    public void downSucceed(RResumeBO rResumeBO) {
+        closeProgressDialog();
+        headPic = rResumeBO.headPic;
+        realName = rResumeBO.realName;
+        sex = rResumeBO.sex;
+        height = rResumeBO.height;
+        birthday = rResumeBO.birthday;
+        provinceId = rResumeBO.provinceId;
+        cityId = rResumeBO.cityId;
+        areaId = rResumeBO.areaId;
+        schoolName = rResumeBO.schoolName;
+        email = rResumeBO.email;
+        qqNum = rResumeBO.qqNum;
+        workResume = rResumeBO.workResume;
+        workExp = rResumeBO.workExp;
+
+//        Glide.with(this).load(headPic).into(userAvatarImg);
+        nameEdt.setText(realName);
+        if (sex == 1) manRbtn.setChecked(true);
+        else womanRbtn.setChecked(true);
+        heightTxt.setText(height);
+        dateTxt.setText(birthday);
+        schoolNameEdt.setText(schoolName);
+        emailEdt.setText(email);
+        qqNumEdt.setText(qqNum);
+        telTxt.setText(application.getTel());
+        workResumeEdt.setText(workResume);
+        workExpEdt.setText(workExp);
+    }
+
+    @Override
+    public void downFailed(String msg) {
         closeProgressDialog();
         MyUtils.showToast(getApplicationContext(), msg);
         finish();
