@@ -32,6 +32,7 @@ import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
+import com.hp.hpl.sparta.xpath.PositionEqualsExpr;
 import com.poomoo.api.AbsAPICallback;
 import com.poomoo.api.ApiException;
 import com.poomoo.api.NetConfig;
@@ -46,6 +47,7 @@ import com.poomoo.parttimejob.R;
 import com.poomoo.parttimejob.database.AreaInfo;
 import com.poomoo.parttimejob.database.CityInfo;
 import com.poomoo.parttimejob.database.DataBaseHelper;
+import com.poomoo.parttimejob.database.ProvinceInfo;
 import com.poomoo.parttimejob.ui.base.BaseActivity;
 import com.poomoo.parttimejob.ui.custom.MyLetterListView;
 
@@ -93,6 +95,7 @@ public class CityListActivity extends BaseActivity implements OnScrollListener {
     private int locateProcess = 1; // 记录当前定位的状态 正在定位-定位成功-定位失败
     private boolean isNeedFresh;
     private WindowManager windowManager;
+    private List<ProvinceInfo> provinceInfos;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -305,10 +308,77 @@ public class CityListActivity extends BaseActivity implements OnScrollListener {
         for (int i = 0; i < len; i++)
             city_lists.add(new RAreaBO().new city(cityInfos.get(i).getCityName(), ""));
 
+        initCity();
+    }
+
+    private void getCityList(boolean flag) {
+        if (!flag)
+            showProgressDialog(getString(R.string.dialog_msg));
+        BaseRequestBO baseRequestBO = new BaseRequestBO(NetConfig.COMMACTION, NetConfig.CITY);
+        Network.getCommApi().getCitys(baseRequestBO)
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .subscribe(new AbsAPICallback<List<RAreaBO>>() {
+                    @Override
+                    protected void onError(ApiException e) {
+                        closeProgressDialog();
+                        MyUtils.showToast(getApplicationContext(), e.getMessage());
+                    }
+
+                    @Override
+                    public void onNext(List<RAreaBO> rAreaBOs) {
+                        closeProgressDialog();
+                        city_lists = new ArrayList<>();
+                        provinceInfos = new ArrayList<>();
+                        int index = 0;
+                        for (RAreaBO rAreaBO : rAreaBOs) {
+                            ProvinceInfo provinceInfo = new ProvinceInfo();
+                            provinceInfo.setProvinceId(rAreaBOs.get(index).provinceId);
+                            provinceInfo.setProvinceName(rAreaBOs.get(index++).provinceName);
+                            int len = rAreaBO.cityList.size();
+                            LogUtils.d(TAG, rAreaBO + ":" + len + "index:" + index + "rAreaBOs:" + rAreaBOs.size());
+                            cityInfos = new ArrayList<>();
+                            for (int i = 0; i < len; i++) {
+                                CityInfo cityInfo = new CityInfo();
+                                cityInfo.setCityId(rAreaBO.cityList.get(i).cityId);
+                                cityInfo.setCityName(rAreaBO.cityList.get(i).cityName);
+
+                                city_lists.add(rAreaBO.cityList.get(i));
+                                int len2 = rAreaBO.cityList.get(i).areaList.size();
+                                areaInfos = new ArrayList<>();
+                                for (int j = 0; j < len2; j++)
+                                    areaInfos.add(new AreaInfo(city_lists.get(i).areaList.get(j).areaId, city_lists.get(i).areaList.get(j).areaName, cityInfo));
+                                DataBaseHelper.saveArea(areaInfos);
+                                cityInfo.setAreaInfoList(areaInfos);
+                                cityInfo.setProvinceInfo(provinceInfo);
+                                cityInfos.add(cityInfo);
+                            }
+                            DataBaseHelper.saveCity(cityInfos);
+                            provinceInfo.setCityInfoList(cityInfos);
+                            provinceInfos.add(provinceInfo);
+                        }
+                        DataBaseHelper.saveProvince(provinceInfos);
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                initCity();
+                            }
+                        });
+
+                    }
+                });
+    }
+
+    private void initCity() {
         setPinYin(city_lists);
-//        hotCityInit();
+        LogUtils.i(TAG, "city_lists:" + city_lists.toString());
+//                        hotCityInit();
         Collections.sort(city_lists, comparator);
+        if (allCity_lists.size() > 2)
+            allCity_lists = allCity_lists.subList(0, 2);
         allCity_lists.addAll(city_lists);
+
+        LogUtils.i(TAG, "allCity_lists:" + allCity_lists.toString() + allCity_lists.size());
         adapter.notifyDataSetChanged();
         sections = new String[allCity_lists.size()];
         for (int i = 0; i < allCity_lists.size(); i++) {
@@ -322,69 +392,6 @@ public class CityListActivity extends BaseActivity implements OnScrollListener {
                 sections[i] = name;
             }
         }
-    }
-
-    private void getCityList(boolean flag) {
-        if (!flag)
-            showProgressDialog(getString(R.string.dialog_msg));
-        BaseRequestBO baseRequestBO = new BaseRequestBO(NetConfig.COMMACTION, NetConfig.CITY);
-        Network.getCommApi().getCitys(baseRequestBO)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new AbsAPICallback<List<RAreaBO>>() {
-                    @Override
-                    protected void onError(ApiException e) {
-                        closeProgressDialog();
-                        MyUtils.showToast(getApplicationContext(), e.getMessage());
-                    }
-
-                    @Override
-                    public void onNext(List<RAreaBO> rAreaBOs) {
-                        closeProgressDialog();
-                        city_lists=new ArrayList<>();
-                        for (RAreaBO rAreaBO : rAreaBOs) {
-                            LogUtils.d(TAG, rAreaBO + "");
-                            int len = rAreaBO.cityList.size();
-                            for (int i = 0; i < len; i++) {
-                                CityInfo cityInfo = new CityInfo();
-                                cityInfo.setCityId(rAreaBO.cityList.get(i).cityId);
-                                cityInfo.setCityName(rAreaBO.cityList.get(i).cityName);
-
-                                city_lists.add(rAreaBO.cityList.get(i));
-                                int len2 = rAreaBO.cityList.get(i).areaList.size();
-                                areaInfos = new ArrayList<>();
-                                for (int j = 0; j < len2; j++)
-                                    areaInfos.add(new AreaInfo(city_lists.get(i).areaList.get(j).areaId, city_lists.get(i).areaList.get(j).areaName, cityInfo));
-                                DataBaseHelper.saveArea(areaInfos);
-                                cityInfo.setAreaInfoList(areaInfos);
-                                cityInfos.add(cityInfo);
-                            }
-
-                        }
-                        DataBaseHelper.saveCity(cityInfos);
-
-                        setPinYin(city_lists);
-                        LogUtils.i(TAG, "city_lists:" + city_lists.toString());
-//                        hotCityInit();
-                        Collections.sort(city_lists, comparator);
-                        allCity_lists=new ArrayList<>();
-                        allCity_lists.addAll(city_lists);
-                        LogUtils.i(TAG, "allCity_lists:" + allCity_lists.toString());
-                        adapter.notifyDataSetChanged();
-                        sections = new String[allCity_lists.size()];
-                        for (int i = 0; i < allCity_lists.size(); i++) {
-                            // 当前汉语拼音首字母
-                            String currentStr = getAlpha(allCity_lists.get(i).pinyin);
-                            // 上一个汉语拼音首字母，如果不存在为" "
-                            String previewStr = (i - 1) >= 0 ? getAlpha(allCity_lists.get(i - 1).pinyin) : " ";
-                            if (!previewStr.equals(currentStr)) {
-                                String name = getAlpha(allCity_lists.get(i).pinyin);
-                                alphaIndexer.put(name, i);
-                                sections[i] = name;
-                            }
-                        }
-                    }
-                });
     }
 
     private void getResultCityList(String keyword) {
@@ -545,12 +552,13 @@ public class CityListActivity extends BaseActivity implements OnScrollListener {
 
         @Override
         public int getCount() {
-            return list.size();
+            LogUtils.d(TAG, "getCount:" + allCity_lists.size());
+            return allCity_lists.size();
         }
 
         @Override
         public Object getItem(int position) {
-            return list.get(position);
+            return allCity_lists.get(position);
         }
 
         @Override
@@ -564,6 +572,8 @@ public class CityListActivity extends BaseActivity implements OnScrollListener {
         public View getView(int position, View convertView, ViewGroup parent) {
             final TextView city;
             int viewType = getItemViewType(position);
+            LogUtils.d(TAG, "getView:" + viewType + position);
+
             if (viewType == 0) { // 定位
                 convertView = inflater.inflate(R.layout.frist_list_item, null);
                 TextView locateHint = (TextView) convertView.findViewById(R.id.locateHint);
@@ -608,50 +618,7 @@ public class CityListActivity extends BaseActivity implements OnScrollListener {
                     city.setText("重新定位");
                     pbLocate.setVisibility(View.GONE);
                 }
-            }
-//            else if (viewType == 1) { // 最近访问城市
-//                convertView = inflater.inflate(R.layout.recent_city, null);
-//                GridView recentCity = (GridView) convertView.findViewById(R.id.recent_city);
-//                recentCity.setAdapter(new HitCityAdapter(context, this.hisCity));
-//                recentCity.setOnItemClickListener(new OnItemClickListener() {
-//
-//                    @Override
-//                    public void onItemClick(AdapterView<?> parent, View view,
-//                                            int position, long id) {
-//                        currentCity = city_history.get(position);
-//                        if (!locateCity.equals(currentCity)) {
-//                            String title = "定位的城市是" + locateCity + ",是否跳转到" + currentCity + "?";
-//                            Dialog dialog = new AlertDialog.Builder(CityListActivity.this).setMessage(title).setPositiveButton("确定", new DialogInterface.OnClickListener() {
-//                                @Override
-//                                public void onClick(DialogInterface dialog, int which) {
-//                                    application.setCurrCity(currentCity);
-//                                    HistoryCityInfo cityInfo = new HistoryCityInfo();
-//                                    cityInfo.setCityName(currentCity);
-//                                    MyUtils.saveHistoryCity(cityInfo);
-//                                    finish();
-//                                    getActivityOutToRight();
-//                                }
-//                            }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
-//                                @Override
-//                                public void onClick(DialogInterface dialog, int which) {
-//
-//                                }
-//                            }).create();
-//                            dialog.show();
-//                        } else {
-//                            application.setCurrCity(currentCity);
-//                            HistoryCityInfo cityInfo = new HistoryCityInfo();
-//                            cityInfo.setCityName(currentCity);
-//                            MyUtils.saveHistoryCity(cityInfo);
-//                            finish();
-//                            getActivityOutToRight();
-//                        }
-//                    }
-//                });
-//                TextView recentHint = (TextView) convertView.findViewById(R.id.recentHint);
-//                recentHint.setText(getString(R.string.label_history));
-//            }
-            else if (viewType == 1) {
+            } else if (viewType == 1) {
                 convertView = inflater.inflate(R.layout.recent_city, null);
                 GridView hotCity = (GridView) convertView.findViewById(R.id.recent_city);
                 hotCity.setOnItemClickListener(new OnItemClickListener() {
@@ -695,11 +662,7 @@ public class CityListActivity extends BaseActivity implements OnScrollListener {
                 TextView hotHint = (TextView) convertView
                         .findViewById(R.id.recentHint);
                 hotHint.setText(list.get(position).cityName);
-            }
-//            else if (viewType == 2) {
-//                convertView = inflater.inflate(R.layout.total_item, null);
-//            }
-            else {
+            } else {
                 if (convertView == null) {
                     convertView = inflater.inflate(R.layout.list_item, null);
                     holder = new ViewHolder();
@@ -711,9 +674,9 @@ public class CityListActivity extends BaseActivity implements OnScrollListener {
                 }
                 if (position >= 2) {
                     LogUtils.i(TAG, "position:" + position + "cityName:" + list.get(position).cityName);
-                    holder.name.setText(list.get(position).cityName);
-                    String currentStr = getAlpha(list.get(position).pinyin);
-                    String previewStr = (position - 1) >= 0 ? getAlpha(list.get(position - 1).pinyin) : " ";
+                    holder.name.setText(allCity_lists.get(position).cityName);
+                    String currentStr = getAlpha(allCity_lists.get(position).pinyin);
+                    String previewStr = (position - 1) >= 0 ? getAlpha(allCity_lists.get(position - 1).pinyin) : " ";
                     LogUtils.i(TAG, "currentStr:" + currentStr + " previewStr:" + previewStr);
                     if (!previewStr.equals(currentStr)) {
                         holder.alpha.setVisibility(View.VISIBLE);
@@ -824,7 +787,7 @@ public class CityListActivity extends BaseActivity implements OnScrollListener {
                 PixelFormat.TRANSLUCENT);
         windowManager = (WindowManager) this.getSystemService(Context.WINDOW_SERVICE);
         windowManager.addView(overlay, lp);
-        LogUtils.d(TAG,"initOverlay"+windowManager+":"+overlay);
+        LogUtils.d(TAG, "initOverlay" + windowManager + ":" + overlay);
     }
 
     private boolean isScroll = false;
@@ -920,6 +883,6 @@ public class CityListActivity extends BaseActivity implements OnScrollListener {
     protected void onDestroy() {
         windowManager.removeViewImmediate(overlay);
         super.onDestroy();
-        LogUtils.d(TAG,"onDestroy:"+windowManager+":"+overlay);
+        LogUtils.d(TAG, "onDestroy:" + windowManager + ":" + overlay);
     }
 }

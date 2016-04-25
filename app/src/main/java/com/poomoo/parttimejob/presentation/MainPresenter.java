@@ -12,12 +12,11 @@ import com.poomoo.model.base.BaseJobBO;
 import com.poomoo.model.base.BaseRequestBO;
 import com.poomoo.model.request.QRecommendBO;
 import com.poomoo.model.response.RAdBO;
-import com.poomoo.parttimejob.ui.view.MainView;
+import com.poomoo.parttimejob.view.MainView;
 
 import java.util.List;
 
 import rx.android.schedulers.AndroidSchedulers;
-import rx.android.schedulers.HandlerScheduler;
 import rx.schedulers.Schedulers;
 
 /**

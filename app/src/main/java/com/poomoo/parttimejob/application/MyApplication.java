@@ -18,7 +18,7 @@ import java.util.List;
  */
 public class MyApplication extends LitePalApplication {
     // 用户信息
-    private String userId = "";//用户编号
+    private int userId;//用户编号
     private String nickName = "";//用户昵称
     private String realName = "";//用户实名
     private String headPic = "";//用户头像
@@ -43,8 +43,8 @@ public class MyApplication extends LitePalApplication {
     private String areaId;//区域编号
     private int sexReq = 0;//性别要求
     private int workSycle = 0;//工作周期（0：不限，1：长期兼职，2：短期兼职，3：周末兼职）
-    private String workday="" ;//工作时间（多选），1上午，2下午，3晚上
-    private String startWorkDt="";//开始上班时间
+    private String workday = "";//工作时间（多选），1上午，2下午，3晚上
+    private String startWorkDt = "";//开始上班时间
     private int orderType = 1;//排序类型；1综合排序，2最新发布，3离我最近
 
     private static MyApplication instance;//当前对象
@@ -94,11 +94,11 @@ public class MyApplication extends LitePalApplication {
         getActivityList().clear();
     }
 
-    public String getUserId() {
+    public int getUserId() {
         return userId;
     }
 
-    public void setUserId(String userId) {
+    public void setUserId(int userId) {
         this.userId = userId;
     }
 

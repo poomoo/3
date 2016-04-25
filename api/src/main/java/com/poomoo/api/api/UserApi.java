@@ -7,6 +7,7 @@ import com.poomoo.model.request.QCodeBO;
 import com.poomoo.model.request.QLoginBO;
 import com.poomoo.model.request.QRegisterBO;
 import com.poomoo.model.request.QResetPDBO;
+import com.poomoo.model.request.QResumeBO;
 import com.poomoo.model.response.RUserBO;
 import com.poomoo.model.response.ResponseBO;
 
@@ -26,4 +27,7 @@ public interface UserApi {
 
     @POST("lzrb/app/call.htm")
     Observable<ResponseBO> reSetPassWord(@Body QResetPDBO data);
+
+    @POST("lzrb/app/call.htm")
+    Observable<ResponseBO> resume(@Body QResumeBO data);
 }

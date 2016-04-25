@@ -1,7 +1,7 @@
 /**
  * Copyright (c) 2016. 李苜菲 Inc. All rights reserved.
  */
-package com.poomoo.parttimejob.ui.view;
+package com.poomoo.parttimejob.view;
 
 import com.poomoo.model.base.BaseJobBO;
 

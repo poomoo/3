@@ -1,4 +1,4 @@
-package com.poomoo.parttimejob.ui.view;
+package com.poomoo.parttimejob.view;
 
 import com.poomoo.model.base.BaseJobBO;
 import com.poomoo.model.response.RAdBO;

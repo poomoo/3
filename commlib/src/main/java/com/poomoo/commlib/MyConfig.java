@@ -26,10 +26,19 @@ public class MyConfig {
     //String
     public static final String phoneNumEmpty = "手机号为空";
     public static final String phoneNumIllegal = "手机号不合法";
+    public static final String emailIllegal = "邮箱不合法";
     public static final String codeEmpty = "验证码为空";
     public static final String passWordEmpty = "密码为空";
     public static final String passWordIllegal = "密码不能少于6位数";
+    public static final String contentEmpty = "内容为空";
+    public static final String nameEmpty = "姓名为空";
+    public static final String provinceEmpty = "请选择省份";
+    public static final String cityEmpty = "请选择城市";
+    public static final String areaEmpty = "请选择区域";
+    public static final String workExpEmpty = "工作经验为空";
     public static final String exitApp = "再按一次退出";
+
+
     public static final String[] jobType = {"不限", "调研", "送餐员", "促销", "礼仪", "安保", "销售", "服务员", "零时工", "校内", "设计", "文员", "派单", "模特", "实习", "家教", "演出", "客服", "翻译", "其他"};
     public static final String[] sortType = {"综合排序", "最新发布", "最新发布"};
 

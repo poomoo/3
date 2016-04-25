@@ -118,6 +118,10 @@
     <string name="sp_nickName">nickName</string>
     <string name="sp_realName">realName</string>
     <string name="sp_idCardNum">idCardNum</string>
+    <string name="sp_headPic">headPic</string>
+    <string name="sp_schoolName">schoolName</string>
+    <string name="sp_intoSchoolDt">intoSchoolDt</string>
+    <string name="sp_idPicture">idPicture</string>
     <!--SharedPreference-->
 
     <!--dialog-->

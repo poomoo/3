@@ -1,4 +1,4 @@
-package com.poomoo.parttimejob.ui.view;
+package com.poomoo.parttimejob.view;
 
 /**
  * 作者: 李苜菲

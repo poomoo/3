@@ -23,7 +23,7 @@ import com.poomoo.parttimejob.adapter.JobsAdapter;
 import com.poomoo.parttimejob.presentation.SearchJobPresenter;
 import com.poomoo.parttimejob.ui.base.BaseActivity;
 import com.poomoo.parttimejob.ui.custom.ErrorLayout;
-import com.poomoo.parttimejob.ui.view.SearchJobView;
+import com.poomoo.parttimejob.view.SearchJobView;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 
 import java.util.Iterator;

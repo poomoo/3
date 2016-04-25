@@ -48,7 +48,7 @@ public class SplashActivity extends BaseActivity {
                     application.setCurrCityId(1);
                     finish();
                 } else {
-                    application.setUserId((String) SPUtils.get(getApplicationContext(), getString(R.string.sp_userId), ""));
+                    application.setUserId((Integer) SPUtils.get(getApplicationContext(), getString(R.string.sp_userId), 0));
                     application.setNickName((String) SPUtils.get(getApplicationContext(), getString(R.string.sp_nickName), ""));
                     application.setRealName((String) SPUtils.get(getApplicationContext(), getString(R.string.sp_realName), ""));
                     application.setTel((String) SPUtils.get(getApplicationContext(), getString(R.string.sp_phoneNum), ""));

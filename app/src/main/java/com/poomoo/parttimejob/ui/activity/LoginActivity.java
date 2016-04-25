@@ -13,7 +13,7 @@ import com.poomoo.model.response.RUserBO;
 import com.poomoo.parttimejob.R;
 import com.poomoo.parttimejob.presentation.LoginPresenter;
 import com.poomoo.parttimejob.ui.base.BaseActivity;
-import com.poomoo.parttimejob.ui.view.LoginView;
+import com.poomoo.parttimejob.view.LoginView;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -147,7 +147,15 @@ public class LoginActivity extends BaseActivity implements LoginView {
         this.application.setDeviceNum(rUserBO.deviceNum);
         this.application.setInsertDt(rUserBO.insertDt);
         this.application.setUpdateDtv(rUserBO.updateDtv);
+
+        SPUtils.put(getApplicationContext(), getString(R.string.sp_userId), application.getUserId());
+        SPUtils.put(getApplicationContext(), getString(R.string.sp_nickName), application.getNickName());
+        SPUtils.put(getApplicationContext(), getString(R.string.sp_headPic), application.getHeadPic());
+        SPUtils.put(getApplicationContext(), getString(R.string.sp_schoolName), application.getSchoolName());
+        SPUtils.put(getApplicationContext(), getString(R.string.sp_intoSchoolDt), application.getIntoSchoolDt());
+        SPUtils.put(getApplicationContext(), getString(R.string.sp_idPicture), application.getIdPicture());
         openActivity(MainActivity.class);
+        finish();
     }
 
     @Override

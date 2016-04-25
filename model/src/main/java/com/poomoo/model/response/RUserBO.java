@@ -8,7 +8,7 @@ package com.poomoo.model.response;
  * 日期: 2016/4/8 09:28.
  */
 public class RUserBO {
-    public String userId = "";//用户编号
+    public int userId;//用户编号
     public String nickName = "";//用户昵称
     public String realName = "";//用户实名
     public String headPic = "";//用户头像

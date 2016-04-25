@@ -20,7 +20,7 @@ import com.poomoo.parttimejob.R;
 import com.poomoo.parttimejob.adapter.GridAdapter;
 import com.poomoo.parttimejob.presentation.JobInfoPresenter;
 import com.poomoo.parttimejob.ui.base.BaseActivity;
-import com.poomoo.parttimejob.ui.view.JobInfoView;
+import com.poomoo.parttimejob.view.JobInfoView;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -157,7 +157,7 @@ public class JobInfoActivity extends BaseActivity implements JobInfoView {
      * @param view
      */
     public void signIn(View view) {
-
+        openActivity(SignUpActivity.class);
     }
 
     /**

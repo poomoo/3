@@ -7,11 +7,10 @@ import com.poomoo.api.AbsAPICallback;
 import com.poomoo.api.ApiException;
 import com.poomoo.api.NetConfig;
 import com.poomoo.api.Network;
-import com.poomoo.commlib.LogUtils;
 import com.poomoo.model.request.QCodeBO;
 import com.poomoo.model.request.QResetPDBO;
 import com.poomoo.model.response.ResponseBO;
-import com.poomoo.parttimejob.ui.view.ForgetPassWordView;
+import com.poomoo.parttimejob.view.ForgetPassWordView;
 
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;

@@ -8,9 +8,10 @@ package com.poomoo.api;
  * 日期: 2016/4/5 16:41.
  */
 public class NetConfig {
-    public static String RemoteUrl = "http://lzrb.91jiaoyou.cn/zgqg/";
+    public static String RemoteUrl = "http://lzrb.91jiaoyou.cn/";
     public static String LocalUrl = "http://192.168.0.104:8088/";
     public static String url = LocalUrl;
+    public static String imageUrl = url + "lzrb/app/common/uploadPic.ajax";
 
 
     /*action 10000*/
@@ -19,6 +20,7 @@ public class NetConfig {
     public final static String REGISTER = "10004";//注册
     public final static String LOGIN = "10005";//登录
     public final static String RESET = "10008";//重置密码
+    public final static String RESUME = "10010";//修改简历
 
     /*action 20000*/
     public final static String JOBACTION = "20000";//职位相关统一业务编号
@@ -34,4 +36,6 @@ public class NetConfig {
     public final static String COMMACTION = "30000";//公共接口统一业务编号
     public final static String AD = "30001";//广告
     public final static String CITY = "30002";//城市列表
+    public final static String UPLOAD = "30003";//图片上传
+    public final static String FEEDBACK = "30004";//反馈
 }

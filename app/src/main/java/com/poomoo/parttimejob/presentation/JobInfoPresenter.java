@@ -9,7 +9,7 @@ import com.poomoo.api.NetConfig;
 import com.poomoo.api.Network;
 import com.poomoo.model.request.QJobInfoBO;
 import com.poomoo.model.response.RJobInfoBO;
-import com.poomoo.parttimejob.ui.view.JobInfoView;
+import com.poomoo.parttimejob.view.JobInfoView;
 
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;

@@ -4,10 +4,11 @@
 package com.poomoo.parttimejob.ui.activity;
 
 import android.os.Bundle;
+import android.view.View;
 
 import com.poomoo.parttimejob.R;
 import com.poomoo.parttimejob.ui.base.BaseActivity;
-import com.poomoo.parttimejob.ui.view.SignUpView;
+import com.poomoo.parttimejob.view.SignUpView;
 
 /**
  * 作者: 李苜菲
@@ -18,6 +19,7 @@ public class SignUpActivity extends BaseActivity implements SignUpView {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setBack();
     }
 
     @Override
@@ -28,5 +30,9 @@ public class SignUpActivity extends BaseActivity implements SignUpView {
     @Override
     protected int onBindLayout() {
         return R.layout.activity_signup;
+    }
+
+    public void EditResume(View view) {
+        openActivity(ResumeActivity.class);
     }
 }

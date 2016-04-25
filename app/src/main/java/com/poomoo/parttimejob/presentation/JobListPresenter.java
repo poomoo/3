@@ -12,7 +12,7 @@ import com.poomoo.model.base.BaseJobBO;
 import com.poomoo.model.request.QAllJobBO;
 import com.poomoo.model.request.QJobTypeBO;
 import com.poomoo.model.response.RTypeBO;
-import com.poomoo.parttimejob.ui.view.JobView;
+import com.poomoo.parttimejob.view.JobView;
 
 import java.util.List;
 

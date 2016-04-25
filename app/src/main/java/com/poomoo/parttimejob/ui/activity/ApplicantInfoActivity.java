@@ -10,7 +10,7 @@ import android.widget.TextView;
 import com.poomoo.model.response.RApplicantBO;
 import com.poomoo.parttimejob.R;
 import com.poomoo.parttimejob.ui.base.BaseActivity;
-import com.poomoo.parttimejob.ui.view.ApplicantInfoView;
+import com.poomoo.parttimejob.view.ApplicantInfoView;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;

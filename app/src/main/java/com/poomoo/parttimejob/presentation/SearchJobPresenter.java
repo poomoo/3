@@ -10,7 +10,7 @@ import com.poomoo.api.Network;
 import com.poomoo.model.Page;
 import com.poomoo.model.base.BaseJobBO;
 import com.poomoo.model.request.QSearchBO;
-import com.poomoo.parttimejob.ui.view.SearchJobView;
+import com.poomoo.parttimejob.view.SearchJobView;
 
 import java.util.List;
 

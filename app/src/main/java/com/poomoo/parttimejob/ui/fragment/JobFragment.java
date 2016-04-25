@@ -32,7 +32,7 @@ import com.poomoo.parttimejob.ui.custom.ErrorLayout;
 import com.poomoo.parttimejob.ui.popup.SortPopUpWindow;
 import com.poomoo.parttimejob.ui.popup.TypePopUpWindow;
 import com.poomoo.parttimejob.ui.popup.ZonePopUpWindow;
-import com.poomoo.parttimejob.ui.view.JobView;
+import com.poomoo.parttimejob.view.JobView;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 
 import java.util.ArrayList;

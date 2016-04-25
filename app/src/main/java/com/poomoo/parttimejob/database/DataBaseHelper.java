@@ -20,18 +20,33 @@ public class DataBaseHelper {
     private static final String TAG = "DateBaseHelper";
 
     /**
+     * 保存省份到本地
+     *
+     * @param provinceInfos
+     */
+    public static void saveProvince(List<ProvinceInfo> provinceInfos) {
+        for (ProvinceInfo provinceInfo : provinceInfos) {
+            Cursor cursor = DataSupport.findBySQL("select * from ProvinceInfo where provinceId =?", provinceInfo.getProvinceId() + "");
+            if (cursor.getCount() == 0)
+                provinceInfo.save();
+            cursor.close();
+        }
+        LogUtils.d(TAG, "saveProvince完成");
+    }
+
+    /**
      * 保存城市到本地
      *
      * @param cityInfos
      */
     public static void saveCity(List<CityInfo> cityInfos) {
         for (CityInfo cityInfo : cityInfos) {
-            Cursor cursor = DataSupport.findBySQL("select * from CityInfo where cityId =?", cityInfo.getCityId() + "");
+            Cursor cursor = DataSupport.findBySQL("select * from CityInfo where cityId = ? and provinceInfo_id = ?", cityInfo.getCityId() + "", cityInfo.getProvinceInfo().getProvinceId() + "");
             if (cursor.getCount() == 0)
                 cityInfo.save();
             cursor.close();
         }
-        LogUtils.d(TAG, "saveArea完成");
+        LogUtils.d(TAG, "saveCity完成");
     }
 
     /**
@@ -69,8 +84,28 @@ public class DataBaseHelper {
      *
      * @return
      */
+    public static List<ProvinceInfo> getProvinceList() {
+        List<ProvinceInfo> provinceInfoList = DataSupport.findAll(ProvinceInfo.class);
+        return provinceInfoList;
+    }
+
+    /**
+     * 查找所有城市
+     *
+     * @return
+     */
     public static List<CityInfo> getCityList() {
         List<CityInfo> cityList = DataSupport.findAll(CityInfo.class);
+        return cityList;
+    }
+
+    /**
+     * 查找所有城市
+     *
+     * @return
+     */
+    public static List<CityInfo> getCityList(int provinceId) {
+        List<CityInfo> cityList = DataSupport.where("provinceinfo_id = ?", provinceId + "").find(CityInfo.class);
         return cityList;
     }
 
@@ -113,6 +148,33 @@ public class DataBaseHelper {
         List<TypeInfo> typeInfos = DataSupport.findAll(TypeInfo.class);
         for (TypeInfo typeInfo : typeInfos)
             list.add(typeInfo.getName() + "#" + typeInfo.getCateId());
+        return list;
+    }
+
+    /**
+     * @return
+     */
+    public static List<String> getProvince() {
+        List<String> list = new ArrayList<>();
+        List<ProvinceInfo> provinceInfos = getProvinceList();
+        for (ProvinceInfo provinceInfo : provinceInfos)
+            list.add(provinceInfo.getProvinceName() + "#" + provinceInfo.getProvinceId());
+        return list;
+    }
+
+    public static List<String> getCity(int provinceId) {
+        List<String> list = new ArrayList<>();
+        List<CityInfo> cityInfos = getCityList(provinceId);
+        for (CityInfo cityInfo : cityInfos)
+            list.add(cityInfo.getCityName() + "#" + cityInfo.getCityId());
+        return list;
+    }
+
+    public static List<String> getArea(int cityId) {
+        List<String> list = new ArrayList<>();
+        List<AreaInfo> areaInfos = getAreaList(cityId);
+        for (AreaInfo areaInfo : areaInfos)
+            list.add(areaInfo.getAreaName() + "#" + areaInfo.getAreaId());
         return list;
     }
 }

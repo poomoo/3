@@ -3,7 +3,7 @@
  */
 package com.poomoo.parttimejob.presentation;
 
-import com.poomoo.parttimejob.ui.view.ApplicantInfoView;
+import com.poomoo.parttimejob.view.ApplicantInfoView;
 
 /**
  * 作者: 李苜菲

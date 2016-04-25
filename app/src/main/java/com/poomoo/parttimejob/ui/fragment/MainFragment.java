@@ -29,7 +29,7 @@ import com.poomoo.parttimejob.ui.activity.MainActivity;
 import com.poomoo.parttimejob.ui.activity.SearchJobActivity;
 import com.poomoo.parttimejob.ui.base.BaseFragment;
 import com.poomoo.parttimejob.ui.custom.SlideShowView;
-import com.poomoo.parttimejob.ui.view.MainView;
+import com.poomoo.parttimejob.view.MainView;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 
 import java.util.ArrayList;

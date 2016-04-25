@@ -5,7 +5,6 @@ package com.poomoo.parttimejob.ui.activity;
 
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.text.style.BackgroundColorSpan;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -16,7 +15,7 @@ import com.poomoo.commlib.TimeCountDownUtil;
 import com.poomoo.parttimejob.R;
 import com.poomoo.parttimejob.presentation.ForgetPassWordPresenter;
 import com.poomoo.parttimejob.ui.base.BaseActivity;
-import com.poomoo.parttimejob.ui.view.ForgetPassWordView;
+import com.poomoo.parttimejob.view.ForgetPassWordView;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;

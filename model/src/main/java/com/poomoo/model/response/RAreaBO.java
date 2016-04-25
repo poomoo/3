@@ -11,7 +11,7 @@ import java.util.List;
  * 日期: 2016/4/8 15:26.
  */
 public class RAreaBO {
-    public String provinceId;
+    public int provinceId;
     public String provinceName;
     public List<city> cityList;//城市集合
 

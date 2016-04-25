@@ -14,6 +14,7 @@ import java.util.List;
 public class CityInfo extends DataSupport {
     private int cityId;
     private String cityName;
+    private ProvinceInfo provinceInfo;
     private List<AreaInfo> areaInfoList = new ArrayList<AreaInfo>();
 
 //    public CityInfo(int cityId, String cityName, List<AreaInfo> areaInfoList) {
@@ -36,6 +37,14 @@ public class CityInfo extends DataSupport {
 
     public void setCityName(String cityName) {
         this.cityName = cityName;
+    }
+
+    public ProvinceInfo getProvinceInfo() {
+        return provinceInfo;
+    }
+
+    public void setProvinceInfo(ProvinceInfo provinceInfo) {
+        this.provinceInfo = provinceInfo;
     }
 
     public List<AreaInfo> getAreaInfoList() {

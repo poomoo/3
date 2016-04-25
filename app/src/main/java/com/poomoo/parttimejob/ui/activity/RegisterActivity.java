@@ -16,7 +16,7 @@ import com.poomoo.commlib.TimeCountDownUtil;
 import com.poomoo.parttimejob.R;
 import com.poomoo.parttimejob.presentation.RegisterPresenter;
 import com.poomoo.parttimejob.ui.base.BaseActivity;
-import com.poomoo.parttimejob.ui.view.RegisterView;
+import com.poomoo.parttimejob.view.RegisterView;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;

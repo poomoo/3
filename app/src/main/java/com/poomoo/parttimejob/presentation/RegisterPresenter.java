@@ -11,7 +11,7 @@ import com.poomoo.commlib.LogUtils;
 import com.poomoo.model.request.QCodeBO;
 import com.poomoo.model.request.QRegisterBO;
 import com.poomoo.model.response.ResponseBO;
-import com.poomoo.parttimejob.ui.view.RegisterView;
+import com.poomoo.parttimejob.view.RegisterView;
 
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;

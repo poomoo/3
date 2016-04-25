@@ -10,7 +10,7 @@ import com.poomoo.parttimejob.adapter.JobsAdapter;
 import com.poomoo.parttimejob.adapter.BaseListAdapter;
 import com.poomoo.parttimejob.presentation.ApplyListPresenter;
 import com.poomoo.parttimejob.ui.base.BaseListFragment;
-import com.poomoo.parttimejob.ui.view.JobListView;
+import com.poomoo.parttimejob.view.JobListView;
 
 import java.util.List;
 

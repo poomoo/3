@@ -13,9 +13,8 @@ import com.poomoo.commlib.SPUtils;
 import com.poomoo.model.request.QLoginBO;
 import com.poomoo.model.response.RUserBO;
 import com.poomoo.parttimejob.R;
-import com.poomoo.parttimejob.ui.view.LoginView;
+import com.poomoo.parttimejob.view.LoginView;
 
-import rx.Scheduler;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 

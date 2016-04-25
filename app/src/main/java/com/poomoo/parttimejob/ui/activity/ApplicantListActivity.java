@@ -14,7 +14,7 @@ import com.poomoo.parttimejob.R;
 import com.poomoo.parttimejob.adapter.ApplicantListAdapter;
 import com.poomoo.parttimejob.adapter.BaseListAdapter;
 import com.poomoo.parttimejob.ui.base.BaseActivity;
-import com.poomoo.parttimejob.ui.view.ApplicantListView;
+import com.poomoo.parttimejob.view.ApplicantListView;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 
 import java.util.ArrayList;

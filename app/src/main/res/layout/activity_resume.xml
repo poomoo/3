@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/llayout_resume"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorBg"
@@ -24,11 +25,10 @@
                 android:gravity="center_vertical"
                 android:padding="10dp">
 
-                <ImageView
+                <com.poomoo.parttimejob.ui.custom.RoundImageView
                     android:id="@+id/img_userAvatar"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
                     android:src="@drawable/ic_upload" />
 
                 <TextView
@@ -53,15 +53,16 @@
                     android:layout_height="wrap_content"
                     android:text="姓　　名"
                     android:textColor="@color/black"
-                    android:textSize="18sp" />
+                    android:textSize="16sp" />
 
                 <EditText
+                    android:id="@+id/edt_realName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
                     android:background="@null"
                     android:hint="@string/hint_inputYourRealName"
-                    android:textSize="18sp" />
+                    android:textSize="16sp" />
             </LinearLayout>
 
             <LinearLayout
@@ -78,7 +79,7 @@
                     android:layout_height="wrap_content"
                     android:text="性　　别"
                     android:textColor="@color/black"
-                    android:textSize="18sp" />
+                    android:textSize="16sp" />
 
                 <RadioGroup
                     android:layout_width="match_parent"
@@ -120,25 +121,34 @@
                     android:layout_height="wrap_content"
                     android:text="身　　高"
                     android:textColor="@color/black"
-                    android:textSize="18sp" />
+                    android:textSize="16sp" />
 
-                <EditText
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:background="@null"
-                    android:hint="@string/hint_click2choose"
-                    android:textSize="18sp" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:clickable="true"
+                    android:gravity="center_vertical"
+                    android:onClick="selectHeight"
+                    android:orientation="horizontal">
 
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1" />
+                    <TextView
+                        android:id="@+id/txt_resumeHeight"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:hint="@string/hint_click2choose"
+                        android:textSize="16sp" />
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_right_arrow_gray" />
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_right_arrow_gray" />
+                </LinearLayout>
             </LinearLayout>
 
             <LinearLayout
@@ -155,25 +165,34 @@
                     android:layout_height="wrap_content"
                     android:text="出生年月"
                     android:textColor="@color/black"
-                    android:textSize="18sp" />
+                    android:textSize="16sp" />
 
-                <EditText
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:background="@null"
-                    android:hint="@string/hint_click2choose"
-                    android:textSize="18sp" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:clickable="true"
+                    android:gravity="center_vertical"
+                    android:onClick="selectDate"
+                    android:orientation="horizontal">
 
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1" />
+                    <TextView
+                        android:id="@+id/txt_resumeDate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:hint="@string/hint_click2choose"
+                        android:textSize="16sp" />
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_right_arrow_gray" />
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_right_arrow_gray" />
+                </LinearLayout>
             </LinearLayout>
 
             <LinearLayout
@@ -181,7 +200,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:background="@color/white"
-                android:gravity="center_vertical"
+                android:gravity="center"
                 android:orientation="horizontal"
                 android:padding="10dp">
 
@@ -189,15 +208,18 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:gravity="center_vertical"
+                    android:clickable="true"
+                    android:gravity="center"
+                    android:onClick="selectProvince"
                     android:orientation="horizontal">
 
                     <TextView
+                        android:id="@+id/txt_province"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="选择省份"
                         android:textColor="@color/black"
-                        android:textSize="18sp" />
+                        android:textSize="16sp" />
 
                     <ImageView
                         android:layout_width="wrap_content"
@@ -209,15 +231,18 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:gravity="center_vertical"
+                    android:clickable="true"
+                    android:gravity="center"
+                    android:onClick="selectCity"
                     android:orientation="horizontal">
 
                     <TextView
+                        android:id="@+id/txt_city"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="选择城市"
                         android:textColor="@color/black"
-                        android:textSize="18sp" />
+                        android:textSize="16sp" />
 
                     <ImageView
                         android:layout_width="wrap_content"
@@ -229,15 +254,18 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:gravity="center_vertical"
+                    android:clickable="true"
+                    android:gravity="center"
+                    android:onClick="selectArea"
                     android:orientation="horizontal">
 
                     <TextView
+                        android:id="@+id/txt_area"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="选择区域"
                         android:textColor="@color/black"
-                        android:textSize="18sp" />
+                        android:textSize="16sp" />
 
                     <ImageView
                         android:layout_width="wrap_content"
@@ -260,7 +288,7 @@
                     android:layout_height="wrap_content"
                     android:text="学　　校"
                     android:textColor="@color/black"
-                    android:textSize="18sp" />
+                    android:textSize="16sp" />
 
                 <EditText
                     android:layout_width="wrap_content"
@@ -268,7 +296,7 @@
                     android:layout_marginLeft="20dp"
                     android:background="@null"
                     android:hint="@string/hint_inputYourSchool"
-                    android:textSize="18sp" />
+                    android:textSize="16sp" />
 
                 <TextView
                     android:layout_width="0dp"
@@ -276,10 +304,10 @@
                     android:layout_weight="1" />
 
                 <ImageView
-                    android:visibility="gone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_right_arrow_gray" />
+                    android:src="@drawable/ic_right_arrow_gray"
+                    android:visibility="gone" />
             </LinearLayout>
 
             <LinearLayout
@@ -295,7 +323,7 @@
                     android:layout_height="wrap_content"
                     android:text="邮　　箱"
                     android:textColor="@color/black"
-                    android:textSize="18sp" />
+                    android:textSize="16sp" />
 
                 <EditText
                     android:layout_width="wrap_content"
@@ -303,7 +331,7 @@
                     android:layout_marginLeft="20dp"
                     android:background="@null"
                     android:hint="@string/hint_inputYourEmail"
-                    android:textSize="18sp" />
+                    android:textSize="16sp" />
             </LinearLayout>
 
             <LinearLayout
@@ -319,7 +347,7 @@
                     android:layout_height="wrap_content"
                     android:text="Q　　　Q"
                     android:textColor="@color/black"
-                    android:textSize="18sp" />
+                    android:textSize="16sp" />
 
                 <EditText
                     android:layout_width="wrap_content"
@@ -327,7 +355,7 @@
                     android:layout_marginLeft="20dp"
                     android:background="@null"
                     android:hint="@string/hint_inputYourQQ"
-                    android:textSize="18sp" />
+                    android:textSize="16sp" />
             </LinearLayout>
 
             <LinearLayout
@@ -343,14 +371,14 @@
                     android:layout_height="wrap_content"
                     android:text="电　　话"
                     android:textColor="@color/black"
-                    android:textSize="18sp" />
+                    android:textSize="16sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
                     android:text="15597726686"
-                    android:textSize="18sp" />
+                    android:textSize="16sp" />
             </LinearLayout>
 
             <LinearLayout
@@ -367,16 +395,16 @@
                     android:layout_height="wrap_content"
                     android:text="工作简历"
                     android:textColor="@color/black"
-                    android:textSize="18sp" />
+                    android:textSize="16sp" />
 
                 <EditText
+                    android:id="@+id/edt_workResume"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
                     android:background="@null"
                     android:hint="@string/hint_inputYourResume"
-                    android:text="测试热启动"
-                    android:textSize="18sp" />
+                    android:textSize="16sp" />
             </LinearLayout>
 
             <LinearLayout
@@ -392,15 +420,16 @@
                     android:layout_height="wrap_content"
                     android:text="工作经验"
                     android:textColor="@color/black"
-                    android:textSize="18sp" />
+                    android:textSize="16sp" />
 
                 <EditText
+                    android:id="@+id/edt_workExp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
                     android:background="@null"
                     android:hint="@string/hint_inputYourExperience"
-                    android:textSize="18sp" />
+                    android:textSize="16sp" />
             </LinearLayout>
 
             <Button
@@ -409,6 +438,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp"
                 android:layout_marginTop="20dp"
+                android:onClick="toSubmit"
                 android:text="@string/btn_submit" />
         </LinearLayout>
     </ScrollView>
