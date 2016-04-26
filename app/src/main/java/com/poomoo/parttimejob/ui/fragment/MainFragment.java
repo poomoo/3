@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.poomoo.commlib.LogUtils;
 import com.poomoo.commlib.MyUtils;
@@ -21,6 +22,8 @@ import com.poomoo.model.response.RApplyJobBO;
 import com.poomoo.parttimejob.R;
 import com.poomoo.parttimejob.adapter.BaseListAdapter;
 import com.poomoo.parttimejob.adapter.JobsAdapter;
+import com.poomoo.parttimejob.event.Events;
+import com.poomoo.parttimejob.event.RxBus;
 import com.poomoo.parttimejob.listener.AdvertisementListener;
 import com.poomoo.parttimejob.presentation.MainPresenter;
 import com.poomoo.parttimejob.ui.activity.CityListActivity;
@@ -30,6 +33,7 @@ import com.poomoo.parttimejob.ui.activity.SearchJobActivity;
 import com.poomoo.parttimejob.ui.base.BaseFragment;
 import com.poomoo.parttimejob.ui.custom.SlideShowView;
 import com.poomoo.parttimejob.view.MainView;
+import com.trello.rxlifecycle.FragmentEvent;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 
 import java.util.ArrayList;
@@ -53,6 +57,8 @@ public class MainFragment extends BaseFragment implements SwipeRefreshLayout.OnR
     AppBarLayout appBarLayout;
     @Bind(R.id.flipper_ad)
     SlideShowView slideShowView;
+    @Bind(R.id.txt_position)
+    TextView cityTxt;
 
     private JobsAdapter adapter;
     private List<RApplyJobBO> rApplyJobBOs = new ArrayList<>();
@@ -117,6 +123,19 @@ public class MainFragment extends BaseFragment implements SwipeRefreshLayout.OnR
         mainPresenter = new MainPresenter(this);
         mainPresenter.loadAd();
         mainPresenter.queryRecommendJobs(currPage);
+
+        initSubscribers();
+    }
+
+    private void initSubscribers() {
+        cityTxt.setText(application.getCurrCity());
+        RxBus.with(this)
+                .setEvent(Events.EventEnum.DELIVER_CITY)
+                .setEndEvent(FragmentEvent.DESTROY)
+                .onNext((events) -> {
+                    LogUtils.d(TAG, "initSubscribers onNext");
+                    cityTxt.setText(application.getCurrCity());
+                }).create();
     }
 
     @OnClick({R.id.llayout_citys, R.id.img_search})

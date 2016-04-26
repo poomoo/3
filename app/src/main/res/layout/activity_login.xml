@@ -13,9 +13,10 @@
         android:layout_weight="2"
         android:gravity="center">
 
-        <com.poomoo.parttimejob.ui.custom.RoundImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <com.poomoo.parttimejob.ui.custom.RoundImageView2
+            android:id="@+id/img_loginAvatar"
+            android:layout_width="160dp"
+            android:layout_height="160dp"
             android:src="@drawable/ic_login_logo"
             app:border_outside_color="@color/white"
             app:border_thickness="1dp" />
@@ -175,8 +176,8 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="6dp"
             android:onClick="toVisit"
+            android:padding="6dp"
             android:text="@string/label_looking"
             android:textColor="@color/white"
             android:textSize="16sp" />

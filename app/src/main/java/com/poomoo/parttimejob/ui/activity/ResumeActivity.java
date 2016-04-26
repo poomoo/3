@@ -12,13 +12,11 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.v4.widget.TextViewCompat;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
@@ -26,20 +24,22 @@ import com.bumptech.glide.Glide;
 import com.poomoo.commlib.LogUtils;
 import com.poomoo.commlib.MyConfig;
 import com.poomoo.commlib.MyUtils;
+import com.poomoo.commlib.SPUtils;
 import com.poomoo.commlib.picUtils.Bimp;
 import com.poomoo.commlib.picUtils.FileUtils;
 import com.poomoo.model.response.RResumeBO;
 import com.poomoo.model.response.RUrl;
 import com.poomoo.parttimejob.R;
 import com.poomoo.parttimejob.database.DataBaseHelper;
+import com.poomoo.parttimejob.event.Events;
+import com.poomoo.parttimejob.event.RxBus;
 import com.poomoo.parttimejob.presentation.ResumePresenter;
 import com.poomoo.parttimejob.ui.base.BaseActivity;
 import com.poomoo.parttimejob.ui.custom.CustomerDatePickerDialog;
-import com.poomoo.parttimejob.ui.custom.RoundImageView;
+import com.poomoo.parttimejob.ui.custom.RoundImageView2;
 import com.poomoo.parttimejob.ui.popup.HeightPopUpWindow;
 import com.poomoo.parttimejob.ui.popup.ProvincePopUpWindow;
 import com.poomoo.parttimejob.ui.popup.SelectPicsPopupWindow;
-import com.poomoo.parttimejob.ui.popup.TypePopUpWindow;
 import com.poomoo.parttimejob.view.ResumeView;
 
 import java.io.File;
@@ -51,7 +51,6 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import butterknife.OnItemLongClick;
 
 /**
  * 个人简历
@@ -60,7 +59,7 @@ import butterknife.OnItemLongClick;
  */
 public class ResumeActivity extends BaseActivity implements ResumeView {
     @Bind(R.id.img_userAvatar)
-    RoundImageView userAvatarImg;
+    RoundImageView2 userAvatarImg;
     @Bind(R.id.edt_realName)
     EditText nameEdt;
     @Bind(R.id.rBtn_man)
@@ -125,7 +124,6 @@ public class ResumeActivity extends BaseActivity implements ResumeView {
     private String schoolName;
     private String email;
     private String qqNum;
-    private String contactTel;
     private String workResume;
     private String workExp;
 
@@ -474,8 +472,15 @@ public class ResumeActivity extends BaseActivity implements ResumeView {
         qqNum = rResumeBO.qqNum;
         workResume = rResumeBO.workResume;
         workExp = rResumeBO.workExp;
+        String temp[] = DataBaseHelper.getProvinceCityArea(provinceId, cityId, areaId);
+        province = temp[0];
+        city = temp[1];
+        area = temp[2];
+        provinceTxt.setText(province);
+        cityTxt.setText(city);
+        areaTxt.setText(area);
 
-//        Glide.with(this).load(headPic).into(userAvatarImg);
+        Glide.with(this).load(headPic).into(userAvatarImg);
         nameEdt.setText(realName);
         if (sex == 1) manRbtn.setChecked(true);
         else womanRbtn.setChecked(true);
@@ -487,6 +492,13 @@ public class ResumeActivity extends BaseActivity implements ResumeView {
         telTxt.setText(application.getTel());
         workResumeEdt.setText(workResume);
         workExpEdt.setText(workExp);
+
+        SPUtils.put(this, getString(R.string.sp_headPic), headPic);
+        SPUtils.put(this, getString(R.string.sp_realName), realName);
+        application.setHeadPic(headPic);
+        application.setRealName(realName);
+
+        RxBus.getInstance().send(Events.EventEnum.DELIVER_AVATAR, null);
     }
 
     @Override

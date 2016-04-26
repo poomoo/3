@@ -6,6 +6,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
+import com.poomoo.commlib.LogUtils;
 import com.poomoo.commlib.MyConfig;
 import com.poomoo.commlib.MyUtils;
 import com.poomoo.commlib.SPUtils;
@@ -13,6 +15,7 @@ import com.poomoo.model.response.RUserBO;
 import com.poomoo.parttimejob.R;
 import com.poomoo.parttimejob.presentation.LoginPresenter;
 import com.poomoo.parttimejob.ui.base.BaseActivity;
+import com.poomoo.parttimejob.ui.custom.RoundImageView2;
 import com.poomoo.parttimejob.view.LoginView;
 
 import butterknife.Bind;
@@ -22,6 +25,8 @@ import butterknife.ButterKnife;
  * 登录
  */
 public class LoginActivity extends BaseActivity implements LoginView {
+    @Bind(R.id.img_loginAvatar)
+    RoundImageView2 avatarImg;
     @Bind(R.id.img_remember)
     ImageView rememberImg;
     @Bind(R.id.edt_name)
@@ -44,6 +49,12 @@ public class LoginActivity extends BaseActivity implements LoginView {
             passWordEdt.setText((String) SPUtils.get(getApplicationContext(), getString(R.string.sp_passWord), ""));
             rememberImg.setImageResource(R.drawable.ic_remember_password_yes);
         }
+//        initSubscribers();
+        LogUtils.d(TAG, "头像:" + SPUtils.get(this, getString(R.string.sp_headPic), ""));
+        if (!TextUtils.isEmpty((String) SPUtils.get(this, getString(R.string.sp_headPic), ""))) {
+            Glide.with(this).load(SPUtils.get(this, getString(R.string.sp_headPic), "")).into(avatarImg);
+
+        }
 
     }
 
@@ -56,6 +67,15 @@ public class LoginActivity extends BaseActivity implements LoginView {
     protected int onBindLayout() {
         return R.layout.activity_login;
     }
+
+//    private void initSubscribers() {
+//        RxBus.with(this)
+//                .setEvent(Events.EventEnum.DELIVER_AVATAR)
+//                .setEndEvent(FragmentEvent.DESTROY)
+//                .onNext((events) -> {
+//                    Glide.with(this).load(application.getHeadPic()).into(avatarImg);
+//                }).create();
+//    }
 
     /**
      * 记住密码
@@ -121,6 +141,7 @@ public class LoginActivity extends BaseActivity implements LoginView {
      * @param view
      */
     public void toVisit(View view) {
+        this.application.setLogin(false);
         openActivity(MainActivity.class);
         finish();
     }
@@ -147,6 +168,7 @@ public class LoginActivity extends BaseActivity implements LoginView {
         this.application.setDeviceNum(rUserBO.deviceNum);
         this.application.setInsertDt(rUserBO.insertDt);
         this.application.setUpdateDtv(rUserBO.updateDtv);
+        this.application.setLogin(true);
 
         SPUtils.put(getApplicationContext(), getString(R.string.sp_userId), application.getUserId());
         SPUtils.put(getApplicationContext(), getString(R.string.sp_nickName), application.getNickName());
@@ -154,6 +176,7 @@ public class LoginActivity extends BaseActivity implements LoginView {
         SPUtils.put(getApplicationContext(), getString(R.string.sp_schoolName), application.getSchoolName());
         SPUtils.put(getApplicationContext(), getString(R.string.sp_intoSchoolDt), application.getIntoSchoolDt());
         SPUtils.put(getApplicationContext(), getString(R.string.sp_idPicture), application.getIdPicture());
+
         openActivity(MainActivity.class);
         finish();
     }

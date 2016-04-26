@@ -23,6 +23,8 @@ import com.poomoo.parttimejob.adapter.BaseListAdapter;
 import com.poomoo.parttimejob.adapter.JobsAdapter;
 import com.poomoo.parttimejob.database.DataBaseHelper;
 import com.poomoo.parttimejob.database.TypeInfo;
+import com.poomoo.parttimejob.event.Events;
+import com.poomoo.parttimejob.event.RxBus;
 import com.poomoo.parttimejob.presentation.JobListPresenter;
 import com.poomoo.parttimejob.ui.activity.CityListActivity;
 import com.poomoo.parttimejob.ui.activity.FilterActivity;
@@ -33,6 +35,7 @@ import com.poomoo.parttimejob.ui.popup.SortPopUpWindow;
 import com.poomoo.parttimejob.ui.popup.TypePopUpWindow;
 import com.poomoo.parttimejob.ui.popup.ZonePopUpWindow;
 import com.poomoo.parttimejob.view.JobView;
+import com.trello.rxlifecycle.FragmentEvent;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 
 import java.util.ArrayList;
@@ -56,6 +59,8 @@ public class JobFragment extends BaseFragment implements JobView, BaseListAdapte
     SwipeRefreshLayout swipeRefreshLayout;
     @Bind(R.id.error_frame)
     ErrorLayout errorLayout;
+    @Bind(R.id.txt_position)
+    TextView cityTxt;
 
     private TypePopUpWindow typePopUpWindow = null;
     private ZonePopUpWindow zonePopUpWindow = null;
@@ -99,7 +104,27 @@ public class JobFragment extends BaseFragment implements JobView, BaseListAdapte
         jobListPresenter = new JobListPresenter(this);
         jobListPresenter.getType();
         getJobList(true);
+
+        initSubscribers();
     }
+
+    private void initSubscribers() {
+        RxBus.with(this)
+                .setEvent(Events.EventEnum.DELIVER_CITY)
+                .setEndEvent(FragmentEvent.DESTROY)
+                .onNext((events) -> {
+                    LogUtils.d(TAG, "initSubscribers onNext");
+                    cityTxt.setText(application.getCurrCity());
+                    currPage = 1;
+                    zonePopUpWindow = null;
+                    typePopUpWindow = null;
+                    sortPopUpWindow = null;
+                    application.setAreaId("");
+                    application.setCateId("");
+                    getJobList(true);
+                }).create();
+    }
+
 
     @OnClick({R.id.rbtn_type, R.id.rbtn_zone, R.id.rbtn_sort, R.id.txt_toFilter})
     void select(View view) {
@@ -120,7 +145,7 @@ public class JobFragment extends BaseFragment implements JobView, BaseListAdapte
                 sortPopUpWindow.showAsDropDown(dividerTxt);
                 break;
             case R.id.txt_toFilter:
-                openActivityForResult(FilterActivity.class,1);
+                openActivityForResult(FilterActivity.class, 1);
                 break;
         }
 
@@ -149,7 +174,7 @@ public class JobFragment extends BaseFragment implements JobView, BaseListAdapte
             String temp = "";
             for (int i = 0; i < len; i++)
                 temp += type.get(i) + ",";
-            temp=temp.substring(0, temp.length() - 1);
+            temp = temp.substring(0, temp.length() - 1);
             application.setAreaId(temp);
             currPage = 1;
             getJobList(true);
@@ -172,13 +197,8 @@ public class JobFragment extends BaseFragment implements JobView, BaseListAdapte
     }
 
     private void getJobList(boolean refresh) {
-        if(refresh)
-        swipeRefreshLayout.post(new Runnable() {
-            @Override
-            public void run() {
-                swipeRefreshLayout.setRefreshing(true);
-            }
-        });
+        if (refresh)
+            swipeRefreshLayout.post(() -> swipeRefreshLayout.setRefreshing(true));
         jobListPresenter.getJobList(application.getLat(), application.getLng(), application.getCurrCityId(), application.getCateId(), application.getAreaId(), application.getSexReq(), application.getWorkSycle(), application.getWorkday(), application.getStartWorkDt(), application.getOrderType(), currPage);
     }
 
@@ -211,7 +231,10 @@ public class JobFragment extends BaseFragment implements JobView, BaseListAdapte
         swipeRefreshLayout.setRefreshing(false);
         if (baseJobBOs == null) return;
 
-        if (currPage == 1) adapter.clear();
+        if (currPage == 1) {
+            LogUtils.d(TAG, "清除数据");
+            adapter.clear();
+        }
 
         if (adapter.getDataSize() + baseJobBOs.size() == 0) {
             adapter.setState(BaseListAdapter.STATE_HIDE);
@@ -265,7 +288,8 @@ public class JobFragment extends BaseFragment implements JobView, BaseListAdapte
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        getJobList(true);
+        if (resultCode == 1)
+            getJobList(true);
     }
 
 }

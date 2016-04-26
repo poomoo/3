@@ -4,6 +4,7 @@
 package com.poomoo.parttimejob.ui.activity;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 
 import com.poomoo.commlib.LogUtils;
 import com.poomoo.model.response.RApplyJobBO;
@@ -43,7 +44,7 @@ public class MyApplyActivity extends BaseActivity {
      */
     private void setDefaultMenuItem() {
         LogUtils.d(TAG, "setDefaultMenuItem");
-        TabFragment mTab = new TabFragment() {
+        final TabFragment mTab = new TabFragment() {
             @Override
             public void onSetupTabs() {
                 addTab(getResources().getString(R.string.tab_apply_all), MyApplyFragment.class, RApplyJobBO.JOB_ALL);
@@ -56,6 +57,5 @@ public class MyApplyActivity extends BaseActivity {
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.frame_container, mTab)
                 .commit();
-        mTab.setPage(type);
     }
 }

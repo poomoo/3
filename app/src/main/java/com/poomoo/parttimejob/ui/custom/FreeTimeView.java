@@ -127,10 +127,10 @@ public class FreeTimeView extends View implements View.OnTouchListener {
                 Bitmap bmp;
                 if (sparseArray.get(i)) {
                     //图标
-                    bmp = BitmapFactory.decodeResource(getResources(), R.drawable.ic_selected);
+                    bmp = BitmapFactory.decodeResource(getResources(), R.drawable.ic_calendar_selected);
                     drawCellIcon(canvas, i, bmp);
                 } else {//撤销
-                    bmp = BitmapFactory.decodeResource(getResources(), R.drawable.ic_selected);
+                    bmp = BitmapFactory.decodeResource(getResources(), R.drawable.ic_calendar_selected);
                     bmp = Bitmap.createBitmap(bmp.getWidth(), bmp.getHeight(), Bitmap.Config.ARGB_8888);
                     drawCellIcon(canvas, i, bmp);
                 }

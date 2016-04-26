@@ -47,6 +47,8 @@ public class MyApplication extends LitePalApplication {
     private String startWorkDt = "";//开始上班时间
     private int orderType = 1;//排序类型；1综合排序，2最新发布，3离我最近
 
+    private boolean isLogin = false;
+
     private static MyApplication instance;//当前对象
     private List<Activity> activityList;//activity栈
 
@@ -58,7 +60,7 @@ public class MyApplication extends LitePalApplication {
         CrashHandler crashHandler = CrashHandler.getInstance();
         // 注册crashHandler
         crashHandler.init(getApplicationContext());
-        SQLiteDatabase db = Connector.getDatabase();//新建表
+//        SQLiteDatabase db = Connector.getDatabase();//新建表
     }
 
     private void initImageLoader() {
@@ -308,5 +310,13 @@ public class MyApplication extends LitePalApplication {
 
     public void setOrderType(int orderType) {
         this.orderType = orderType;
+    }
+
+    public boolean isLogin() {
+        return isLogin;
+    }
+
+    public void setLogin(boolean login) {
+        isLogin = login;
     }
 }

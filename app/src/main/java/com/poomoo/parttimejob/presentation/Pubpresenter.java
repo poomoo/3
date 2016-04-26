@@ -49,4 +49,5 @@ public class PubPresenter extends BasePresenter {
                     }
                 }));
     }
+
 }

@@ -19,6 +19,7 @@ import com.poomoo.parttimejob.ui.base.BaseActivity;
 import com.poomoo.parttimejob.ui.fragment.JobFragment;
 import com.poomoo.parttimejob.ui.fragment.MainFragment;
 import com.poomoo.parttimejob.ui.fragment.PersonalFragment;
+import com.trello.rxlifecycle.components.RxFragment;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -32,9 +33,9 @@ public class MainActivity extends BaseActivity {
     @Bind(R.id.llayout_main)
     LinearLayout mainLlayout;
 
-    private MainFragment mainFragment;
-    private JobFragment jobFragment;
-    private PersonalFragment personalFragment;
+    private Fragment mainFragment;
+    private Fragment jobFragment;
+    private Fragment personalFragment;
     private Fragment curFragment;
     private long exitTime = 0;
     public static MainActivity instance;
@@ -60,7 +61,7 @@ public class MainActivity extends BaseActivity {
 
     private void setDefaultFragment() {
         // TODO 自动生成的方法存根
-        mainFragment = new MainFragment();
+        mainFragment = Fragment.instantiate(this, MainFragment.class.getName());
         curFragment = mainFragment;
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.flayout_main, curFragment)
@@ -82,7 +83,7 @@ public class MainActivity extends BaseActivity {
                 break;
             case R.id.rbtn_job:
                 if (jobFragment == null)
-                    jobFragment = new JobFragment();
+                    jobFragment = Fragment.instantiate(this, JobFragment.class.getName());
                 switchFragment(jobFragment);
                 curFragment = jobFragment;
                 break;
@@ -90,7 +91,7 @@ public class MainActivity extends BaseActivity {
                 break;
             case R.id.rbtn_personal:
                 if (personalFragment == null)
-                    personalFragment = new PersonalFragment();
+                    personalFragment = Fragment.instantiate(this, PersonalFragment.class.getName());
                 switchFragment(personalFragment);
                 curFragment = personalFragment;
                 break;

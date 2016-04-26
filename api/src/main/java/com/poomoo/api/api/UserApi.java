@@ -3,6 +3,7 @@
 package com.poomoo.api.api;
 
 
+import com.poomoo.model.request.QAuthBO;
 import com.poomoo.model.request.QCodeBO;
 import com.poomoo.model.request.QLoginBO;
 import com.poomoo.model.request.QRegisterBO;
@@ -35,4 +36,7 @@ public interface UserApi {
 
     @POST("lzrb/app/call.htm")
     Observable<ResponseBO> resumeUp(@Body QResumeBO data);
+
+    @POST("lzrb/app/call.htm")
+    Observable<ResponseBO> auth(@Body QAuthBO data);
 }

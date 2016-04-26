@@ -5,16 +5,16 @@ package com.poomoo.parttimejob.ui.base;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 
 import com.poomoo.parttimejob.R;
 import com.poomoo.parttimejob.application.MyApplication;
+import com.trello.rxlifecycle.components.support.RxFragment;
 
 /**
  * 作者: 李苜菲
  * 日期: 2016/3/18 14:32.
  */
-public abstract class BaseFragment extends Fragment {
+public abstract class BaseFragment extends RxFragment {
     public String TAG = getClass().getSimpleName();
     public MyApplication application;
 

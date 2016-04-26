@@ -56,6 +56,18 @@ public class MoreActivity extends BaseActivity {
      * @param view
      */
     public void toChangePassWord(View view) {
+//        if (!application.isLogin()) {
+//            Dialog dialog = new AlertDialog.Builder(this).setMessage("请先登录").setPositiveButton("确定", (dialog1, which) -> {
+//                MainActivity.instance.finish();
+//                openActivity(LoginActivity.class);
+//                getActivityOutToRight();
+//                finish();
+//            }).setNegativeButton("取消", (dialog1, which) -> {
+//
+//            }).create();
+//            dialog.show();
+//            return;
+//        }
         openActivity(ChangePassWordActivity.class);
     }
 
@@ -74,18 +86,12 @@ public class MoreActivity extends BaseActivity {
      * @param view
      */
     public void toLogOut(View view) {
-        Dialog dialog = new AlertDialog.Builder(this).setMessage("确认退出?").setNegativeButton("取消", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-            }
-        }).setPositiveButton("确定", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                MainActivity.instance.finish();
-                openActivity(LoginActivity.class);
-                SPUtils.put(getApplicationContext(), getString(R.string.sp_isLogin), false);
-                finish();
-            }
+        Dialog dialog = new AlertDialog.Builder(this).setMessage("确认退出?").setNegativeButton("取消", (dialog1, which) -> {
+        }).setPositiveButton("确定", (dialog1, which) -> {
+            MainActivity.instance.finish();
+            openActivity(LoginActivity.class);
+            SPUtils.put(getApplicationContext(), getString(R.string.sp_isLogin), false);
+            finish();
         }).create();
         dialog.show();
     }

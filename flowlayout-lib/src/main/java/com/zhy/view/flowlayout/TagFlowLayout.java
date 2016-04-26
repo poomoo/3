@@ -25,8 +25,9 @@ public class TagFlowLayout extends FlowLayout implements TagAdapter.OnDataChange
     private int mSelectedMax = -1;//-1为不限制数量
     private static final String TAG = "TagFlowLayout";
     private MotionEvent mMotionEvent;
+    private int len = 0;
 
-    private Set<Integer> mSelectedView = new HashSet<Integer>();
+    private Set<Integer> mSelectedView = new HashSet<>();
 
 
     public TagFlowLayout(Context context, AttributeSet attrs, int defStyle) {
@@ -101,13 +102,14 @@ public class TagFlowLayout extends FlowLayout implements TagAdapter.OnDataChange
     private void changeAdapter() {
         removeAllViews();
         TagAdapter adapter = mTagAdapter;
+        len = adapter.getCount();
         TagView tagViewContainer;
         HashSet preCheckedList = mTagAdapter.getPreCheckedList();
         int cellWidth = getMeasuredWidth() / 4;
         int spaceWidth = cellWidth / 6;
         cellWidth = (getMeasuredWidth() - spaceWidth * 3) / 4;
         Log.d(TAG, "cellWidth:" + cellWidth + "getMeasuredWidth:" + getMeasuredWidth() + "getWidth()" + getWidth());
-        for (int i = 0; i < adapter.getCount(); i++) {
+        for (int i = 0; i < len; i++) {
             View tagView = adapter.getView(this, i, adapter.getItem(i));
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(cellWidth, LayoutParams.WRAP_CONTENT);
             if ((i + 1) % 4 == 0)
@@ -120,15 +122,19 @@ public class TagFlowLayout extends FlowLayout implements TagAdapter.OnDataChange
             tagViewContainer.setLayoutParams(tagView.getLayoutParams());
             tagViewContainer.addView(tagView);
             addView(tagViewContainer);
-
-            if (preCheckedList.contains(i)) {
+            if (i == 0) {
                 tagViewContainer.setChecked(true);
+                mSelectedView.add(0);
             }
 
-            if (mTagAdapter.setSelected(i, adapter.getItem(i))) {
-                mSelectedView.add(i);
-                tagViewContainer.setChecked(true);
-            }
+//            if (preCheckedList.contains(i)) {
+//                tagViewContainer.setChecked(true);
+//            }
+
+//            if (mTagAdapter.setSelected(i, adapter.getItem(i))) {
+//                mSelectedView.add(i);
+//                tagViewContainer.setChecked(true);
+//            }
         }
         mSelectedView.addAll(preCheckedList);
 
@@ -177,10 +183,14 @@ public class TagFlowLayout extends FlowLayout implements TagAdapter.OnDataChange
 
     public void reSet() {
         Iterator<Integer> iterator = mSelectedView.iterator();
-        Integer preIndex = iterator.next();
-        TagView pre = (TagView) getChildAt(preIndex);
-        pre.setChecked(false);
-        mSelectedView.remove(preIndex);
+
+        while(iterator.hasNext()){
+            Integer preIndex = iterator.next();
+            TagView pre = (TagView) getChildAt(preIndex);
+            pre.setChecked(false);
+            mSelectedView.remove(pre);
+        }
+
         TagView defaultView = (TagView) getChildAt(0);
         defaultView.setChecked(true);
         mSelectedView.add(0);
@@ -191,7 +201,7 @@ public class TagFlowLayout extends FlowLayout implements TagAdapter.OnDataChange
 
     private void doSelect(TagView child, int position) {
         if (mAutoSelectEffect) {
-            if (!child.isChecked()) {
+            if (!child.isChecked()) {//false状态
                 //处理max_select=1的情况
                 if (mSelectedMax == 1 && mSelectedView.size() == 1) {
                     Iterator<Integer> iterator = mSelectedView.iterator();
@@ -204,18 +214,55 @@ public class TagFlowLayout extends FlowLayout implements TagAdapter.OnDataChange
                 } else {
                     if (mSelectedMax > 0 && mSelectedView.size() >= mSelectedMax)
                         return;
-                    child.setChecked(true);
-                    mSelectedView.add(position);
+
+                    if (position != 0) {
+                        //设置第一个为false
+                        TagView defaultView = (TagView) getChildAt(0);
+                        defaultView.setChecked(false);
+                        mSelectedView.remove(defaultView);
+                        Log.d(TAG, "点击前是false状态1:" + position + ":" + mSelectedView.size() + "len:" + len);
+                        if (mSelectedView.size() == len - 1) {
+                            Iterator<Integer> iterator = mSelectedView.iterator();
+                            while (iterator.hasNext()) {
+                                Integer preIndex = iterator.next();
+                                TagView pre = (TagView) getChildAt(preIndex);
+                                pre.setChecked(false);
+                            }
+                            mSelectedView.clear();
+                            defaultView.setChecked(true);
+                            mSelectedView.add(0);
+                        } else {
+                            child.setChecked(true);
+                            mSelectedView.add(position);
+                        }
+                    } else {
+                        Iterator<Integer> iterator = mSelectedView.iterator();
+                        while (iterator.hasNext()) {
+                            Integer preIndex = iterator.next();
+                            TagView pre = (TagView) getChildAt(preIndex);
+                            pre.setChecked(false);
+                        }
+                        mSelectedView.clear();
+                        child.setChecked(true);
+                        mSelectedView.add(position);
+                    }
+                    Log.d(TAG, "点击前是false状态:" + position + ":" + mSelectedView.size());
                 }
-            } else if (position != 0) {
-                child.setChecked(false);
-                mSelectedView.remove(position);
-                if (mSelectedView.size() == 0) {
-                    TagView defaultView = (TagView) getChildAt(0);
-                    defaultView.setChecked(true);
-                    mSelectedView.add(0);
+            } else {//true状态
+                if (position != 0) {
+                    child.setChecked(false);
+                    mSelectedView.remove(position);
+                    Log.d(TAG, "点击前是true状态" + mSelectedView.size());
+                    if (mSelectedView.size() == 0) {
+                        TagView defaultView = (TagView) getChildAt(0);
+                        defaultView.setChecked(true);
+                        mSelectedView.add(0);
+                    }
+                } else if (position == 0) {
+
                 }
             }
+
             if (mOnSelectListener != null) {
                 mOnSelectListener.onSelected(new HashSet<>(mSelectedView));
             }

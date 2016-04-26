@@ -177,4 +177,32 @@ public class DataBaseHelper {
             list.add(areaInfo.getAreaName() + "#" + areaInfo.getAreaId());
         return list;
     }
+
+    public static List<String> getArea1(int cityId) {
+        List<String> list = new ArrayList<>();
+        list.add("不限#");
+        List<AreaInfo> areaInfos = getAreaList(cityId);
+        for (AreaInfo areaInfo : areaInfos)
+            list.add(areaInfo.getAreaName() + "#" + areaInfo.getAreaId());
+        return list;
+    }
+
+    public static String[] getProvinceCityArea(int provinceId, int cityId, int areaId) {
+        LogUtils.d(TAG, "provinceId:" + provinceId + "cityId:" + cityId + "areaId:" + areaId);
+        String[] temp = new String[3];
+        Cursor cursor = DataSupport.findBySQL("select provinceName from ProvinceInfo where provinceId = ?", provinceId + "");
+        cursor.moveToFirst();
+        temp[0] = cursor.getString(0);
+        LogUtils.d(TAG, "province:" + temp[0]);
+        cursor = DataSupport.findBySQL("select cityName from CityInfo where provinceinfo_id = ? and cityId = ?", provinceId + "", cityId + "");
+        cursor.moveToFirst();
+        temp[1] = cursor.getString(0);
+        LogUtils.d(TAG, "city:" + temp[1]);
+        cursor = DataSupport.findBySQL("select areaName from AreaInfo where cityinfo_id = ? and areaId = ?", cityId + "", areaId + "");
+        cursor.moveToFirst();
+        temp[2] = cursor.getString(0);
+        LogUtils.d(TAG, "area:" + temp[2]);
+        cursor.close();
+        return temp;
+    }
 }

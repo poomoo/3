@@ -122,6 +122,8 @@
     <string name="sp_schoolName">schoolName</string>
     <string name="sp_intoSchoolDt">intoSchoolDt</string>
     <string name="sp_idPicture">idPicture</string>
+    <string name="sp_currCityId">currCityId</string>
+    <string name="sp_currCity">currCity</string>
     <!--SharedPreference-->
 
     <!--dialog-->

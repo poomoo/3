@@ -36,7 +36,12 @@ public class MyConfig {
     public static final String cityEmpty = "请选择城市";
     public static final String areaEmpty = "请选择区域";
     public static final String workExpEmpty = "工作经验为空";
+    public static final String schoolNameEmpty = "学校为空";
+    public static final String dateEmpty = "入校年份为空";
+    public static final String idNumEmpty = "身份证号为空";
+    public static final String idNumIllegal = "身份证号不合法";
     public static final String exitApp = "再按一次退出";
+    public static final String pleaseLogin = "您还没有登录,请先登录";
 
 
     public static final String[] jobType = {"不限", "调研", "送餐员", "促销", "礼仪", "安保", "销售", "服务员", "零时工", "校内", "设计", "文员", "派单", "模特", "实习", "家教", "演出", "客服", "翻译", "其他"};

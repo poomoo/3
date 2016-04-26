@@ -10,18 +10,27 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.poomoo.commlib.LogUtils;
+import com.poomoo.commlib.MyConfig;
+import com.poomoo.commlib.MyUtils;
+import com.poomoo.commlib.SPUtils;
 import com.poomoo.commlib.picUtils.Bimp;
 import com.poomoo.commlib.picUtils.FileUtils;
+import com.poomoo.model.response.RUrl;
 import com.poomoo.parttimejob.R;
+import com.poomoo.parttimejob.presentation.AuthPresenter;
 import com.poomoo.parttimejob.ui.base.BaseActivity;
 import com.poomoo.parttimejob.ui.popup.SelectPicsPopupWindow;
+import com.poomoo.parttimejob.view.AuthView;
+import com.poomoo.parttimejob.view.PubView;
 
 import java.io.File;
 import java.io.IOException;
@@ -34,7 +43,7 @@ import butterknife.ButterKnife;
  * 作者: 李苜菲
  * 日期: 2016/4/18 11:03.
  */
-public class AuthActivity extends BaseActivity {
+public class AuthActivity extends BaseActivity implements AuthView {
     @Bind(R.id.edt_authName)
     EditText nameEdt;
     @Bind(R.id.edt_authSchoolName)
@@ -48,6 +57,12 @@ public class AuthActivity extends BaseActivity {
     @Bind(R.id.img_idCard)
     ImageView idCardImg;
 
+    private AuthPresenter authPresenter;
+    private String name;
+    private String school;
+    private String date;
+    private String idNum;
+    private String idPic;
 
     private Bitmap bitmap;
     private File file;
@@ -57,13 +72,15 @@ public class AuthActivity extends BaseActivity {
     private static final int PHOTORESOULT = 2;// 结果
 
     private static final String IMAGE_UNSPECIFIED = "image/*";
-    private final static String image_capture_path = Environment.getExternalStorageDirectory() + "/" + "partTimeJob.png";
+    private final static String image_capture_path = Environment.getExternalStorageDirectory() + "/" + "partTimeJob.temp";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setBack();
+        authPresenter = new AuthPresenter(this);
         ButterKnife.bind(this);
+        initView();
     }
 
     @Override
@@ -74,6 +91,21 @@ public class AuthActivity extends BaseActivity {
     @Override
     protected int onBindLayout() {
         return R.layout.activity_auth;
+    }
+
+    private void initView() {
+        if (!TextUtils.isEmpty((String) SPUtils.get(this, getString(R.string.sp_realName), "")))
+            nameEdt.setText((String) SPUtils.get(this, getString(R.string.sp_realName), ""));
+        if (!TextUtils.isEmpty((String) SPUtils.get(this, getString(R.string.sp_schoolName), "")))
+            schoolNameEdt.setText((String) SPUtils.get(this, getString(R.string.sp_schoolName), ""));
+        if (!TextUtils.isEmpty((String) SPUtils.get(this, getString(R.string.sp_intoSchoolDt), "")))
+            dateEdt.setText((String) SPUtils.get(this, getString(R.string.sp_intoSchoolDt), ""));
+        if (!TextUtils.isEmpty((String) SPUtils.get(this, getString(R.string.sp_idCardNum), "")))
+            idNumEdt.setText((String) SPUtils.get(this, getString(R.string.sp_idCardNum), ""));
+        if (!TextUtils.isEmpty((String) SPUtils.get(this, getString(R.string.sp_idPicture), "")))
+            Glide.with(this).load((String) SPUtils.get(this, getString(R.string.sp_idPicture), "")).into(idCardImg);
+
+        telTxt.setText(application.getTel());
     }
 
     /**
@@ -164,5 +196,68 @@ public class AuthActivity extends BaseActivity {
         idCardImg.setImageBitmap(bitmap);
         file = FileUtils.saveBitmapByPath(bitmap, image_capture_path);
         LogUtils.d(TAG, "选择的图片文件:" + file);
+    }
+
+    public void toSubmit(View view) {
+        name = nameEdt.getText().toString().trim();
+        if (TextUtils.isEmpty(name)) {
+            nameEdt.setFocusable(true);
+            nameEdt.requestFocus();
+            MyUtils.showToast(getApplicationContext(), MyConfig.nameEmpty);
+            return;
+        }
+        school = schoolNameEdt.getText().toString().trim();
+        if (TextUtils.isEmpty(school)) {
+            schoolNameEdt.setFocusable(true);
+            schoolNameEdt.requestFocus();
+            MyUtils.showToast(getApplicationContext(), MyConfig.schoolNameEmpty);
+            return;
+        }
+        date = dateEdt.getText().toString().trim();
+        if (TextUtils.isEmpty(date)) {
+            dateEdt.setFocusable(true);
+            dateEdt.requestFocus();
+            MyUtils.showToast(getApplicationContext(), MyConfig.dateEmpty);
+            return;
+        }
+        idNum = idNumEdt.getText().toString().trim();
+        if (TextUtils.isEmpty(idNum)) {
+            idNumEdt.setFocusable(true);
+            idNumEdt.requestFocus();
+            MyUtils.showToast(getApplicationContext(), MyConfig.idNumEmpty);
+            return;
+        }
+        if (idNum.length() != 18) {
+            idNumEdt.setFocusable(true);
+            idNumEdt.requestFocus();
+            MyUtils.showToast(getApplicationContext(), MyConfig.idNumIllegal);
+            return;
+        }
+        showProgressDialog(getString(R.string.dialog_msg));
+        authPresenter.uploadPic(file);
+    }
+
+    @Override
+    public void failed(String msg) {
+        closeProgressDialog();
+
+    }
+
+    @Override
+    public void upLoadSucceed(RUrl rUrl) {
+        idPic = rUrl.picUrl;
+        authPresenter.auth(application.getUserId(), name, school, date, idNum, rUrl.picUrl);
+    }
+
+    @Override
+    public void submitSucceed(String msg) {
+        closeProgressDialog();
+        MyUtils.showToast(getApplicationContext(), msg);
+        SPUtils.put(this, getString(R.string.sp_realName), name);
+        SPUtils.put(this, getString(R.string.sp_schoolName), school);
+        SPUtils.put(this, getString(R.string.sp_intoSchoolDt), date);
+        SPUtils.put(this, getString(R.string.sp_idCardNum), idNum);
+        SPUtils.put(this, getString(R.string.sp_idPicture), idPic);
+        finish();
     }
 }

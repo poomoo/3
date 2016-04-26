@@ -3,23 +3,40 @@
  */
 package com.poomoo.parttimejob.ui.fragment;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.poomoo.commlib.LogUtils;
+import com.poomoo.commlib.MyConfig;
 import com.poomoo.model.response.RApplyJobBO;
 import com.poomoo.parttimejob.R;
+import com.poomoo.parttimejob.event.Events;
+import com.poomoo.parttimejob.event.RxBus;
 import com.poomoo.parttimejob.ui.activity.AuthActivity;
 import com.poomoo.parttimejob.ui.activity.FeedBackActivity;
 import com.poomoo.parttimejob.ui.activity.JobIntentionActivity;
+import com.poomoo.parttimejob.ui.activity.LoginActivity;
 import com.poomoo.parttimejob.ui.activity.MainActivity;
 import com.poomoo.parttimejob.ui.activity.MoreActivity;
 import com.poomoo.parttimejob.ui.activity.MyApplyActivity;
 import com.poomoo.parttimejob.ui.activity.MyCollectionActivity;
 import com.poomoo.parttimejob.ui.activity.ResumeActivity;
 import com.poomoo.parttimejob.ui.base.BaseFragment;
+import com.poomoo.parttimejob.ui.custom.RoundImageView2;
+import com.trello.rxlifecycle.ActivityEvent;
+import com.trello.rxlifecycle.FragmentEvent;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -28,6 +45,12 @@ import butterknife.OnClick;
  * 日期: 2016/4/12 15:37.
  */
 public class PersonalFragment extends BaseFragment {
+    @Bind(R.id.img_personalAvatar)
+    RoundImageView2 avatarImg;
+    @Bind(R.id.txt_personalName)
+    TextView nameTxt;
+    @Bind(R.id.txt_personalAuth)
+    TextView authTxt;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -40,17 +63,50 @@ public class PersonalFragment extends BaseFragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        if (application.isLogin()) {
+            initSubscribers();
+            initView();
+        } else {
+            nameTxt.setText(MyConfig.pleaseLogin);
+            authTxt.setVisibility(View.GONE);
+        }
+
     }
 
-    @Override
-    public void onHiddenChanged(boolean hidden) {
-        super.onHiddenChanged(hidden);
-        if (!hidden)
-            MainActivity.instance.setBackGround1();
+    private void initSubscribers() {
+        RxBus.with(this)
+                .setEvent(Events.EventEnum.DELIVER_AVATAR)
+                .setEndEvent(FragmentEvent.DESTROY)
+                .onNext((events) -> {
+                    LogUtils.d(TAG, "onNext");
+                    initView();
+                }).create();
+    }
+
+    private void initView() {
+        LogUtils.d(TAG, "头像:"+application.getHeadPic());
+        if (!TextUtils.isEmpty(application.getHeadPic())) {
+            LogUtils.d(TAG, "有头像");
+            Glide.with(this).load(application.getHeadPic()).into(avatarImg);
+        }
+
+        if (!TextUtils.isEmpty(application.getRealName()))
+            nameTxt.setText(application.getRealName());
     }
 
     @OnClick({R.id.llayout_signed, R.id.llayout_hired, R.id.llayout_toPost, R.id.llayout_settleMent})
     void toApplyList(View view) {
+        if (!application.isLogin()) {
+            Dialog dialog = new AlertDialog.Builder(getActivity()).setMessage("请先登录").setPositiveButton("确定", (dialog1, which) -> {
+                MainActivity.instance.finish();
+                openActivity(LoginActivity.class);
+                getActivityOutToRight();
+            }).setNegativeButton("取消", (dialog1, which) -> {
+
+            }).create();
+            dialog.show();
+            return;
+        }
         Bundle bundle = new Bundle();
         switch (view.getId()) {
             case R.id.llayout_signed:
@@ -71,6 +127,17 @@ public class PersonalFragment extends BaseFragment {
 
     @OnClick({R.id.llayout_toResume, R.id.rlayout_myCollection, R.id.rlayout_myAuth, R.id.rlayout_setting, R.id.rlayout_feedBack, R.id.rlayout_more})
     void OnClick(View view) {
+        if (!application.isLogin()) {
+            Dialog dialog = new AlertDialog.Builder(getActivity()).setMessage("请先登录").setPositiveButton("确定", (dialog1, which) -> {
+                MainActivity.instance.finish();
+                openActivity(LoginActivity.class);
+                getActivityOutToRight();
+            }).setNegativeButton("取消", (dialog1, which) -> {
+
+            }).create();
+            dialog.show();
+            return;
+        }
         switch (view.getId()) {
             case R.id.llayout_toResume:
                 openActivity(ResumeActivity.class);
@@ -92,4 +159,12 @@ public class PersonalFragment extends BaseFragment {
                 break;
         }
     }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (!hidden)
+            MainActivity.instance.setBackGround1();
+    }
+
 }

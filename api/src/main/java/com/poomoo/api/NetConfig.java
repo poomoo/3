@@ -20,8 +20,9 @@ public class NetConfig {
     public final static String REGISTER = "10004";//注册
     public final static String LOGIN = "10005";//登录
     public final static String RESET = "10008";//重置密码
-    public final static String RESUMEDOWN = "10009";//修改简历
-    public final static String RESUMEUP = "10010";//修改简历
+    public final static String RESUMEDOWN = "10009";//下载简历
+    public final static String RESUMEUP = "10010";//上传简历
+    public final static String AUTH = "10013";//实名认证
 
     /*action 20000*/
     public final static String JOBACTION = "20000";//职位相关统一业务编号

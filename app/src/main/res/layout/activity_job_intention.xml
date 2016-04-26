@@ -59,7 +59,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
                     android:layout_marginRight="20dp"
-                    zhy:max_select="1" />
+                    zhy:max_select="-1" />
 
                 <RadioGroup
                     android:layout_width="match_parent"
@@ -504,7 +504,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
                     android:layout_marginRight="20dp"
-                    zhy:max_select="1" />
+                    zhy:max_select="-1" />
             </LinearLayout>
 
             <LinearLayout
@@ -555,8 +555,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp"
-                android:onClick="toConfirm"
                 android:layout_marginTop="20dp"
+                android:onClick="toConfirm"
                 android:text="@string/btn_confirm" />
         </LinearLayout>
     </ScrollView>

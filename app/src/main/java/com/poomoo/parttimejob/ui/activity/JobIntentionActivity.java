@@ -16,12 +16,18 @@ import com.poomoo.commlib.LogUtils;
 import com.poomoo.commlib.MyConfig;
 import com.poomoo.commlib.MyUtils;
 import com.poomoo.parttimejob.R;
+import com.poomoo.parttimejob.database.AreaInfo;
+import com.poomoo.parttimejob.database.DataBaseHelper;
+import com.poomoo.parttimejob.database.TypeInfo;
 import com.poomoo.parttimejob.ui.base.BaseActivity;
 import com.poomoo.parttimejob.ui.custom.FreeTimeView;
 import com.zhy.view.flowlayout.FlowLayout;
 import com.zhy.view.flowlayout.TagAdapter;
 import com.zhy.view.flowlayout.TagFlowLayout;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 import butterknife.Bind;
@@ -42,7 +48,11 @@ public class JobIntentionActivity extends BaseActivity {
     @Bind(R.id.flayout_zone)
     TagFlowLayout zoneFlayout;
 
-    private String[] zone = {"不限", "南明", "修文县", "息烽县", "开阳县", "小河", "白云", "乌当", "花溪", "云岩", "清镇市"};
+    //    private String[] zone = {"不限", "南明", "修文县", "息烽县", "开阳县", "小河", "白云", "乌当", "花溪", "云岩", "清镇市"};
+    private List<String> typeInfos;
+    private List<String> areaInfos;
+    private String cateId = "";
+    private String areaId = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,56 +82,73 @@ public class JobIntentionActivity extends BaseActivity {
     }
 
     private void initJobType(final LayoutInflater mInflater) {
-        typeFlayout.setAdapter(new TagAdapter<String>(MyConfig.jobType) {
+        typeInfos = DataBaseHelper.getType();
+        typeFlayout.setAdapter(new TagAdapter<String>(typeInfos) {
             @Override
             public View getView(FlowLayout parent, int position, String s) {
                 TextView tv = (TextView) mInflater.inflate(R.layout.tv, typeFlayout, false);
-                tv.setText(s);
+                tv.setText(s.split("#")[0]);
                 return tv;
             }
 
+
             @Override
             public boolean setSelected(int position, String s) {
-                return s.equals(MyConfig.jobType[0]);
+                return s.equals(typeInfos.get(position));
+            }
+
+            @Override
+            public void setSelectedList(int... pos) {
+                super.setSelectedList(pos);
             }
         });
 
-        typeFlayout.setOnTagClickListener(new TagFlowLayout.OnTagClickListener() {
-            @Override
-            public boolean onTagClick(View view, int position, FlowLayout parent) {
-                MyUtils.showToast(getApplicationContext(), "兼职类型" + MyConfig.jobType[position]);
-                return true;
-            }
+
+        typeFlayout.setOnTagClickListener((view, position, parent) -> {
+//            MyUtils.showToast(getApplicationContext(), "兼职类型" + typeInfos.get(position));
+            return true;
         });
     }
 
     private void initJobZone(final LayoutInflater mInflater) {
-        zoneFlayout.setAdapter(new TagAdapter<String>(zone) {
-
+        areaInfos = DataBaseHelper.getArea1(application.getCurrCityId());
+        zoneFlayout.setAdapter(new TagAdapter<String>(areaInfos) {
             @Override
             public View getView(FlowLayout parent, int position, String s) {
                 TextView tv = (TextView) mInflater.inflate(R.layout.tv, zoneFlayout, false);
-                tv.setText(s);
+                tv.setText(s.split("#")[0]);
                 return tv;
             }
 
             @Override
             public boolean setSelected(int position, String s) {
-                return s.equals(zone[0]);
+                return s.equals(areaInfos.get(position));
             }
+
         });
-        zoneFlayout.setOnTagClickListener(new TagFlowLayout.OnTagClickListener() {
-            @Override
-            public boolean onTagClick(View view, int position, FlowLayout parent) {
-                MyUtils.showToast(getApplicationContext(), "兼职地点" + zone[position]);
-                return true;
-            }
+
+        zoneFlayout.setOnTagClickListener((view, position, parent) -> {
+//            MyUtils.showToast(getApplicationContext(), "兼职地点" + areaInfos.get(position));
+            return true;
         });
 
     }
 
     public void toConfirm(View view) {
-        LogUtils.d(TAG, "" + zoneFlayout.getSelectedList().iterator().next());
+        Iterator<Integer> itType = typeFlayout.getSelectedList().iterator();
+        while (itType.hasNext()) {
+            String temp[] = typeInfos.get(itType.next()).split("#");
+            cateId += temp.length == 2 ? temp[1] + "," : "";
+        }
+
+        Iterator<Integer> itArea = zoneFlayout.getSelectedList().iterator();
+        while (itArea.hasNext()) {
+            String temp[] = areaInfos.get(itArea.next()).split("#");
+            areaId += temp.length == 2 ? temp[1] + "," : "";
+        }
+        cateId = cateId.length() > 0 ? cateId.substring(0, cateId.length() - 1) : "";
+        areaId = areaId.length() > 0 ? areaId.substring(0, areaId.length() - 1):"";
+        LogUtils.d(TAG, "cateId:" + cateId + "areaId:" + areaId);
     }
 
     /**

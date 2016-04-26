@@ -19,6 +19,7 @@ import com.poomoo.parttimejob.R;
 import com.poomoo.parttimejob.adapter.BaseListAdapter;
 import com.poomoo.parttimejob.application.MyApplication;
 import com.poomoo.parttimejob.ui.custom.ErrorLayout;
+import com.trello.rxlifecycle.components.support.RxAppCompatActivity;
 
 import java.util.Iterator;
 import java.util.List;
@@ -27,7 +28,7 @@ import java.util.List;
  * 作者: 李苜菲
  * 日期: 2016/3/18 14:35.
  */
-public abstract class BaseActivity extends AppCompatActivity {
+public abstract class BaseActivity extends RxAppCompatActivity {
     //日志标签
     public String TAG = getClass().getSimpleName();
     //进度对话框
