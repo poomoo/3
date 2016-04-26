@@ -116,6 +116,7 @@ public class DataBaseHelper {
      * @return
      */
     public static List<AreaInfo> getAreaList(int cityId) {
+        LogUtils.d(TAG, "getAreaList:" + cityId);
         List<AreaInfo> areaList = DataSupport.where("cityinfo_id = ?", cityId + "").find(AreaInfo.class);
         return areaList;
     }

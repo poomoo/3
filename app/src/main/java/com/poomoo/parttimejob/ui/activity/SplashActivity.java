@@ -68,6 +68,7 @@ public class SplashActivity extends BaseActivity {
                 application.setIdCardNum((String) SPUtils.get(getApplicationContext(), getString(R.string.sp_idCardNum), ""));
                 application.setHeadPic((String) SPUtils.get(getApplicationContext(), getString(R.string.sp_headPic), ""));
                 LogUtils.d(TAG, "HeadPic:" + application.getHeadPic());
+                LogUtils.d(TAG, "CurrCityId:" + application.getCurrCityId());
                 application.setLogin(true);
                 openActivity(MainActivity.class);
                 finish();

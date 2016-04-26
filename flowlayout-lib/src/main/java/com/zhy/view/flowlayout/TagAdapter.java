@@ -1,5 +1,6 @@
 package com.zhy.view.flowlayout;
 
+import android.util.Log;
 import android.view.View;
 
 import java.util.ArrayList;
@@ -15,11 +16,12 @@ public abstract class TagAdapter<T> {
 
     public TagAdapter(List<T> datas) {
         mTagDatas = datas;
+        Log.d("TagAdapter","mTagDatas:"+mTagDatas.size());
     }
 
-    public TagAdapter(T[] datas) {
-        mTagDatas = new ArrayList<T>(Arrays.asList(datas));
-    }
+//    public TagAdapter(T[] datas) {
+//        mTagDatas = new ArrayList<T>(Arrays.asList(datas));
+//    }
 
     static interface OnDataChangedListener {
         void onChanged();
@@ -29,9 +31,9 @@ public abstract class TagAdapter<T> {
         mOnDataChangedListener = listener;
     }
 
-    public void setSelectedList(int... pos) {
-        for (int i = 0; i < pos.length; i++)
-            mCheckedPosList.add(pos[i]);
+    public void setSelectedList(List<Integer> pos) {
+        for (int i = 0; i < pos.size(); i++)
+            mCheckedPosList.add(pos.get(i));
         notifyDataChanged();
     }
 

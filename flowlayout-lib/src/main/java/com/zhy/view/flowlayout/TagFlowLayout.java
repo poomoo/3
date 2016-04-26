@@ -122,14 +122,15 @@ public class TagFlowLayout extends FlowLayout implements TagAdapter.OnDataChange
             tagViewContainer.setLayoutParams(tagView.getLayoutParams());
             tagViewContainer.addView(tagView);
             addView(tagViewContainer);
-            if (i == 0) {
+            if (i == 0 && preCheckedList.size() == 0) {
                 tagViewContainer.setChecked(true);
                 mSelectedView.add(0);
             }
 
-//            if (preCheckedList.contains(i)) {
-//                tagViewContainer.setChecked(true);
-//            }
+            if (preCheckedList.contains(i)) {
+                tagViewContainer.setChecked(true);
+                mSelectedView.add(i);
+            }
 
 //            if (mTagAdapter.setSelected(i, adapter.getItem(i))) {
 //                mSelectedView.add(i);
@@ -184,7 +185,7 @@ public class TagFlowLayout extends FlowLayout implements TagAdapter.OnDataChange
     public void reSet() {
         Iterator<Integer> iterator = mSelectedView.iterator();
 
-        while(iterator.hasNext()){
+        while (iterator.hasNext()) {
             Integer preIndex = iterator.next();
             TagView pre = (TagView) getChildAt(preIndex);
             pre.setChecked(false);

@@ -22,6 +22,8 @@ public class NetConfig {
     public final static String RESET = "10008";//重置密码
     public final static String RESUMEDOWN = "10009";//下载简历
     public final static String RESUMEUP = "10010";//上传简历
+    public final static String INTENTIONDOWN = "10011";//求职意向
+    public final static String INTENTIONUP = "10012";//求职意向
     public final static String AUTH = "10013";//实名认证
 
     /*action 20000*/

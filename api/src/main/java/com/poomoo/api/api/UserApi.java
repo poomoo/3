@@ -5,11 +5,13 @@ package com.poomoo.api.api;
 
 import com.poomoo.model.request.QAuthBO;
 import com.poomoo.model.request.QCodeBO;
+import com.poomoo.model.request.QJobIntentionBO;
 import com.poomoo.model.request.QLoginBO;
 import com.poomoo.model.request.QRegisterBO;
 import com.poomoo.model.request.QResetPDBO;
 import com.poomoo.model.request.QResumeBO;
 import com.poomoo.model.request.QUserIdBO;
+import com.poomoo.model.response.RIntentionBO;
 import com.poomoo.model.response.RResumeBO;
 import com.poomoo.model.response.RUserBO;
 import com.poomoo.model.response.ResponseBO;
@@ -39,4 +41,10 @@ public interface UserApi {
 
     @POST("lzrb/app/call.htm")
     Observable<ResponseBO> auth(@Body QAuthBO data);
+
+    @POST("lzrb/app/call.htm")
+    Observable<ResponseBO> jobIntentionUp(@Body QJobIntentionBO data);
+
+    @POST("lzrb/app/call.htm")
+    Observable<RIntentionBO> jobIntentionDown(@Body QUserIdBO data);
 }

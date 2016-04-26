@@ -7,10 +7,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
-import android.graphics.Typeface;
-import android.text.TextUtils;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.util.SparseArray;
 import android.view.MotionEvent;
 import android.view.View;
@@ -18,8 +15,7 @@ import android.view.View;
 import com.poomoo.commlib.LogUtils;
 import com.poomoo.parttimejob.R;
 
-import java.util.Calendar;
-import java.util.Date;
+import java.util.List;
 
 /**
  * 空闲时间选择控件
@@ -58,6 +54,13 @@ public class FreeTimeView extends View implements View.OnTouchListener {
     public void clearAll() {
         for (int i = 0; i < row * column; i++)
             sparseArray.put(i, false);
+        invalidate();
+    }
+
+    public void setSelected(List<Integer> selected) {
+        int len = selected.size();
+        for (int i = 0; i < len; i++)
+            sparseArray.put(selected.get(i), true);
         invalidate();
     }
 

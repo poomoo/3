@@ -62,8 +62,8 @@ public class LocaleService extends Service {
 
         @Override
         public void onReceiveLocation(BDLocation location) {
-            LogUtils.d(TAG, "location.getLongitude():" + location.getLongitude() + "location.getLatitude():"
-                    + location.getLatitude() + "location.getCity():" + location.getCity());
+//            LogUtils.d(TAG, "location.getLongitude():" + location.getLongitude() + "location.getLatitude():"
+//                    + location.getLatitude() + "location.getCity():" + location.getCity());
             application.setLat(location.getLatitude());
             application.setLng(location.getLongitude());
         }
