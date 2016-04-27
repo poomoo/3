@@ -19,6 +19,7 @@ import com.poomoo.parttimejob.ui.base.BaseActivity;
 import com.poomoo.parttimejob.ui.fragment.JobFragment;
 import com.poomoo.parttimejob.ui.fragment.MainFragment;
 import com.poomoo.parttimejob.ui.fragment.PersonalFragment;
+import com.poomoo.parttimejob.ui.fragment.ServiceFragment;
 import com.trello.rxlifecycle.components.RxFragment;
 
 import butterknife.Bind;
@@ -35,6 +36,7 @@ public class MainActivity extends BaseActivity {
 
     private Fragment mainFragment;
     private Fragment jobFragment;
+    private Fragment serviceFragment;
     private Fragment personalFragment;
     private Fragment curFragment;
     private long exitTime = 0;
@@ -88,6 +90,10 @@ public class MainActivity extends BaseActivity {
                 curFragment = jobFragment;
                 break;
             case R.id.rbtn_message:
+                if (serviceFragment == null)
+                    serviceFragment = Fragment.instantiate(this, ServiceFragment.class.getName());
+                switchFragment(serviceFragment);
+                curFragment = serviceFragment;
                 break;
             case R.id.rbtn_personal:
                 if (personalFragment == null)

@@ -156,6 +156,7 @@ public class LoginActivity extends BaseActivity implements LoginView {
         }
         this.application.setUserId(rUserBO.userId);
         this.application.setNickName(rUserBO.nickName);
+        this.application.setRealName(rUserBO.realName);
         this.application.setHeadPic(rUserBO.headPic);
         this.application.setSchoolName(rUserBO.schoolName);
         this.application.setIntoSchoolDt(rUserBO.intoSchoolDt);
@@ -172,6 +173,7 @@ public class LoginActivity extends BaseActivity implements LoginView {
 
         SPUtils.put(getApplicationContext(), getString(R.string.sp_userId), application.getUserId());
         SPUtils.put(getApplicationContext(), getString(R.string.sp_nickName), application.getNickName());
+        SPUtils.put(getApplicationContext(), getString(R.string.sp_realName), application.getRealName());
         SPUtils.put(getApplicationContext(), getString(R.string.sp_headPic), application.getHeadPic());
         SPUtils.put(getApplicationContext(), getString(R.string.sp_schoolName), application.getSchoolName());
         SPUtils.put(getApplicationContext(), getString(R.string.sp_intoSchoolDt), application.getIntoSchoolDt());

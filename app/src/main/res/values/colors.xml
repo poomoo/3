@@ -15,6 +15,7 @@
     <color name="colorHeight">#9A9A9A</color>
     <color name="colorApplicantInfoBg">#CFEFEA</color>
     <color name="colorCalendarTitle">#FE6300</color>
+    <color name="colorMessage">#D6D6D6</color>
 
     <color name="transparent">#00000000</color>
     <color name="transparentBlack">#55000000</color>

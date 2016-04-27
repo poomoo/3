@@ -9,21 +9,29 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.GridView;
 import android.widget.TextView;
 
 import com.poomoo.commlib.MyUtils;
+import com.poomoo.model.Page;
+import com.poomoo.model.base.BaseJobBO;
 import com.poomoo.model.response.RApplicantBO;
 import com.poomoo.model.response.RJobInfoBO;
 import com.poomoo.parttimejob.R;
+import com.poomoo.parttimejob.adapter.BaseListAdapter;
 import com.poomoo.parttimejob.adapter.GridAdapter;
+import com.poomoo.parttimejob.adapter.JobsAdapter;
 import com.poomoo.parttimejob.presentation.JobInfoPresenter;
 import com.poomoo.parttimejob.ui.base.BaseActivity;
 import com.poomoo.parttimejob.view.JobInfoView;
+import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import butterknife.Bind;
@@ -55,6 +63,8 @@ public class JobInfoActivity extends BaseActivity implements JobInfoView {
     TextView telTxt;
     @Bind(R.id.grid_applicants)
     GridView gridView;
+    @Bind(R.id.recycler_jobInfo)
+    RecyclerView recyclerView;
 
     private JobInfoPresenter jobInfoPresenter;
     private int[] pics = {R.drawable.ic_1, R.drawable.ic_2, R.drawable.ic_3, R.drawable.ic_4};
@@ -62,15 +72,15 @@ public class JobInfoActivity extends BaseActivity implements JobInfoView {
     private GridAdapter adapter;
     private List<RApplicantBO> rApplicantBOs = new ArrayList<>();
     private RApplicantBO rApplicantBO;
+    private JobsAdapter jobsAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setBack();
         ButterKnife.bind(this);
-        jobInfoPresenter = new JobInfoPresenter(this);
-        showProgressDialog(getString(R.string.dialog_msg));
-        jobInfoPresenter.queryJobInfo(getIntent().getIntExtra(getString(R.string.intent_value), -1));
+
+        initView();
     }
 
     @Override
@@ -82,6 +92,19 @@ public class JobInfoActivity extends BaseActivity implements JobInfoView {
     protected int onBindLayout() {
         return R.layout.activity_job_info;
     }
+
+    private void initView() {
+        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        recyclerView.addItemDecoration(new HorizontalDividerItemDecoration.Builder(this)
+                .color(getResources().getColor(R.color.transparent))
+                .size((int) getResources().getDimension(R.dimen.divider_height5))
+                .build());
+        jobInfoPresenter = new JobInfoPresenter(this);
+        showProgressDialog(getString(R.string.dialog_msg));
+        jobInfoPresenter.queryJobInfo(getIntent().getIntExtra(getString(R.string.intent_value), -1));
+        jobInfoPresenter.queryRecommendJobs(1);
+    }
+
 
     @Override
     public void succeed(RJobInfoBO rJobInfoBO) {
@@ -113,6 +136,12 @@ public class JobInfoActivity extends BaseActivity implements JobInfoView {
             rApplicantBO.registDt = "2016-01-25";
             rApplicantBOs.add(rApplicantBO);
         }
+    }
+
+    @Override
+    public void loadRecommendsSucceed(List<BaseJobBO> rAdBOs) {
+        if (rAdBOs == null) return;
+        jobsAdapter.addItems(0, rAdBOs);
     }
 
     @Override

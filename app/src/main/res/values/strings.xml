@@ -49,6 +49,8 @@
     <string name="title_resume">个人简历</string>
     <string name="title_auth">实名认证</string>
     <string name="title_jobIntention">求职意向设置</string>
+    <string name="title_about">关于灵智博睿</string>
+    <string name="title_message">信息中心</string>
     <!--title-->
 
     <!--标签-->
@@ -98,10 +100,12 @@
     <string name="btn_confirm">确认</string>
     <string name="btn_register">注册</string>
     <string name="btn_submit">提交</string>
+    <string name="btn_reply">回复</string>
     <!--btn-->
 
     <!--intent-->
     <string name="intent_value">value</string>
+    <string name="intent_msgId">msgId</string>
     <!--intent-->
 
     <!--城市列表-->

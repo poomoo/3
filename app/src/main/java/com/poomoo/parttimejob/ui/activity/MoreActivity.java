@@ -77,7 +77,7 @@ public class MoreActivity extends BaseActivity {
      * @param view
      */
     public void toAbout(View view) {
-
+        openActivity(AboutActivity.class);
     }
 
     /**

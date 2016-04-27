@@ -40,6 +40,10 @@ public class NetConfig {
     public final static String COMMACTION = "30000";//公共接口统一业务编号
     public final static String AD = "30001";//广告
     public final static String CITY = "30002";//城市列表
-    public final static String UPLOAD = "30003";//图片上传
     public final static String FEEDBACK = "30004";//反馈
+    public final static String SERVICELIST = "30005";//客服列表
+    public final static String MESSAGELIST = "30006";//聊天记录
+    public final static String MESSAGEUP = "30007";//发送聊天
+    public final static String ABOUT = "30008";//关于
+
 }

@@ -28,6 +28,7 @@ import com.poomoo.parttimejob.event.RxBus;
 import com.poomoo.parttimejob.presentation.JobListPresenter;
 import com.poomoo.parttimejob.ui.activity.CityListActivity;
 import com.poomoo.parttimejob.ui.activity.FilterActivity;
+import com.poomoo.parttimejob.ui.activity.JobInfoActivity;
 import com.poomoo.parttimejob.ui.activity.MainActivity;
 import com.poomoo.parttimejob.ui.base.BaseFragment;
 import com.poomoo.parttimejob.ui.custom.ErrorLayout;
@@ -274,7 +275,9 @@ public class JobFragment extends BaseFragment implements JobView, BaseListAdapte
 
     @Override
     public void onItemClick(int position, long id, View view) {
-
+        Bundle bundle = new Bundle();
+        bundle.putInt(getString(R.string.intent_value), adapter.getItem(position).jobId);
+        openActivity(JobInfoActivity.class, bundle);
     }
 
     @Override

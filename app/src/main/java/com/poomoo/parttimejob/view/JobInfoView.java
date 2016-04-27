@@ -3,7 +3,10 @@
  */
 package com.poomoo.parttimejob.view;
 
+import com.poomoo.model.base.BaseJobBO;
 import com.poomoo.model.response.RJobInfoBO;
+
+import java.util.List;
 
 /**
  * 作者: 李苜菲
@@ -11,4 +14,6 @@ import com.poomoo.model.response.RJobInfoBO;
  */
 public interface JobInfoView extends BaseView {
     void succeed(RJobInfoBO rJobInfoBO);
+
+    void loadRecommendsSucceed(List<BaseJobBO> rAdBOs);
 }

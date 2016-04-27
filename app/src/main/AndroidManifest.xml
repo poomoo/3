@@ -47,6 +47,8 @@
         <activity android:name=".ui.activity.AuthActivity" />
         <activity android:name=".ui.activity.JobIntentionActivity" />
         <activity android:name=".ui.activity.SignUpActivity" />
+        <activity android:name=".ui.activity.AboutActivity" />
+        <activity android:name=".ui.activity.MessageActivity" />
 
         <service
             android:name="com.baidu.location.f"
