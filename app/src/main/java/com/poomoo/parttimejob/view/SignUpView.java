@@ -7,5 +7,6 @@ package com.poomoo.parttimejob.view;
  * 作者: 李苜菲
  * 日期: 2016/4/9 12:09.
  */
-public interface SignUpView {
+public interface SignUpView extends BaseView {
+    void succeed(String msg);
 }

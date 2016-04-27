@@ -16,4 +16,8 @@ public interface JobInfoView extends BaseView {
     void succeed(RJobInfoBO rJobInfoBO);
 
     void loadRecommendsSucceed(List<BaseJobBO> rAdBOs);
+
+    void collectSucceed(String msg);
+
+    void collectFailed(String msg);
 }

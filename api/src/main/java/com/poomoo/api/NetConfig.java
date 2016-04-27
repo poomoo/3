@@ -32,9 +32,12 @@ public class NetConfig {
     public final static String RECOMMENDLIST = "20002";//推荐职位
     public final static String SEARCHLIST = "20003";//搜素职位
     public final static String JOBINFO = "20004";//职位详情
+    public final static String CATEJOBLIST = "20005";//按种类查询
     public final static String ALLJOBLIST = "20006";//所有的职位
     public final static String APPLYLIST = "20007";//我的申请
     public final static String COLLECTIONLIST = "20008";//我的收藏
+    public final static String SIGNUP = "20010";//报名
+    public final static String COLLECT = "20011";//收藏
 
     /*action 30000*/
     public final static String COMMACTION = "30000";//公共接口统一业务编号

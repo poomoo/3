@@ -33,4 +33,6 @@ public class BaseJobBO extends Entity {
     public String publishDt;//发布时间
     public String areaName;//区名
     public String applyDt;//申请时间
+    public String collectDt;//收藏时间
+    public String icon;
 }

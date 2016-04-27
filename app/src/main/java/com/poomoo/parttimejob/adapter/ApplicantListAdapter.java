@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.poomoo.commlib.LogUtils;
 import com.poomoo.commlib.MyDateFormat;
 import com.poomoo.commlib.MyUtils;
@@ -37,7 +38,7 @@ public class ApplicantListAdapter extends BaseListAdapter<RApplicantBO> {
 
     @Override
     protected void onBindDefaultViewHolder(RecyclerView.ViewHolder h, int position) {
-        LogUtils.d("ApplicantListAdapter","onBindDefaultViewHolder:"+position);
+        LogUtils.d("ApplicantListAdapter", "onBindDefaultViewHolder:" + position);
         ViewHolder holder = (ViewHolder) h;
         RApplicantBO item = items.get(position);
         holder.nameTxt.setText(item.nickName);
@@ -49,10 +50,11 @@ public class ApplicantListAdapter extends BaseListAdapter<RApplicantBO> {
             holder.sexTxt.setBackgroundResource(R.drawable.style_label_female);
         }
         holder.intentTxt.setText(item.intention);
+        Glide.with(mContext).load(item.headPic).placeholder(R.drawable.ic_login_logo).into(holder.avatarImg);
     }
 
     public static final class ViewHolder extends RecyclerView.ViewHolder {
-        @Bind(R.id.img_avatar)
+        @Bind(R.id.img_applicantAvatar)
         ImageView avatarImg;
         @Bind(R.id.txt_applicantName)
         TextView nameTxt;

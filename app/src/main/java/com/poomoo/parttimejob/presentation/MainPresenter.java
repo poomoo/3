@@ -10,8 +10,10 @@ import com.poomoo.api.Network;
 import com.poomoo.model.Page;
 import com.poomoo.model.base.BaseJobBO;
 import com.poomoo.model.base.BaseRequestBO;
+import com.poomoo.model.request.QJobTypeBO;
 import com.poomoo.model.request.QRecommendBO;
 import com.poomoo.model.response.RAdBO;
+import com.poomoo.model.response.RTypeBO;
 import com.poomoo.parttimejob.view.MainView;
 
 import java.util.List;
@@ -47,6 +49,24 @@ public class MainPresenter extends BasePresenter {
                     @Override
                     public void onNext(List<RAdBO> rAdBOs) {
                         mainView.loadAdSucceed(rAdBOs);
+                    }
+                }));
+    }
+
+    public void loadCate() {
+        QJobTypeBO qJobTypeBO = new QJobTypeBO(NetConfig.JOBACTION, NetConfig.JOBTYPE, 1);
+        mSubscriptions.add(Network.getJobApi().getType(qJobTypeBO)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new AbsAPICallback<List<RTypeBO>>() {
+                    @Override
+                    protected void onError(ApiException e) {
+                        mainView.failed(e.getMessage());
+                    }
+
+                    @Override
+                    public void onNext(List<RTypeBO> rTypeBOs) {
+                        mainView.loadTypeSucceed(rTypeBOs);
                     }
                 }));
     }

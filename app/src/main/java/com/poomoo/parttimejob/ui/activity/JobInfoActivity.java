@@ -13,8 +13,10 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.poomoo.commlib.MyConfig;
 import com.poomoo.commlib.MyUtils;
 import com.poomoo.model.Page;
 import com.poomoo.model.base.BaseJobBO;
@@ -65,6 +67,10 @@ public class JobInfoActivity extends BaseActivity implements JobInfoView {
     GridView gridView;
     @Bind(R.id.recycler_jobInfo)
     RecyclerView recyclerView;
+    @Bind(R.id.img_collect)
+    ImageView collectImg;
+    @Bind(R.id.txt_collet)
+    TextView collectTxt;
 
     private JobInfoPresenter jobInfoPresenter;
     private int[] pics = {R.drawable.ic_1, R.drawable.ic_2, R.drawable.ic_3, R.drawable.ic_4};
@@ -73,6 +79,7 @@ public class JobInfoActivity extends BaseActivity implements JobInfoView {
     private List<RApplicantBO> rApplicantBOs = new ArrayList<>();
     private RApplicantBO rApplicantBO;
     private JobsAdapter jobsAdapter;
+    private int jobId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,53 +111,9 @@ public class JobInfoActivity extends BaseActivity implements JobInfoView {
 
         jobInfoPresenter = new JobInfoPresenter(this);
         showProgressDialog(getString(R.string.dialog_msg));
-        jobInfoPresenter.queryJobInfo(getIntent().getIntExtra(getString(R.string.intent_value), -1));
+        jobId = getIntent().getIntExtra(getString(R.string.intent_value), -1);
+        jobInfoPresenter.queryJobInfo(jobId);
         jobInfoPresenter.queryRecommendJobs(1);
-    }
-
-
-    @Override
-    public void succeed(RJobInfoBO rJobInfoBO) {
-        closeProgressDialog();
-        payTxt.setText(MyUtils.formatPay(rJobInfoBO.pay, false));
-        browseTxt.setText(rJobInfoBO.browseNum + "");
-        jobNameTxt.setText(rJobInfoBO.jobName);
-        jobTypeTxt.setText(rJobInfoBO.cateName);
-        jobSexTxt.setText(rJobInfoBO.sexReq);
-        jobAreaTxt.setText(rJobInfoBO.areaName);
-        jobPubDateTxt.setText(rJobInfoBO.publishDt);
-        jobDescTxt.setText(rJobInfoBO.jobDesc);
-        telTxt.setText(rJobInfoBO.contactTel);
-
-        adapter = new GridAdapter(this);
-        gridView.setAdapter(adapter);
-        for (Integer integer : pics)
-            integers.add(integer);
-        adapter.addItems(integers);
-
-        for (int i = 0; i < 10; i++) {
-            rApplicantBO = new RApplicantBO();
-            rApplicantBO.age = i + 20;
-            rApplicantBO.sex = i % 2 == 0 ? 1 : 2;
-            rApplicantBO.nickName = "安卓" + i;
-            rApplicantBO.intention = "求职意向你擦不到" + i;
-            rApplicantBO.height = "165cm";
-            rApplicantBO.schoolName = "北京姑娘大学";
-            rApplicantBO.registDt = "2016-01-25";
-            rApplicantBOs.add(rApplicantBO);
-        }
-    }
-
-    @Override
-    public void loadRecommendsSucceed(List<BaseJobBO> rAdBOs) {
-        if (rAdBOs == null) return;
-        jobsAdapter.addItems(0, rAdBOs);
-    }
-
-    @Override
-    public void failed(String msg) {
-        closeProgressDialog();
-        MyUtils.showToast(getApplicationContext(), msg);
     }
 
     /**
@@ -159,6 +122,10 @@ public class JobInfoActivity extends BaseActivity implements JobInfoView {
      * @param view
      */
     public void dial(View view) {
+        if(!application.isLogin()){
+            MyUtils.showToast(getApplicationContext(), MyConfig.pleaseLogin);
+            return;
+        }
         Dialog dialog = new AlertDialog.Builder(this).setMessage("拨打电话" + telTxt.getText()).setNegativeButton("取消", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -175,12 +142,29 @@ public class JobInfoActivity extends BaseActivity implements JobInfoView {
     }
 
     /**
+     * 更多
+     *
+     * @param view
+     */
+    public void more(View view) {
+        if(!application.isLogin()){
+            MyUtils.showToast(getApplicationContext(), MyConfig.pleaseLogin);
+            return;
+        }
+        openActivity(MoreJobsActivity.class);
+    }
+
+    /**
      * 收藏
      *
      * @param view
      */
     public void collect(View view) {
-
+        if(!application.isLogin()){
+            MyUtils.showToast(getApplicationContext(), MyConfig.pleaseLogin);
+            return;
+        }
+        jobInfoPresenter.collet(jobId, application.getUserId());
     }
 
     /**
@@ -189,7 +173,13 @@ public class JobInfoActivity extends BaseActivity implements JobInfoView {
      * @param view
      */
     public void signIn(View view) {
-        openActivity(SignUpActivity.class);
+        if(!application.isLogin()){
+            MyUtils.showToast(getApplicationContext(), MyConfig.pleaseLogin);
+            return;
+        }
+        Bundle bundle = new Bundle();
+        bundle.putInt(getString(R.string.intent_value), jobId);
+        openActivity(SignUpActivity.class, bundle);
     }
 
     /**
@@ -198,10 +188,70 @@ public class JobInfoActivity extends BaseActivity implements JobInfoView {
      * @param view
      */
     public void allApplicants(View view) {
+        if(!application.isLogin()){
+            MyUtils.showToast(getApplicationContext(), MyConfig.pleaseLogin);
+            return;
+        }
         Bundle bundle = new Bundle();
         bundle.putSerializable(getString(R.string.intent_value), (Serializable) rApplicantBOs);
         openActivity(ApplicantListActivity.class, bundle);
     }
 
+    @Override
+    public void succeed(RJobInfoBO rJobInfoBO) {
+        closeProgressDialog();
+        payTxt.setText(MyUtils.formatPay(rJobInfoBO.pay, false));
+        browseTxt.setText(rJobInfoBO.browseNum + "");
+        jobNameTxt.setText(rJobInfoBO.jobName);
+        jobTypeTxt.setText(rJobInfoBO.cateName);
+        jobSexTxt.setText(rJobInfoBO.sexReq);
+        jobAreaTxt.setText(rJobInfoBO.areaName);
+        jobPubDateTxt.setText(rJobInfoBO.publishDt);
+        jobDescTxt.setText(rJobInfoBO.jobDesc);
+        telTxt.setText(rJobInfoBO.contactTel);
 
+        adapter = new GridAdapter(this);
+        gridView.setAdapter(adapter);
+        rApplicantBOs = rJobInfoBO.applyList;
+        adapter.addItems(rApplicantBOs);
+
+//        for (Integer integer : pics)
+
+//        for (int i = 0; i < 10; i++) {
+//            rApplicantBO = new RApplicantBO();
+//            rApplicantBO.age = i + 20;
+//            rApplicantBO.sex = i % 2 == 0 ? 1 : 2;
+//            rApplicantBO.nickName = "安卓" + i;
+//            rApplicantBO.intention = "求职意向你擦不到" + i;
+//            rApplicantBO.height = "165cm";
+//            rApplicantBO.schoolName = "北京姑娘大学";
+//            rApplicantBO.registDt = "2016-01-25";
+//            rApplicantBOs.add(rApplicantBO);
+//        }
+    }
+
+    @Override
+    public void loadRecommendsSucceed(List<BaseJobBO> rAdBOs) {
+        if (rAdBOs == null) return;
+        jobsAdapter.addItems(0, rAdBOs);
+    }
+
+    @Override
+    public void collectSucceed(String msg) {
+        MyUtils.showToast(getApplicationContext(), "收藏成功");
+//        collectImg.setImageDrawable(R.drawable.);
+        collectTxt.setText("已收藏");
+    }
+
+    @Override
+    public void collectFailed(String msg) {
+        MyUtils.showToast(getApplicationContext(), msg);
+    }
+
+    @Override
+    public void failed(String msg) {
+        closeProgressDialog();
+        MyUtils.showToast(getApplicationContext(), msg);
+        finish();
+    }
 }

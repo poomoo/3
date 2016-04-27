@@ -92,7 +92,7 @@
             android:layout_marginRight="40dp"
             android:background="@drawable/selector_btn_login"
             android:onClick="toLogin"
-            android:text="登录"
+            android:text="@string/btn_login"
             android:textColor="@color/colorPrimary"
             android:textSize="18sp" />
 

@@ -52,7 +52,7 @@ public class LoginActivity extends BaseActivity implements LoginView {
 //        initSubscribers();
         LogUtils.d(TAG, "头像:" + SPUtils.get(this, getString(R.string.sp_headPic), ""));
         if (!TextUtils.isEmpty((String) SPUtils.get(this, getString(R.string.sp_headPic), ""))) {
-            Glide.with(this).load(SPUtils.get(this, getString(R.string.sp_headPic), "")).into(avatarImg);
+            Glide.with(this).load(SPUtils.get(this, getString(R.string.sp_headPic), "")).placeholder(R.drawable.ic_login_logo).into(avatarImg);
 
         }
 
@@ -178,6 +178,7 @@ public class LoginActivity extends BaseActivity implements LoginView {
         SPUtils.put(getApplicationContext(), getString(R.string.sp_schoolName), application.getSchoolName());
         SPUtils.put(getApplicationContext(), getString(R.string.sp_intoSchoolDt), application.getIntoSchoolDt());
         SPUtils.put(getApplicationContext(), getString(R.string.sp_idPicture), application.getIdPicture());
+        SPUtils.put(getApplicationContext(), getString(R.string.sp_idCardNum), application.getIdCardNum());
 
         openActivity(MainActivity.class);
         finish();

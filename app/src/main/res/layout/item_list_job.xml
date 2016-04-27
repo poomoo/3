@@ -16,16 +16,15 @@
         android:padding="10dp">
 
         <RelativeLayout
-            android:layout_width="70dp"
-            android:layout_height="70dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:background="@drawable/style_round_bg">
 
-            <ImageView
+            <com.poomoo.parttimejob.ui.custom.RoundImageView2
                 android:id="@+id/img_jobPic"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:src="@drawable/ic_arrow_position" />
-
 
             <TextView
                 android:layout_width="match_parent"
@@ -35,7 +34,8 @@
                 android:gravity="center"
                 android:text="文员"
                 android:textColor="@color/white"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                android:visibility="gone" />
         </RelativeLayout>
 
         <LinearLayout

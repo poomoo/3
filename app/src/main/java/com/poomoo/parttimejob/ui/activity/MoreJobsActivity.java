@@ -8,8 +8,8 @@ import android.view.View;
 
 import com.poomoo.model.base.BaseJobBO;
 import com.poomoo.parttimejob.R;
-import com.poomoo.parttimejob.adapter.JobsAdapter;
 import com.poomoo.parttimejob.adapter.BaseListAdapter;
+import com.poomoo.parttimejob.adapter.JobsAdapter;
 import com.poomoo.parttimejob.presentation.AllJobListPresenter;
 import com.poomoo.parttimejob.ui.base.BaseListActivity;
 import com.poomoo.parttimejob.view.JobListView;
@@ -17,21 +17,23 @@ import com.poomoo.parttimejob.view.JobListView;
 import java.util.List;
 
 /**
- * 我的收藏
+ * 更多
  * 作者: 李苜菲
  * 日期: 2016/4/16 15:32.
  */
-public class MyCollectionActivity extends BaseListActivity<BaseJobBO> implements BaseListAdapter.OnItemClickListener, JobListView {
+public class MoreJobsActivity extends BaseListActivity<BaseJobBO> implements BaseListAdapter.OnItemClickListener, JobListView {
     private AllJobListPresenter allJobListPresenter;
+    private int currPage = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setBack();
+
         mListView.setPadding(0, setDividerSize(), 0, 0);
         mAdapter.setOnItemClickListener(this);
         allJobListPresenter = new AllJobListPresenter(this);
-        allJobListPresenter.getCollectionList(1);
+        allJobListPresenter.queryRecommendJobs(currPage);
     }
 
     @Override
@@ -41,25 +43,28 @@ public class MyCollectionActivity extends BaseListActivity<BaseJobBO> implements
 
     @Override
     protected String onSetTitle() {
-        return getString(R.string.title_myCollection);
+        return getString(R.string.title_interesting);
     }
 
     @Override
     public void onRefresh() {
         super.onRefresh();
-        allJobListPresenter.getCollectionList(1);
+        currPage = 1;
+        allJobListPresenter.queryRecommendJobs(currPage);
     }
 
     @Override
     public void onLoadActiveClick() {
         super.onLoadActiveClick();
-        allJobListPresenter.getCollectionList(1);
+        currPage = 1;
+        allJobListPresenter.queryRecommendJobs(currPage);
     }
 
     @Override
     public void succeed(List<BaseJobBO> list) {
         onLoadFinishState(action);
         onLoadResultData(list);
+        currPage++;
     }
 
     @Override
@@ -72,6 +77,8 @@ public class MyCollectionActivity extends BaseListActivity<BaseJobBO> implements
 
     @Override
     public void onItemClick(int position, long id, View view) {
-
+        Bundle bundle = new Bundle();
+        bundle.putInt(getString(R.string.intent_value), mAdapter.getItem(position).jobId);
+        openActivity(JobInfoActivity.class, bundle);
     }
 }

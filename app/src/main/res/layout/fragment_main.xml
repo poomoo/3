@@ -104,6 +104,7 @@
                         app:layout_scrollFlags="scroll">
 
                         <RadioButton
+                            android:id="@+id/rBtn_1"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -113,6 +114,7 @@
                             android:text="@string/label_main1" />
 
                         <RadioButton
+                            android:id="@+id/rBtn_2"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -122,6 +124,7 @@
                             android:text="@string/label_main2" />
 
                         <RadioButton
+                            android:id="@+id/rBtn_3"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -131,6 +134,7 @@
                             android:text="@string/label_main3" />
 
                         <RadioButton
+                            android:id="@+id/rBtn_4"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -166,11 +170,14 @@
                             android:textSize="16sp" />
 
                         <TextView
+                            android:id="@+id/txt_more"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"
                             android:layout_centerVertical="true"
                             android:layout_marginRight="20dp"
+                            android:onClick="more"
+                            android:padding="2dp"
                             android:text="更多"
                             android:textColor="@color/black"
                             android:textSize="16sp" />

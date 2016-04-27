@@ -3,28 +3,22 @@
  */
 package com.poomoo.parttimejob.ui.fragment;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.TextView;
+import android.widget.LinearLayout;
 
-import com.poomoo.commlib.MyConfig;
 import com.poomoo.model.Page;
-import com.poomoo.model.base.BaseJobBO;
 import com.poomoo.model.response.RServiceBO;
 import com.poomoo.parttimejob.R;
 import com.poomoo.parttimejob.adapter.BaseListAdapter;
-import com.poomoo.parttimejob.adapter.JobsAdapter;
 import com.poomoo.parttimejob.adapter.ServiceListAdapter;
 import com.poomoo.parttimejob.presentation.ServicePresenter;
+import com.poomoo.parttimejob.ui.activity.LoginActivity;
 import com.poomoo.parttimejob.ui.activity.MainActivity;
 import com.poomoo.parttimejob.ui.activity.MessageActivity;
 import com.poomoo.parttimejob.ui.base.BaseFragment;
@@ -37,6 +31,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * 作者: 李苜菲
@@ -49,6 +44,10 @@ public class ServiceFragment extends BaseFragment implements SwipeRefreshLayout.
     RecyclerView recyclerView;
     @Bind(R.id.error_frame)
     ErrorLayout errorLayout;
+    @Bind(R.id.llayout_service)
+    LinearLayout serviceLlayout;
+    @Bind(R.id.llayout_login)
+    LinearLayout loginLlayout;
 
     public static final int LOAD_MODE_DEFAULT = 1; // 默认的下拉刷新,小圆圈
     public static final int LOAD_MODE_UP_DRAG = 2; // 上拉到底部时刷新
@@ -73,6 +72,14 @@ public class ServiceFragment extends BaseFragment implements SwipeRefreshLayout.
     }
 
     private void initView() {
+        if (application.isLogin()) {
+            serviceLlayout.setVisibility(View.VISIBLE);
+            loginLlayout.setVisibility(View.GONE);
+        } else {
+            loginLlayout.setVisibility(View.VISIBLE);
+            serviceLlayout.setVisibility(View.GONE);
+        }
+
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         recyclerView.addItemDecoration(new HorizontalDividerItemDecoration.Builder(getActivity())
                 .color(getResources().getColor(R.color.transparent))
@@ -200,6 +207,12 @@ public class ServiceFragment extends BaseFragment implements SwipeRefreshLayout.
                 break;
         }
 
+    }
+
+    @OnClick(R.id.btn_logIn)
+    void toLogin() {
+        openActivity(LoginActivity.class);
+        MainActivity.instance.finish();
     }
 
 }

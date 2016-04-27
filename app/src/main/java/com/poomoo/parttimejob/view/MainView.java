@@ -2,6 +2,8 @@ package com.poomoo.parttimejob.view;
 
 import com.poomoo.model.base.BaseJobBO;
 import com.poomoo.model.response.RAdBO;
+import com.poomoo.model.response.RJobInfoBO;
+import com.poomoo.model.response.RTypeBO;
 
 import java.util.List;
 
@@ -11,6 +13,8 @@ import java.util.List;
  */
 public interface MainView {
     void loadAdSucceed(List<RAdBO> rAdBOs);
+
+    void loadTypeSucceed(List<RTypeBO> rTypeBOs);
 
     void loadRecommendsSucceed(List<BaseJobBO> rAdBOs);
 

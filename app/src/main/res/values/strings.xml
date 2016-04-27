@@ -51,6 +51,7 @@
     <string name="title_jobIntention">求职意向设置</string>
     <string name="title_about">关于灵智博睿</string>
     <string name="title_message">信息中心</string>
+    <string name="title_interesting">可能感兴趣的</string>
     <!--title-->
 
     <!--标签-->
@@ -97,15 +98,18 @@
     <!--hint-->
 
     <!--btn-->
+    <string name="btn_login">登录</string>
     <string name="btn_confirm">确认</string>
     <string name="btn_register">注册</string>
     <string name="btn_submit">提交</string>
     <string name="btn_reply">回复</string>
+    <string name="btn_loginFirst">请先登录</string>
     <!--btn-->
 
     <!--intent-->
     <string name="intent_value">value</string>
     <string name="intent_msgId">msgId</string>
+    <string name="intent_cateId">cateId</string>
     <!--intent-->
 
     <!--城市列表-->

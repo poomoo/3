@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.poomoo.commlib.LogUtils;
@@ -19,6 +20,7 @@ import com.poomoo.model.Page;
 import com.poomoo.model.base.BaseJobBO;
 import com.poomoo.model.response.RAdBO;
 import com.poomoo.model.response.RApplyJobBO;
+import com.poomoo.model.response.RTypeBO;
 import com.poomoo.parttimejob.R;
 import com.poomoo.parttimejob.adapter.BaseListAdapter;
 import com.poomoo.parttimejob.adapter.JobsAdapter;
@@ -28,7 +30,9 @@ import com.poomoo.parttimejob.listener.AdvertisementListener;
 import com.poomoo.parttimejob.presentation.MainPresenter;
 import com.poomoo.parttimejob.ui.activity.CityListActivity;
 import com.poomoo.parttimejob.ui.activity.JobInfoActivity;
+import com.poomoo.parttimejob.ui.activity.JobListByCateActivity;
 import com.poomoo.parttimejob.ui.activity.MainActivity;
+import com.poomoo.parttimejob.ui.activity.MoreJobsActivity;
 import com.poomoo.parttimejob.ui.activity.SearchJobActivity;
 import com.poomoo.parttimejob.ui.base.BaseFragment;
 import com.poomoo.parttimejob.ui.custom.SlideShowView;
@@ -60,9 +64,17 @@ public class MainFragment extends BaseFragment implements SwipeRefreshLayout.OnR
     @Bind(R.id.txt_position)
     TextView cityTxt;
 
+//    @Bind(R.id.rBtn_1)
+//    RadioButton rBtn1;
+//    @Bind(R.id.rBtn_2)
+//    RadioButton rBtn2;
+//    @Bind(R.id.rBtn_3)
+//    RadioButton rBtn3;
+//    @Bind(R.id.rBtn_4)
+//    RadioButton rBtn4;
+
+
     private JobsAdapter adapter;
-    private List<RApplyJobBO> rApplyJobBOs = new ArrayList<>();
-    private RApplyJobBO rApplyJobBO;
     private String[] urls;
     private RAdBO rAdBO;
     private int currPage = 1;
@@ -96,11 +108,6 @@ public class MainFragment extends BaseFragment implements SwipeRefreshLayout.OnR
         );
         adapter = new JobsAdapter(getActivity(), BaseListAdapter.ONLY_FOOTER, false);
         recyclerView.setAdapter(adapter);
-//        for (int i = 0; i < 10; i++) {
-//            rApplyJobBO = new RApplyJobBO("金阳" + i, i + "", i, 100 * (i + 1) + "￥/天", "第" + i + "份工作", i + "分钟前");
-//            rApplyJobBOs.add(rApplyJobBO);
-//        }
-//        adapter.addItems(rApplyJobBOs);
         adapter.setOnLoadingListener(this);
         adapter.setOnItemClickListener(this);
         appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
@@ -122,6 +129,7 @@ public class MainFragment extends BaseFragment implements SwipeRefreshLayout.OnR
         });
         mainPresenter = new MainPresenter(this);
         mainPresenter.loadAd();
+//        mainPresenter.loadCate();
         mainPresenter.queryRecommendJobs(currPage);
 
         initSubscribers();
@@ -138,7 +146,7 @@ public class MainFragment extends BaseFragment implements SwipeRefreshLayout.OnR
                 }).create();
     }
 
-    @OnClick({R.id.llayout_citys, R.id.img_search})
+    @OnClick({R.id.llayout_citys, R.id.img_search, R.id.txt_more})
     void click(View view) {
         switch (view.getId()) {
             case R.id.llayout_citys:
@@ -147,7 +155,38 @@ public class MainFragment extends BaseFragment implements SwipeRefreshLayout.OnR
             case R.id.img_search:
                 openActivity(SearchJobActivity.class);
                 break;
+            case R.id.txt_more:
+                openActivity(MoreJobsActivity.class);
+                break;
         }
+    }
+
+    @OnClick({R.id.rBtn_1, R.id.rBtn_2, R.id.rBtn_3, R.id.rBtn_4})
+    void cate(View view) {
+        int cateId = 0;
+        String title = "";
+        switch (view.getId()) {
+            case R.id.rBtn_1:
+                cateId = 1;
+                title = getString(R.string.label_main1);
+                break;
+            case R.id.rBtn_2:
+                cateId = 2;
+                title = getString(R.string.label_main2);
+                break;
+            case R.id.rBtn_3:
+                cateId = 3;
+                title = getString(R.string.label_main3);
+                break;
+            case R.id.rBtn_4:
+                cateId = 4;
+                title = getString(R.string.label_main4);
+                break;
+        }
+        Bundle bundle = new Bundle();
+        bundle.putString(getString(R.string.intent_value), title);
+        bundle.putInt(getString(R.string.intent_cateId), cateId);
+        openActivity(JobListByCateActivity.class, bundle);
     }
 
     @Override
@@ -179,12 +218,15 @@ public class MainFragment extends BaseFragment implements SwipeRefreshLayout.OnR
             rAdBO = rAdBOs.get(i);
             urls[i] = rAdBO.picture;
         }
-        slideShowView.setPics(urls, new AdvertisementListener() {
-            @Override
-            public void onResult(int position) {
+        slideShowView.setPics(urls, position -> {
 
-            }
         });
+    }
+
+    @Override
+    public void loadTypeSucceed(List<RTypeBO> rTypeBOs) {
+//        for (RTypeBO rTypeBO : rTypeBOs) {
+//        }
     }
 
     @Override

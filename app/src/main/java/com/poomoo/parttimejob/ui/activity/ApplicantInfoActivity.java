@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.poomoo.model.response.RApplicantBO;
 import com.poomoo.parttimejob.R;
 import com.poomoo.parttimejob.ui.base.BaseActivity;
@@ -60,6 +61,7 @@ public class ApplicantInfoActivity extends BaseActivity implements ApplicantInfo
     }
 
     private void initView() {
+        Glide.with(this).load(rApplicantBO.headPic).placeholder(R.drawable.ic_login_logo).into(avatarImg);
         sexImg.setImageResource(rApplicantBO.sex == 1 ? R.drawable.ic_man : R.drawable.ic_woman);
         sexTxt.setText(rApplicantBO.sex == 1 ? "男 " + rApplicantBO.age : "女 " + rApplicantBO.age);
         sexTxt.setBackgroundResource(rApplicantBO.sex == 1 ? R.drawable.style_label_male : R.drawable.style_label_female);

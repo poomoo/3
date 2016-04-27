@@ -9,14 +9,17 @@ import com.poomoo.api.NetConfig;
 import com.poomoo.api.Network;
 import com.poomoo.model.Page;
 import com.poomoo.model.base.BaseJobBO;
+import com.poomoo.model.request.QCollectBO;
 import com.poomoo.model.request.QJobInfoBO;
 import com.poomoo.model.request.QRecommendBO;
 import com.poomoo.model.response.RJobInfoBO;
+import com.poomoo.model.response.ResponseBO;
 import com.poomoo.parttimejob.view.JobInfoView;
 
 import java.util.List;
 
 import rx.android.schedulers.AndroidSchedulers;
+import rx.android.schedulers.HandlerScheduler;
 import rx.schedulers.Schedulers;
 
 /**
@@ -72,6 +75,24 @@ public class JobInfoPresenter extends BasePresenter {
                     @Override
                     public void onNext(List<BaseJobBO> baseJobBOs) {
                         jobInfoView.loadRecommendsSucceed(baseJobBOs);
+                    }
+                }));
+    }
+
+    public void collet(int jobId, int userId) {
+        QCollectBO qCollectBO = new QCollectBO(NetConfig.JOBACTION, NetConfig.COLLECT, jobId, userId, 1);
+        mSubscriptions.add(Network.getJobApi().collect(qCollectBO)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new AbsAPICallback<ResponseBO>() {
+                    @Override
+                    protected void onError(ApiException e) {
+                        jobInfoView.collectFailed(e.getMessage());
+                    }
+
+                    @Override
+                    public void onNext(ResponseBO responseBO) {
+                        jobInfoView.collectSucceed(responseBO.msg);
                     }
                 }));
     }

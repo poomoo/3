@@ -149,12 +149,9 @@ public class ResumeActivity extends BaseActivity implements ResumeView {
 
     private void initView() {
 
-        userAvatarImg.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                select_pics();
-                return false;
-            }
+        userAvatarImg.setOnLongClickListener(v -> {
+            select_pics();
+            return false;
         });
         showProgressDialog(getString(R.string.dialog_msg));
         resumePresenter.downResume(application.getUserId());
@@ -480,7 +477,7 @@ public class ResumeActivity extends BaseActivity implements ResumeView {
         cityTxt.setText(city);
         areaTxt.setText(area);
 
-        Glide.with(this).load(headPic).into(userAvatarImg);
+        Glide.with(this).load(headPic).placeholder(R.drawable.ic_login_logo).into(userAvatarImg);
         nameEdt.setText(realName);
         if (sex == 1) manRbtn.setChecked(true);
         else womanRbtn.setChecked(true);

@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.poomoo.commlib.MyDateFormat;
 import com.poomoo.commlib.MyUtils;
 import com.poomoo.model.base.BaseJobBO;
@@ -37,10 +38,17 @@ public class JobsAdapter extends BaseListAdapter<BaseJobBO> {
     protected void onBindDefaultViewHolder(RecyclerView.ViewHolder h, int position) {
         JobsViewHolder holder = (JobsViewHolder) h;
         BaseJobBO item = items.get(position);
+        Glide.with(mContext).load(item.icon).into(holder.picImg);
         holder.jobNameTxt.setText(item.jobName);
-        holder.payTxt.setText(MyUtils.formatPay(item.pay,true));
+        holder.payTxt.setText(MyUtils.formatPay(item.pay, true));
         holder.areaTxt.setText(item.areaName);
-        holder.dateTxt.setText(TextUtils.isEmpty(item.applyDt)? MyDateFormat.format(item.publishDt):item.applyDt);
+        if (!TextUtils.isEmpty(item.applyDt))
+            holder.dateTxt.setText(item.applyDt);
+        else if (!TextUtils.isEmpty(item.publishDt))
+            holder.dateTxt.setText(MyDateFormat.format(item.publishDt));
+        else if (!TextUtils.isEmpty(item.collectDt))
+            holder.dateTxt.setText(MyDateFormat.format(item.collectDt));
+//        holder.dateTxt.setText(TextUtils.isEmpty(item.applyDt) ? MyDateFormat.format(item.publishDt) : item.applyDt);
         //是否显示工作种类
         if (hasType) {
             holder.typeImg.setVisibility(View.VISIBLE);
@@ -73,6 +81,8 @@ public class JobsAdapter extends BaseListAdapter<BaseJobBO> {
         TextView dateTxt;
         @Bind(R.id.img_jobType)
         ImageView typeImg;
+        @Bind(R.id.img_jobPic)
+        ImageView picImg;
 
         public JobsViewHolder(View view) {
             super(view);

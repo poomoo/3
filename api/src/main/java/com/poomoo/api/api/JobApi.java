@@ -6,6 +6,9 @@ package com.poomoo.api.api;
 import com.poomoo.model.base.BaseJobBO;
 import com.poomoo.model.request.QAllJobBO;
 import com.poomoo.model.request.QApplyBO;
+import com.poomoo.model.request.QCateBO;
+import com.poomoo.model.request.QCollectBO;
+import com.poomoo.model.request.QSignUpBO;
 import com.poomoo.model.request.QUserIdBO;
 import com.poomoo.model.request.QJobInfoBO;
 import com.poomoo.model.request.QJobTypeBO;
@@ -13,6 +16,7 @@ import com.poomoo.model.request.QRecommendBO;
 import com.poomoo.model.request.QSearchBO;
 import com.poomoo.model.response.RJobInfoBO;
 import com.poomoo.model.response.RTypeBO;
+import com.poomoo.model.response.ResponseBO;
 
 import java.util.List;
 
@@ -45,4 +49,13 @@ public interface JobApi {
 
     @POST("lzrb/app/call.htm")
     Observable<List<BaseJobBO>> getCollectionList(@Body QUserIdBO data);
+
+    @POST("lzrb/app/call.htm")
+    Observable<List<BaseJobBO>> getJobByCate(@Body QCateBO data);
+
+    @POST("lzrb/app/call.htm")
+    Observable<ResponseBO> collect(@Body QCollectBO data);
+
+    @POST("lzrb/app/call.htm")
+    Observable<ResponseBO> signUp(@Body QSignUpBO data);
 }

@@ -25,10 +25,14 @@ public class MyDateFormat {
     private static final String ONE_HOUR_AGO = "小时前";
     private static final String ONE_DAY_AGO = "昨天";
     private static final String TWO_DAY_AGO = "前天";
+    private static SimpleDateFormat format;
 
 
     public static String format(String date) {
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:m:s");
+        if (date.length() > 10)
+            format = new SimpleDateFormat("yyyy-MM-dd HH:m:s");
+        else
+            format = new SimpleDateFormat("yyyy-MM-dd");
         SimpleDateFormat format2 = new SimpleDateFormat("yyyy-MM-dd");
         Date date1 = null;
         String yearMonthDay;
