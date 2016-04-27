@@ -12,7 +12,8 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/title">
+        android:layout_below="@+id/title"
+        android:layout_above="@+id/bottom">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -349,6 +350,7 @@
     </ScrollView>
 
     <LinearLayout
+        android:id="@+id/bottom"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
