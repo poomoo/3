@@ -99,6 +99,9 @@ public class JobInfoActivity extends BaseActivity implements JobInfoView {
                 .color(getResources().getColor(R.color.transparent))
                 .size((int) getResources().getDimension(R.dimen.divider_height5))
                 .build());
+        jobsAdapter = new JobsAdapter(this, BaseListAdapter.NEITHER, false);
+        recyclerView.setAdapter(jobsAdapter);
+
         jobInfoPresenter = new JobInfoPresenter(this);
         showProgressDialog(getString(R.string.dialog_msg));
         jobInfoPresenter.queryJobInfo(getIntent().getIntExtra(getString(R.string.intent_value), -1));
