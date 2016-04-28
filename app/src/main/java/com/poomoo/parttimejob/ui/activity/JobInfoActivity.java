@@ -14,6 +14,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.poomoo.commlib.MyConfig;
@@ -78,6 +79,7 @@ public class JobInfoActivity extends BaseActivity implements JobInfoView {
     private GridAdapter adapter;
     private List<RApplicantBO> rApplicantBOs = new ArrayList<>();
     private RApplicantBO rApplicantBO;
+    private RJobInfoBO rJobInfoBO;
     private JobsAdapter jobsAdapter;
     private int jobId;
 
@@ -117,12 +119,24 @@ public class JobInfoActivity extends BaseActivity implements JobInfoView {
     }
 
     /**
+     * 地图
+     *
+     * @param view
+     */
+    public void toMap(View view) {
+        Bundle bundle = new Bundle();
+        bundle.putDouble(getString(R.string.intent_lat), rJobInfoBO.lat);
+        bundle.putDouble(getString(R.string.intent_lng), rJobInfoBO.lng);
+        openActivity(MapActivity.class, bundle);
+    }
+
+    /**
      * 打电话
      *
      * @param view
      */
     public void dial(View view) {
-        if(!application.isLogin()){
+        if (!application.isLogin()) {
             MyUtils.showToast(getApplicationContext(), MyConfig.pleaseLogin);
             return;
         }
@@ -147,7 +161,7 @@ public class JobInfoActivity extends BaseActivity implements JobInfoView {
      * @param view
      */
     public void more(View view) {
-        if(!application.isLogin()){
+        if (!application.isLogin()) {
             MyUtils.showToast(getApplicationContext(), MyConfig.pleaseLogin);
             return;
         }
@@ -160,7 +174,7 @@ public class JobInfoActivity extends BaseActivity implements JobInfoView {
      * @param view
      */
     public void collect(View view) {
-        if(!application.isLogin()){
+        if (!application.isLogin()) {
             MyUtils.showToast(getApplicationContext(), MyConfig.pleaseLogin);
             return;
         }
@@ -173,7 +187,7 @@ public class JobInfoActivity extends BaseActivity implements JobInfoView {
      * @param view
      */
     public void signIn(View view) {
-        if(!application.isLogin()){
+        if (!application.isLogin()) {
             MyUtils.showToast(getApplicationContext(), MyConfig.pleaseLogin);
             return;
         }
@@ -188,7 +202,7 @@ public class JobInfoActivity extends BaseActivity implements JobInfoView {
      * @param view
      */
     public void allApplicants(View view) {
-        if(!application.isLogin()){
+        if (!application.isLogin()) {
             MyUtils.showToast(getApplicationContext(), MyConfig.pleaseLogin);
             return;
         }
@@ -200,6 +214,7 @@ public class JobInfoActivity extends BaseActivity implements JobInfoView {
     @Override
     public void succeed(RJobInfoBO rJobInfoBO) {
         closeProgressDialog();
+        this.rJobInfoBO = rJobInfoBO;
         payTxt.setText(MyUtils.formatPay(rJobInfoBO.pay, false));
         browseTxt.setText(rJobInfoBO.browseNum + "");
         jobNameTxt.setText(rJobInfoBO.jobName);

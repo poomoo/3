@@ -3,6 +3,7 @@ package com.poomoo.parttimejob.application;
 import android.app.Activity;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.baidu.mapapi.SDKInitializer;
 import com.poomoo.commlib.CrashHandler;
 
 import org.litepal.LitePalApplication;
@@ -57,6 +58,8 @@ public class MyApplication extends LitePalApplication {
         super.onCreate();
 
 //        initImageLoader();
+        // 在使用 SDK 各组间之前初始化 context 信息，传入 ApplicationContext
+        SDKInitializer.initialize(this);
         CrashHandler crashHandler = CrashHandler.getInstance();
         // 注册crashHandler
         crashHandler.init(getApplicationContext());

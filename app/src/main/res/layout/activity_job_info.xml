@@ -12,8 +12,8 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/title"
-        android:layout_above="@+id/bottom">
+        android:layout_above="@+id/bottom"
+        android:layout_below="@+id/title">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -152,6 +152,8 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
                         android:layout_centerVertical="true"
+                        android:clickable="true"
+                        android:onClick="toMap"
                         android:orientation="horizontal">
 
                         <ImageView
@@ -331,12 +333,12 @@
                     android:textSize="16sp" />
 
                 <TextView
-                    android:onClick="more"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="20dp"
+                    android:onClick="more"
                     android:text="更多"
                     android:textColor="@color/black"
                     android:textSize="16sp" />

@@ -23,8 +23,8 @@ public class BaseJobBO extends Entity {
     public String workSycle;//工作周期（0：不限，1：长期兼职，2：短期兼职，3：周末兼职）
     public String cityId;//城市编号
     public String areaId;//区域编号
-    public String lat;//纬度
-    public String lng;//经度
+    public double lat;//纬度
+    public double lng;//经度
     public String jobDesc;//职位描述（HTML富文本）
     public String contactTel;//联系电话
     public String contact;//联系人信息

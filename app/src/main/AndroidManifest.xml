@@ -4,6 +4,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <!-- 这个权限用于进行网络定位-->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -51,6 +52,7 @@
         <activity android:name=".ui.activity.MessageActivity" />
         <activity android:name=".ui.activity.JobListByCateActivity" />
         <activity android:name=".ui.activity.MoreJobsActivity" />
+        <activity android:name=".ui.activity.MapActivity" />
 
         <service
             android:name="com.baidu.location.f"
