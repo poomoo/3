@@ -12,7 +12,9 @@ import android.widget.TextView;
 
 import com.poomoo.commlib.MyConfig;
 import com.poomoo.commlib.MyUtils;
+import com.poomoo.commlib.SPUtils;
 import com.poomoo.commlib.TimeCountDownUtil;
+import com.poomoo.model.response.RUserBO;
 import com.poomoo.parttimejob.R;
 import com.poomoo.parttimejob.presentation.RegisterPresenter;
 import com.poomoo.parttimejob.ui.base.BaseActivity;
@@ -71,6 +73,7 @@ public class RegisterActivity extends BaseActivity implements RegisterView {
     }
 
     public void toDo(View view) {
+        openActivity(LoginActivity.class);
         finish();
     }
 
@@ -124,6 +127,7 @@ public class RegisterActivity extends BaseActivity implements RegisterView {
         if (!agreeChk.isChecked())
             MyUtils.showToast(getApplicationContext(), "请阅读并同意用户协议");
         inviteCode = inviteCodedEdt.getText().toString().trim();
+        showProgressDialog(getString(R.string.dialog_msg));
         registerPresenter.register(tel, code, passWord, inviteCode, MyUtils.getDeviceId(this));
     }
 
@@ -135,10 +139,57 @@ public class RegisterActivity extends BaseActivity implements RegisterView {
     @Override
     public void registerSucceed(String msg) {
         MyUtils.showToast(getApplicationContext(), msg);
+        registerPresenter.login(tel, passWord, MyUtils.getDeviceId(getApplicationContext()));
     }
 
     @Override
     public void registerFailed(String msg) {
         MyUtils.showToast(getApplicationContext(), msg);
+    }
+
+    @Override
+    public void loginFailed(String msg) {
+        closeProgressDialog();
+        MyUtils.showToast(getApplicationContext(), msg);
+        finish();
+        openActivity(LoginActivity.class);
+    }
+
+    @Override
+    public void loginSucceed(RUserBO rUserBO) {
+        closeProgressDialog();
+        SPUtils.put(getApplicationContext(), getString(R.string.sp_isLogin), true);
+        if ((boolean) SPUtils.get(getApplicationContext(), getString(R.string.sp_isRemember), false)) {
+            SPUtils.put(getApplicationContext(), getString(R.string.sp_phoneNum), tel);
+            SPUtils.put(getApplicationContext(), getString(R.string.sp_passWord), passWord);
+        }
+        this.application.setUserId(rUserBO.userId);
+        this.application.setNickName(rUserBO.nickName);
+        this.application.setRealName(rUserBO.realName);
+        this.application.setHeadPic(rUserBO.headPic);
+        this.application.setSchoolName(rUserBO.schoolName);
+        this.application.setIntoSchoolDt(rUserBO.intoSchoolDt);
+        this.application.setTel(rUserBO.tel);
+        this.application.setIdCardNum(rUserBO.idCardNum);
+        this.application.setIdPicture(rUserBO.idPicture);
+        this.application.setPassword(rUserBO.password);
+        this.application.setStatus(rUserBO.status);
+        this.application.setInviteCode(rUserBO.inviteCode);
+        this.application.setDeviceNum(rUserBO.deviceNum);
+        this.application.setInsertDt(rUserBO.insertDt);
+        this.application.setUpdateDtv(rUserBO.updateDtv);
+        this.application.setLogin(true);
+
+        SPUtils.put(getApplicationContext(), getString(R.string.sp_userId), application.getUserId());
+        SPUtils.put(getApplicationContext(), getString(R.string.sp_nickName), application.getNickName());
+        SPUtils.put(getApplicationContext(), getString(R.string.sp_realName), application.getRealName());
+        SPUtils.put(getApplicationContext(), getString(R.string.sp_headPic), application.getHeadPic());
+        SPUtils.put(getApplicationContext(), getString(R.string.sp_schoolName), application.getSchoolName());
+        SPUtils.put(getApplicationContext(), getString(R.string.sp_intoSchoolDt), application.getIntoSchoolDt());
+        SPUtils.put(getApplicationContext(), getString(R.string.sp_idPicture), application.getIdPicture());
+        SPUtils.put(getApplicationContext(), getString(R.string.sp_idCardNum), application.getIdCardNum());
+
+        openActivity(MainActivity.class);
+        finish();
     }
 }

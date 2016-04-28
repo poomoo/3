@@ -6,6 +6,7 @@ package com.poomoo.parttimejob.ui.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.WindowManager;
 
 import com.poomoo.commlib.LogUtils;
 import com.poomoo.commlib.SPUtils;
@@ -32,6 +33,9 @@ public class SplashActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        //去掉Activity上面的状态栏
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         super.onCreate(savedInstanceState);
         StatusBarUtil.setTransparent(this);
         importDB();

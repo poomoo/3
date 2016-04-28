@@ -36,7 +36,6 @@ public class SortPopUpWindow extends PopupWindow {
     private ListView list_type;
     private Button confirmBtn;
     private JobTypeAdapter adapter;
-    private List<Integer> selected;
     private List<String> stringList = new ArrayList<>();
 
 
@@ -61,40 +60,24 @@ public class SortPopUpWindow extends PopupWindow {
         ColorDrawable dw = new ColorDrawable(0x00000000);
         this.setBackgroundDrawable(dw);
 
-        confirmBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                selected = new ArrayList<>();
-                for (int i = 0; i < adapter.getSparseArray().size(); i++) {
-                    if (adapter.getSparseArray().get(i))
-                        selected.add(i + 1);
-                }
-                selectCategory.selectCategory(selected);
-                dismiss();
-            }
+        list_type.setOnItemClickListener((parent, view, position, id) -> {
+            adapter.clearIsCheckedMap();
+            adapter.getIsCheckedMap().put(position, true);
+            adapter.notifyDataSetChanged();
+            selectCategory.selectCategory((position + 1));
+            dismiss();
         });
 
-        list_type.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                adapter.clearSparseArray();
-                adapter.getSparseArray().put(position, true);
-                adapter.notifyDataSetChanged();
-            }
-        });
-
-        mMenuView.setOnTouchListener(new View.OnTouchListener() {
-            public boolean onTouch(View v, MotionEvent event) {
-                int height_top = mMenuView.findViewById(R.id.llayout_type).getTop();
-                int height_bottom = mMenuView.findViewById(R.id.llayout_type).getBottom();
-                int y = (int) event.getY();
-                if (event.getAction() == MotionEvent.ACTION_UP) {
-                    if (y < height_top || y > height_bottom) {
-                        dismiss();
-                    }
+        mMenuView.setOnTouchListener((v, event) -> {
+            int height_top = mMenuView.findViewById(R.id.llayout_type).getTop();
+            int height_bottom = mMenuView.findViewById(R.id.llayout_type).getBottom();
+            int y = (int) event.getY();
+            if (event.getAction() == MotionEvent.ACTION_UP) {
+                if (y < height_top || y > height_bottom) {
+                    dismiss();
                 }
-                return true;
             }
+            return true;
         });
 
     }
@@ -108,6 +91,6 @@ public class SortPopUpWindow extends PopupWindow {
          *
          * @param type 选中的下标
          */
-        public void selectCategory(List<Integer> type);
+        public void selectCategory(int type);
     }
 }

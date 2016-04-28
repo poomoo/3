@@ -112,6 +112,7 @@ public class JobIntentionActivity extends BaseActivity implements JobIntentionVi
 
     private void initJobZone(final LayoutInflater mInflater) {
         areaInfos = DataBaseHelper.getArea1(application.getCurrCityId());
+        LogUtils.d(TAG, "areaInfos:" + areaInfos);
         adapterArea = new TagAdapter<String>(areaInfos) {
             @Override
             public View getView(FlowLayout parent, int position, String s) {
@@ -190,10 +191,10 @@ public class JobIntentionActivity extends BaseActivity implements JobIntentionVi
         int len = rIntentionBO.cateList.size();
         for (int i = 0; i < len; i++) {
             if (rIntentionBO.cateList.get(i).selected)
-                type.add(typeInfos.indexOf(rIntentionBO.cateList.get(i).cateId));
+                type.add(typeInfos.indexOf(rIntentionBO.cateList.get(i).cateName + "#" + rIntentionBO.cateList.get(i).cateId));
         }
         adapterType.setSelectedList(type);
-        LogUtils.d(TAG, "TYPE" + type.size() + "len:" + len);
+        LogUtils.d(TAG, "TYPE" + type.size() + "type:" + type.toString() + "len:" + len);
 
         if (!TextUtils.isEmpty(rIntentionBO.workAreaId)) {
             String[] areaStr = rIntentionBO.workAreaId.split(",");

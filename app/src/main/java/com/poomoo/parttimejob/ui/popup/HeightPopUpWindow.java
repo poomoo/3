@@ -48,7 +48,7 @@ public class HeightPopUpWindow extends PopupWindow {
         list_type = (ListView) mMenuView.findViewById(R.id.list_type);
         confirmBtn = (Button) mMenuView.findViewById(R.id.btn_resumeConfirm);
         for (int i = 0; i < 100; i++)
-            stringList.add((100 + i) + "厘米");
+            stringList.add((100 + i) + "cm");
 
 //        DisplayMetrics dm = new DisplayMetrics();
 //        context.getWindowManager().getDefaultDisplay().getMetrics(dm); // 获取手机屏幕的大小
@@ -67,40 +67,29 @@ public class HeightPopUpWindow extends PopupWindow {
         this.setBackgroundDrawable(dw);
 //        this.setAnimationStyle(R.style.mypopwindow_anim_style);
 
-        confirmBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                selectCategory.selectCategory(selected);
-                dismiss();
-            }
+        confirmBtn.setOnClickListener(v -> {
+            selectCategory.selectCategory(selected);
+            dismiss();
         });
 
-        list_type.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                selected = stringList.get(position);
-                adapter.clearSparseArray();
-                if (adapter.getSparseArray().get(position))
-                    adapter.getSparseArray().put(position, false);
-                else
-                    adapter.getSparseArray().put(position, true);
+        list_type.setOnItemClickListener((parent, view, position, id) -> {
+            selected = stringList.get(position);
+            adapter.clearIsCheckedMap();
+            adapter.getIsCheckedMap().put(position, true);
 
-                adapter.notifyDataSetChanged();
-            }
+            adapter.notifyDataSetChanged();
         });
 
-        mMenuView.setOnTouchListener(new View.OnTouchListener() {
-            public boolean onTouch(View v, MotionEvent event) {
-                int height_top = mMenuView.findViewById(R.id.llayout_resume).getTop();
-                int height_bottom = mMenuView.findViewById(R.id.llayout_resume).getBottom();
-                int y = (int) event.getY();
-                if (event.getAction() == MotionEvent.ACTION_UP) {
-                    if (y < height_top || y > height_bottom) {
-                        dismiss();
-                    }
+        mMenuView.setOnTouchListener((v, event) -> {
+            int height_top = mMenuView.findViewById(R.id.llayout_resume).getTop();
+            int height_bottom = mMenuView.findViewById(R.id.llayout_resume).getBottom();
+            int y = (int) event.getY();
+            if (event.getAction() == MotionEvent.ACTION_UP) {
+                if (y < height_top || y > height_bottom) {
+                    dismiss();
                 }
-                return true;
             }
+            return true;
         });
 
     }

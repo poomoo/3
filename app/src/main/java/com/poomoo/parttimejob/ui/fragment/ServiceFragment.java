@@ -215,4 +215,11 @@ public class ServiceFragment extends BaseFragment implements SwipeRefreshLayout.
         MainActivity.instance.finish();
     }
 
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (!hidden)
+            MainActivity.instance.setBackGround2();
+    }
 }

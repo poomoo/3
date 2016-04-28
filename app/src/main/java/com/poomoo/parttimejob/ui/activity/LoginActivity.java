@@ -133,6 +133,7 @@ public class LoginActivity extends BaseActivity implements LoginView {
      */
     public void toRegister(View view) {
         openActivity(RegisterActivity.class);
+        finish();
     }
 
     /**

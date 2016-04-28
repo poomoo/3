@@ -182,14 +182,6 @@ public class MainFragment extends BaseFragment implements SwipeRefreshLayout.OnR
 //    }
 
     @Override
-    public void onHiddenChanged(boolean hidden) {
-        super.onHiddenChanged(hidden);
-        if (!hidden)
-            MainActivity.instance.setBackGround2();
-
-    }
-
-    @Override
     public void onLoading() {
         mainPresenter.queryRecommendJobs(currPage);
     }
@@ -275,5 +267,12 @@ public class MainFragment extends BaseFragment implements SwipeRefreshLayout.OnR
         bundle.putString(getString(R.string.intent_value), rTypeBO.name);
         bundle.putInt(getString(R.string.intent_cateId), rTypeBO.cateId);
         openActivity(JobListByCateActivity.class, bundle);
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (!hidden)
+            MainActivity.instance.setBackGround2();
     }
 }

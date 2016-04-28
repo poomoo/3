@@ -134,17 +134,17 @@ public class JobFragment extends BaseFragment implements JobView, BaseListAdapte
             case R.id.rbtn_type:
                 if (typePopUpWindow == null)
                     typePopUpWindow = new TypePopUpWindow(getActivity(), DataBaseHelper.getType(), typeCategory);
-                typePopUpWindow.showAsDropDown(dividerTxt);
+                typePopUpWindow.showAsDropDown(view);
                 break;
             case R.id.rbtn_zone:
                 if (zonePopUpWindow == null)
                     zonePopUpWindow = new ZonePopUpWindow(getActivity(), DataBaseHelper.getCityAndArea(application.getCurrCity(), application.getCurrCityId()), zoneCategory);
-                zonePopUpWindow.showAsDropDown(dividerTxt);
+                zonePopUpWindow.showAsDropDown(view);
                 break;
             case R.id.rbtn_sort:
                 if (sortPopUpWindow == null)
                     sortPopUpWindow = new SortPopUpWindow(getActivity(), sortCategory);
-                sortPopUpWindow.showAsDropDown(dividerTxt);
+                sortPopUpWindow.showAsDropDown(view);
                 break;
             case R.id.txt_toFilter:
                 openActivityForResult(FilterActivity.class, 1);
@@ -153,43 +153,34 @@ public class JobFragment extends BaseFragment implements JobView, BaseListAdapte
 
     }
 
-    TypePopUpWindow.SelectCategory typeCategory = new TypePopUpWindow.SelectCategory() {
-        @Override
-        public void selectCategory(List<String> type) {
-            int len = type.size();
-            String temp = "";
-            for (int i = 0; i < len; i++)
-                temp += type.get(i) + ",";
-            LogUtils.d(TAG, "selectCategory:" + temp);
-            temp = temp.substring(0, temp.length() - 1);
-            LogUtils.d(TAG, "selectCategory2:" + temp);
-            application.setCateId(temp);
-            currPage = 1;
-            getJobList(true);
-        }
+    TypePopUpWindow.SelectCategory typeCategory = type -> {
+        int len = type.size();
+        String temp = "";
+        for (int i = 0; i < len; i++)
+            temp += type.get(i) + ",";
+        LogUtils.d(TAG, "selectCategory:" + temp);
+        temp = temp.substring(0, temp.length() - 1);
+        LogUtils.d(TAG, "selectCategory2:" + temp);
+        application.setCateId(temp);
+        currPage = 1;
+        getJobList(true);
     };
 
-    ZonePopUpWindow.SelectCategory zoneCategory = new ZonePopUpWindow.SelectCategory() {
-        @Override
-        public void selectCategory(List<String> type) {
-            int len = type.size();
-            String temp = "";
-            for (int i = 0; i < len; i++)
-                temp += type.get(i) + ",";
-            temp = temp.substring(0, temp.length() - 1);
-            application.setAreaId(temp);
-            currPage = 1;
-            getJobList(true);
-        }
+    ZonePopUpWindow.SelectCategory zoneCategory = type -> {
+        int len = type.size();
+        String temp = "";
+        for (int i = 0; i < len; i++)
+            temp += type.get(i) + ",";
+        temp = temp.substring(0, temp.length() - 1);
+        application.setAreaId(temp);
+        currPage = 1;
+        getJobList(true);
     };
 
-    SortPopUpWindow.SelectCategory sortCategory = new SortPopUpWindow.SelectCategory() {
-        @Override
-        public void selectCategory(List<Integer> type) {
-            application.setOrderType(type.get(0));
-            currPage = 1;
-            getJobList(true);
-        }
+    SortPopUpWindow.SelectCategory sortCategory = type -> {
+        application.setOrderType(type);
+        currPage = 1;
+        getJobList(true);
     };
 
 

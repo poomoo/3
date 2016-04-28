@@ -64,59 +64,51 @@ public class TypePopUpWindow extends PopupWindow {
         this.setBackgroundDrawable(dw);
 //        this.setAnimationStyle(R.style.mypopwindow_anim_style);
 
-        confirmBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                selected = new ArrayList<>();
-                for (int i = 0; i < adapter.getSparseArray().size(); i++) {
-                    if (adapter.getSparseArray().get(i)) {
-                        String temp[] = stringList.get(i).split("#");
-                        selected.add(temp.length == 2 ? temp[1] : "");
-                    }
-
+        confirmBtn.setOnClickListener(v -> {
+            selected = new ArrayList<>();
+            for (int i = 0; i < adapter.getIsCheckedMap().size(); i++) {
+                if (adapter.getIsCheckedMap().get(i)) {
+                    String temp[] = stringList.get(i).split("#");
+                    selected.add(temp.length == 2 ? temp[1] : "");
                 }
-                selectCategory.selectCategory(selected);
-                dismiss();
+
             }
+            selectCategory.selectCategory(selected);
+            dismiss();
         });
 
-        list_type.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (position == 0)
-                    adapter.initSparseArray();
-                else {
-                    if (adapter.getSparseArray().get(position))
-                        adapter.getSparseArray().put(position, false);
-                    else
-                        adapter.getSparseArray().put(position, true);
+        list_type.setOnItemClickListener((parent, view, position, id) -> {
+            if (position == 0)
+                adapter.initIsCheckedMap();
+            else {
+                JobTypeAdapter.ViewHolder holder = (JobTypeAdapter.ViewHolder) view.getTag();
+                // 改变CheckBox的状态
+                holder.checkBox.toggle();
+                // 将CheckBox的选中状况记录下来
+                adapter.getIsCheckedMap().put(position, holder.checkBox.isChecked());
 
-                    if (!adapter.hasChecked())
-                        adapter.getSparseArray().put(0, true);
-                    else
-                        adapter.getSparseArray().put(0, false);
+                if (!adapter.hasChecked())
+                    adapter.getIsCheckedMap().put(0, true);
+                else
+                    adapter.getIsCheckedMap().put(0, false);
 
-                    if (adapter.isAllChecked()) {
-                        adapter.initSparseArray();
-                        adapter.getSparseArray().put(0, true);
-                    }
-                }
-                adapter.notifyDataSetChanged();
+                if (adapter.isAllChecked())
+                    adapter.initIsCheckedMap();
+
             }
+            adapter.notifyDataSetChanged();
         });
 
-        mMenuView.setOnTouchListener(new View.OnTouchListener() {
-            public boolean onTouch(View v, MotionEvent event) {
-                int height_top = mMenuView.findViewById(R.id.llayout_type).getTop();
-                int height_bottom = mMenuView.findViewById(R.id.llayout_type).getBottom();
-                int y = (int) event.getY();
-                if (event.getAction() == MotionEvent.ACTION_UP) {
-                    if (y < height_top || y > height_bottom) {
-                        dismiss();
-                    }
+        mMenuView.setOnTouchListener((v, event) -> {
+            int height_top = mMenuView.findViewById(R.id.llayout_type).getTop();
+            int height_bottom = mMenuView.findViewById(R.id.llayout_type).getBottom();
+            int y = (int) event.getY();
+            if (event.getAction() == MotionEvent.ACTION_UP) {
+                if (y < height_top || y > height_bottom) {
+                    dismiss();
                 }
-                return true;
             }
+            return true;
         });
 
     }

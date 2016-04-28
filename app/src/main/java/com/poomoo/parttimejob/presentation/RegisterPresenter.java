@@ -9,7 +9,9 @@ import com.poomoo.api.NetConfig;
 import com.poomoo.api.Network;
 import com.poomoo.commlib.LogUtils;
 import com.poomoo.model.request.QCodeBO;
+import com.poomoo.model.request.QLoginBO;
 import com.poomoo.model.request.QRegisterBO;
+import com.poomoo.model.response.RUserBO;
 import com.poomoo.model.response.ResponseBO;
 import com.poomoo.parttimejob.view.RegisterView;
 
@@ -63,6 +65,31 @@ public class RegisterPresenter extends BasePresenter {
                     @Override
                     public void onNext(ResponseBO responseBO) {
                         registerView.registerFailed(responseBO.msg);
+                    }
+                }));
+    }
+
+    /**
+     * 登录
+     *
+     * @param tel
+     * @param password
+     * @param deviceNum
+     */
+    public void login(String tel, String password, String deviceNum) {
+        QLoginBO qLoginBO = new QLoginBO(NetConfig.USERACTION, NetConfig.LOGIN, tel, password, deviceNum, 1);
+        mSubscriptions.add(Network.getUserApi().login(qLoginBO)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new AbsAPICallback<RUserBO>() {
+                    @Override
+                    protected void onError(ApiException e) {
+                        registerView.loginFailed(e.getMessage());
+                    }
+
+                    @Override
+                    public void onNext(RUserBO rUserBO) {
+                        registerView.loginSucceed(rUserBO);
                     }
                 }));
     }
