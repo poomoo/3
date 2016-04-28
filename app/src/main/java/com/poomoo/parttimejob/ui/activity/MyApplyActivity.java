@@ -21,7 +21,7 @@ import com.poomoo.parttimejob.ui.fragment.TabFragment;
  */
 public class MyApplyActivity extends BaseActivity {
     int type;
-    public static TabFragment mTab;
+    private TabFragment mTab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -5,12 +5,15 @@ package com.poomoo.parttimejob.ui.fragment;
 
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.GridView;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
@@ -24,6 +27,7 @@ import com.poomoo.model.response.RTypeBO;
 import com.poomoo.parttimejob.R;
 import com.poomoo.parttimejob.adapter.BaseListAdapter;
 import com.poomoo.parttimejob.adapter.JobsAdapter;
+import com.poomoo.parttimejob.adapter.MainGridAdapter;
 import com.poomoo.parttimejob.event.Events;
 import com.poomoo.parttimejob.event.RxBus;
 import com.poomoo.parttimejob.listener.AdvertisementListener;
@@ -52,7 +56,7 @@ import butterknife.OnClick;
  * 作者: 李苜菲
  * 日期: 2016/3/22 16:23.
  */
-public class MainFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener, BaseListAdapter.OnLoadingListener, BaseListAdapter.OnItemClickListener, MainView {
+public class MainFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener, BaseListAdapter.OnLoadingListener, BaseListAdapter.OnItemClickListener, MainView, AdapterView.OnItemClickListener {
     @Bind(R.id.swipe_refresh)
     SwipeRefreshLayout swipeRefreshLayout;
     @Bind(R.id.recycler_main)
@@ -63,18 +67,11 @@ public class MainFragment extends BaseFragment implements SwipeRefreshLayout.OnR
     SlideShowView slideShowView;
     @Bind(R.id.txt_position)
     TextView cityTxt;
-
-//    @Bind(R.id.rBtn_1)
-//    RadioButton rBtn1;
-//    @Bind(R.id.rBtn_2)
-//    RadioButton rBtn2;
-//    @Bind(R.id.rBtn_3)
-//    RadioButton rBtn3;
-//    @Bind(R.id.rBtn_4)
-//    RadioButton rBtn4;
-
+    @Bind(R.id.grid_main)
+    GridView gridView;
 
     private JobsAdapter adapter;
+    private MainGridAdapter gridAdapter;
     private String[] urls;
     private RAdBO rAdBO;
     private int currPage = 1;
@@ -110,26 +107,21 @@ public class MainFragment extends BaseFragment implements SwipeRefreshLayout.OnR
         recyclerView.setAdapter(adapter);
         adapter.setOnLoadingListener(this);
         adapter.setOnItemClickListener(this);
-        appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
-            @Override
-            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+        appBarLayout.addOnOffsetChangedListener((appBarLayout1, verticalOffset) -> {
+            if (verticalOffset >= 0) {
+                swipeRefreshLayout.setEnabled(true);
+            } else {
+                swipeRefreshLayout.setEnabled(false);
+            }
+        });
+        swipeRefreshLayout.post(() -> swipeRefreshLayout.setRefreshing(true));
+        gridAdapter = new MainGridAdapter(getActivity());
+        gridView.setAdapter(gridAdapter);
+        gridView.setOnItemClickListener(this);
 
-                if (verticalOffset >= 0) {
-                    swipeRefreshLayout.setEnabled(true);
-                } else {
-                    swipeRefreshLayout.setEnabled(false);
-                }
-            }
-        });
-        swipeRefreshLayout.post(new Runnable() {
-            @Override
-            public void run() {
-                swipeRefreshLayout.setRefreshing(true);
-            }
-        });
         mainPresenter = new MainPresenter(this);
         mainPresenter.loadAd();
-//        mainPresenter.loadCate();
+        mainPresenter.loadCate();
         mainPresenter.queryRecommendJobs(currPage);
 
         initSubscribers();
@@ -161,33 +153,33 @@ public class MainFragment extends BaseFragment implements SwipeRefreshLayout.OnR
         }
     }
 
-    @OnClick({R.id.rBtn_1, R.id.rBtn_2, R.id.rBtn_3, R.id.rBtn_4})
-    void cate(View view) {
-        int cateId = 0;
-        String title = "";
-        switch (view.getId()) {
-            case R.id.rBtn_1:
-                cateId = 1;
-                title = getString(R.string.label_main1);
-                break;
-            case R.id.rBtn_2:
-                cateId = 2;
-                title = getString(R.string.label_main2);
-                break;
-            case R.id.rBtn_3:
-                cateId = 3;
-                title = getString(R.string.label_main3);
-                break;
-            case R.id.rBtn_4:
-                cateId = 4;
-                title = getString(R.string.label_main4);
-                break;
-        }
-        Bundle bundle = new Bundle();
-        bundle.putString(getString(R.string.intent_value), title);
-        bundle.putInt(getString(R.string.intent_cateId), cateId);
-        openActivity(JobListByCateActivity.class, bundle);
-    }
+//    @OnClick({R.id.rBtn_1, R.id.rBtn_2, R.id.rBtn_3, R.id.rBtn_4})
+//    void cate(View view) {
+//        int cateId = 0;
+//        String title = "";
+//        switch (view.getId()) {
+//            case R.id.rBtn_1:
+//                cateId = 1;
+//                title = getString(R.string.label_main1);
+//                break;
+//            case R.id.rBtn_2:
+//                cateId = 2;
+//                title = getString(R.string.label_main2);
+//                break;
+//            case R.id.rBtn_3:
+//                cateId = 3;
+//                title = getString(R.string.label_main3);
+//                break;
+//            case R.id.rBtn_4:
+//                cateId = 4;
+//                title = getString(R.string.label_main4);
+//                break;
+//        }
+//        Bundle bundle = new Bundle();
+//        bundle.putString(getString(R.string.intent_value), title);
+//        bundle.putInt(getString(R.string.intent_cateId), cateId);
+//        openActivity(JobListByCateActivity.class, bundle);
+//    }
 
     @Override
     public void onHiddenChanged(boolean hidden) {
@@ -225,8 +217,7 @@ public class MainFragment extends BaseFragment implements SwipeRefreshLayout.OnR
 
     @Override
     public void loadTypeSucceed(List<RTypeBO> rTypeBOs) {
-//        for (RTypeBO rTypeBO : rTypeBOs) {
-//        }
+        gridAdapter.setItems(rTypeBOs);
     }
 
     @Override
@@ -275,5 +266,14 @@ public class MainFragment extends BaseFragment implements SwipeRefreshLayout.OnR
         Bundle bundle = new Bundle();
         bundle.putInt(getString(R.string.intent_value), adapter.getItem(position).jobId);
         openActivity(JobInfoActivity.class, bundle);
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        RTypeBO rTypeBO = (RTypeBO) gridAdapter.getItem(position);
+        Bundle bundle = new Bundle();
+        bundle.putString(getString(R.string.intent_value), rTypeBO.name);
+        bundle.putInt(getString(R.string.intent_cateId), rTypeBO.cateId);
+        openActivity(JobListByCateActivity.class, bundle);
     }
 }
