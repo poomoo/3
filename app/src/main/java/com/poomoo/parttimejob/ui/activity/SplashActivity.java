@@ -28,13 +28,20 @@ public class SplashActivity extends BaseActivity {
     private static String DB_PATH = "/data/data/com.poomoo.parttimejob/databases/";
     private static String DB_NAME = "partTimeJob.db";
     private final static int SPLASH_DISPLAY_LENGTH = 3000;
+    private boolean isIndex = false;//是否需要引导
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         StatusBarUtil.setTransparent(this);
-        LogUtils.d(TAG, "onCreate");
-        start();
+        importDB();
+        isIndex = (boolean) SPUtils.get(getApplicationContext(), getString(R.string.sp_isIndex), true);
+        if (isIndex) {
+            openActivity(IndexViewPagerActivity.class);
+            SPUtils.put(getApplicationContext(), getString(R.string.sp_isIndex), false);
+            finish();
+        } else
+            start();
     }
 
     @Override
@@ -49,9 +56,6 @@ public class SplashActivity extends BaseActivity {
 
     public void start() {
         startService(new Intent(this, LocaleService.class));
-        LogUtils.d(TAG, "importDB1");
-        importDB();
-        LogUtils.d(TAG, "importDB2");
         new Handler().postDelayed(() -> {
             if (!(boolean) SPUtils.get(getApplicationContext(), getString(R.string.sp_isLogin), false)) {
                 openActivity(LoginActivity.class);

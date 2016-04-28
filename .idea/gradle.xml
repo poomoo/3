@@ -12,9 +12,7 @@
             <option value="$PROJECT_DIR$/api" />
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/commlib" />
-            <option value="$PROJECT_DIR$/flowlayout-lib" />
             <option value="$PROJECT_DIR$/model" />
-            <option value="$PROJECT_DIR$/togglebuttonlib" />
           </set>
         </option>
         <option name="myModules">
@@ -23,9 +21,7 @@
             <option value="$PROJECT_DIR$/api" />
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/commlib" />
-            <option value="$PROJECT_DIR$/flowlayout-lib" />
             <option value="$PROJECT_DIR$/model" />
-            <option value="$PROJECT_DIR$/togglebuttonlib" />
           </set>
         </option>
       </GradleProjectSettings>

@@ -430,7 +430,10 @@ public class ResumeActivity extends BaseActivity implements ResumeView {
         schoolName = schoolNameEdt.getText().toString().trim();
         workResume = workResumeEdt.getText().toString().trim();
         showProgressDialog(getString(R.string.dialog_msg));
-        resumePresenter.uploadPic(file);
+        if (file == null)
+            resumePresenter.changeResume(application.getUserId(), headPic, realName, sex, height, birthday, provinceId, cityId, areaId, schoolName, email, qqNum, application.getTel(), workResume, workExp);
+        else
+            resumePresenter.uploadPic(file);
     }
 
 

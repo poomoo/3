@@ -135,6 +135,7 @@
     <string name="sp_idPicture">idPicture</string>
     <string name="sp_currCityId">currCityId</string>
     <string name="sp_currCity">currCity</string>
+    <string name="sp_isIndex">isIndex</string>
     <!--SharedPreference-->
 
     <!--dialog-->

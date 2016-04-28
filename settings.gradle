@@ -1,1 +1,1 @@
-include ':app', ':model', ':commlib', ':api', ':togglebuttonlib', ':flowlayout-lib'
+include ':app', ':model', ':commlib', ':api'

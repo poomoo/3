@@ -110,6 +110,7 @@ public class JobFragment extends BaseFragment implements JobView, BaseListAdapte
     }
 
     private void initSubscribers() {
+        cityTxt.setText(application.getCurrCity());
         RxBus.with(this)
                 .setEvent(Events.EventEnum.DELIVER_CITY)
                 .setEndEvent(FragmentEvent.DESTROY)
@@ -243,8 +244,10 @@ public class JobFragment extends BaseFragment implements JobView, BaseListAdapte
             return;
         } else if (baseJobBOs.size() < Page.PAGE_SIZE) {
             adapter.setState(BaseListAdapter.STATE_NO_MORE);
+            errorLayout.setState(ErrorLayout.HIDE);
         } else {
             adapter.setState(BaseListAdapter.STATE_LOAD_MORE);
+            errorLayout.setState(ErrorLayout.HIDE);
         }
         Iterator<BaseJobBO> iterator = baseJobBOs.iterator();
         final List<BaseJobBO> data = adapter.getDataSet();

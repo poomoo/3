@@ -140,17 +140,11 @@ public class JobInfoActivity extends BaseActivity implements JobInfoView {
             MyUtils.showToast(getApplicationContext(), MyConfig.pleaseLogin);
             return;
         }
-        Dialog dialog = new AlertDialog.Builder(this).setMessage("拨打电话" + telTxt.getText()).setNegativeButton("取消", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-            }
-        }).setPositiveButton("确定", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + telTxt.getText().toString()));
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
-            }
+        Dialog dialog = new AlertDialog.Builder(this).setMessage("拨打电话" + telTxt.getText()).setNegativeButton("取消", (dialog1, which) -> {
+        }).setPositiveButton("确定", (dialog1, which) -> {
+            Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + telTxt.getText().toString()));
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
         }).create();
         dialog.show();
     }
@@ -254,7 +248,6 @@ public class JobInfoActivity extends BaseActivity implements JobInfoView {
     @Override
     public void collectSucceed(String msg) {
         MyUtils.showToast(getApplicationContext(), "收藏成功");
-//        collectImg.setImageDrawable(R.drawable.);
         collectTxt.setText("已收藏");
     }
 

@@ -28,7 +28,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:drawableTop="@mipmap/load_failed"
         android:text="@string/load_failed"
         android:textColor="@color/black"
         android:textSize="16sp"

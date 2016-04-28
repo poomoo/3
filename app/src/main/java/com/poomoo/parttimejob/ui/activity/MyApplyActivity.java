@@ -3,6 +3,7 @@
  */
 package com.poomoo.parttimejob.ui.activity;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
@@ -20,6 +21,7 @@ import com.poomoo.parttimejob.ui.fragment.TabFragment;
  */
 public class MyApplyActivity extends BaseActivity {
     int type;
+    public static TabFragment mTab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,9 +44,10 @@ public class MyApplyActivity extends BaseActivity {
     /**
      * 设置默认的页面
      */
+    @SuppressLint("ValidFragment")
     private void setDefaultMenuItem() {
         LogUtils.d(TAG, "setDefaultMenuItem");
-        final TabFragment mTab = new TabFragment() {
+        mTab = new TabFragment() {
             @Override
             public void onSetupTabs() {
                 addTab(getResources().getString(R.string.tab_apply_all), MyApplyFragment.class, RApplyJobBO.JOB_ALL);
@@ -55,7 +58,7 @@ public class MyApplyActivity extends BaseActivity {
             }
         };
         getSupportFragmentManager().beginTransaction()
-                .add(R.id.frame_container, mTab)
+                .replace(R.id.frame_container, mTab)
                 .commit();
     }
 }
