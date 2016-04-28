@@ -351,7 +351,7 @@ public class ResumeActivity extends BaseActivity implements ResumeView {
     };
 
     public void selectCity(View view) {
-        if (cityPopUpWindow == null) {
+        if (cityPopUpWindow == null && cityList.size() > 0) {
             cityPopUpWindow = new ProvincePopUpWindow(this, cityList, cityCategory);
         }
         if (cityList.size() > 0) {
@@ -382,7 +382,7 @@ public class ResumeActivity extends BaseActivity implements ResumeView {
     };
 
     public void selectArea(View view) {
-        if (areaPopUpWindow == null) {
+        if (areaPopUpWindow == null && areaList.size() > 0){
             areaPopUpWindow = new ProvincePopUpWindow(this, areaList, areaCategory);
         }
         if (areaList.size() > 0) {
@@ -467,6 +467,8 @@ public class ResumeActivity extends BaseActivity implements ResumeView {
         provinceId = rResumeBO.provinceId;
         cityId = rResumeBO.cityId;
         areaId = rResumeBO.areaId;
+        cityList = DataBaseHelper.getCity(provinceId);
+        areaList=DataBaseHelper.getArea(cityId);
         schoolName = rResumeBO.schoolName;
         email = rResumeBO.email;
         qqNum = rResumeBO.qqNum;
