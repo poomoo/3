@@ -111,9 +111,9 @@ public class MyUtils {
         int pos = 0;
         for (int i = 0; i < len; i++) {
             char a = pay.charAt(i);
-            LogUtils.d(TAG, "formatPay:" + i + "a:" + a);
+//            LogUtils.d(TAG, "formatPay:" + i + "a:" + a);
             if (!(a >= '0' && a <= '9')) {
-                LogUtils.d(TAG, "数字结束的位置:" + i);
+//                LogUtils.d(TAG, "数字结束的位置:" + i);
                 pos = i;
                 break;
             }
