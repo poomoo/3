@@ -16,6 +16,7 @@ public class RApplicantBO implements Serializable {
     public String height;//--求职意向
     public String intention;//--求职意向
     public String nickName;//--用户昵称
+    public String realName;//--用户昵称
     public int age;//--年龄
     public int userId;//--用户头像
     public String headPic;//--用户头像

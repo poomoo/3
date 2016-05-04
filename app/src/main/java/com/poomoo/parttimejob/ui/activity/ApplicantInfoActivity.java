@@ -52,7 +52,7 @@ public class ApplicantInfoActivity extends BaseActivity implements ApplicantInfo
 
     @Override
     protected String onSetTitle() {
-        return rApplicantBO.nickName;
+        return rApplicantBO.realName;
     }
 
     @Override

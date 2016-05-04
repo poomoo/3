@@ -41,7 +41,7 @@ public class ApplicantListAdapter extends BaseListAdapter<RApplicantBO> {
         LogUtils.d("ApplicantListAdapter", "onBindDefaultViewHolder:" + position);
         ViewHolder holder = (ViewHolder) h;
         RApplicantBO item = items.get(position);
-        holder.nameTxt.setText(item.nickName);
+        holder.nameTxt.setText(item.realName);
         if (item.sex == 1) {
             holder.sexTxt.setText("男　" + item.age);
             holder.sexTxt.setBackgroundResource(R.drawable.style_label_male);
