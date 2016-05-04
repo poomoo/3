@@ -95,12 +95,7 @@ public class ServiceFragment extends BaseFragment implements SwipeRefreshLayout.
         adapter.setOnItemClickListener(this);
         adapter.setOnLoadingListener(this);
         recyclerView.setAdapter(adapter);
-        swipeRefreshLayout.post(new Runnable() {
-            @Override
-            public void run() {
-                swipeRefreshLayout.setRefreshing(true);
-            }
-        });
+        swipeRefreshLayout.post(() -> swipeRefreshLayout.setRefreshing(true));
         servicePresenter = new ServicePresenter(this);
         servicePresenter.getServiceList();
     }

@@ -224,41 +224,33 @@ public class CityListActivity extends BaseActivity implements OnScrollListener {
         personList.setOnScrollListener(this);
         resultListAdapter = new ResultListAdapter(this, city_result);
         resultList.setAdapter(resultListAdapter);
-        resultList.setOnItemClickListener(new OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id) {
-                currentCity = city_result.get(position).cityName;
-                if (!locateCity.equals(currentCity)) {
-                    String title = "定位的城市是" + locateCity + ",是否跳转到" + currentCity + "?";
-                    Dialog dialog = new AlertDialog.Builder(CityListActivity.this).setMessage(title).setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            application.setCurrCity(currentCity);
+        resultList.setOnItemClickListener((parent, view, position, id) -> {
+            currentCity = city_result.get(position).cityName;
+            if (!locateCity.equals(currentCity)) {
+                String title = "定位的城市是" + locateCity + ",是否跳转到" + currentCity + "?";
+                Dialog dialog = new AlertDialog.Builder(CityListActivity.this).setMessage(title).setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        application.setCurrCity(currentCity);
 //                            HistoryCityInfo cityInfo = new HistoryCityInfo();
 //                            cityInfo.setCityName(currentCity);
 //                            MyUtils.saveHistoryCity(cityInfo);
-                            finish();
-                            getActivityOutToRight();
-                        }
-                    }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                        getActivityOutToRight();
+                    }
+                }).setNegativeButton("取消", (dialog1, which) -> {
 
-                        }
-                    }).create();
-                    dialog.show();
-                } else {
-                    application.setCurrCity(currentCity);
+                }).create();
+                dialog.show();
+            } else {
+                application.setCurrCity(currentCity);
 //                    HistoryCityInfo cityInfo = new HistoryCityInfo();
 //                    cityInfo.setCityName(currentCity);
 //                    MyUtils.saveHistoryCity(cityInfo);
-                    finish();
-                    getActivityOutToRight();
-                }
-
+                finish();
+                getActivityOutToRight();
             }
+
         });
         initOverlay();
         cityInit();
@@ -359,12 +351,7 @@ public class CityListActivity extends BaseActivity implements OnScrollListener {
                             provinceInfos.add(provinceInfo);
                         }
                         DataBaseHelper.saveProvince(provinceInfos);
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                initCity();
-                            }
-                        });
+                        runOnUiThread(() -> initCity());
 
                     }
                 });

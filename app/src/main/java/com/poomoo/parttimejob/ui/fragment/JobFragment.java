@@ -52,8 +52,6 @@ import butterknife.OnClick;
  * 日期: 2016/4/9 15:57.
  */
 public class JobFragment extends BaseFragment implements JobView, BaseListAdapter.OnLoadingListener, BaseListAdapter.OnItemClickListener, SwipeRefreshLayout.OnRefreshListener {
-    @Bind(R.id.txt_divider)
-    TextView dividerTxt;
     @Bind(R.id.recycler_view)
     RecyclerView recyclerView;
     @Bind(R.id.swipe_refresh)

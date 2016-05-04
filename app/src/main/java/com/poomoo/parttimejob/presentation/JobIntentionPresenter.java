@@ -1,5 +1,7 @@
 package com.poomoo.parttimejob.presentation;
 
+import android.text.TextUtils;
+
 import com.poomoo.api.AbsAPICallback;
 import com.poomoo.api.ApiException;
 import com.poomoo.api.NetConfig;
@@ -11,7 +13,11 @@ import com.poomoo.model.response.RIntentionBO;
 import com.poomoo.model.response.ResponseBO;
 import com.poomoo.parttimejob.view.JobIntentionView;
 
+import java.util.List;
+
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 /**
@@ -44,10 +50,31 @@ public class JobIntentionPresenter extends BasePresenter {
                 }));
     }
 
-    public void JobIntentionDown(int userId) {
+    public void JobIntentionDown(int userId, List<String> typeInfos) {
         QUserIdBO qUserIdBO = new QUserIdBO(NetConfig.USERACTION, NetConfig.INTENTIONDOWN, userId);
         mSubscriptions.add(Network.getUserApi().jobIntentionDown(qUserIdBO)
                 .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.computation())
+                .map(rIntentionBO -> {
+                    int len = rIntentionBO.cateList.size();
+                    for (int i = 0; i < len; i++) {
+                        if (rIntentionBO.cateList.get(i).selected)
+                            rIntentionBO.type.add(typeInfos.indexOf(rIntentionBO.cateList.get(i).cateName + "#" + rIntentionBO.cateList.get(i).cateId));
+                    }
+                    if (!TextUtils.isEmpty(rIntentionBO.workAreaId)) {
+                        String[] areaStr = rIntentionBO.workAreaId.split(",");
+                        len = areaStr.length;
+                        for (int i = 0; i < len; i++)
+                            rIntentionBO.area.add(Integer.parseInt(areaStr[i]));
+                    }
+                    if (!TextUtils.isEmpty(rIntentionBO.workDay)) {
+                        String[] workStr = rIntentionBO.workDay.split(",");
+                        len = workStr.length;
+                        for (int i = 0; i < len; i++)
+                            rIntentionBO.work.add(getPos(workStr[i]));
+                    }
+                    return rIntentionBO;
+                })
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new AbsAPICallback<RIntentionBO>() {
                     @Override
@@ -61,5 +88,11 @@ public class JobIntentionPresenter extends BasePresenter {
                     }
                 }));
 
+    }
+
+    private int getPos(String workday) {
+        int x = Integer.parseInt(workday.substring(0, 1));
+        int y = Integer.parseInt(workday.substring(1, 2));
+        return (x - 1) * 8 + (y + 8);
     }
 }

@@ -1,5 +1,6 @@
 package com.poomoo.model.response;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -10,6 +11,9 @@ public class RIntentionBO {
     public String workDay;
     public String workAreaId;
     public String otherInfo;
+    public List<Integer> type = new ArrayList<>();
+    public List<Integer> area = new ArrayList<>();
+    public List<Integer> work = new ArrayList<>();
 
     public class cate {
         public int cateId;
