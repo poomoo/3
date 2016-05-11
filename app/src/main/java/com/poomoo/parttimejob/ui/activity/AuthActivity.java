@@ -234,19 +234,23 @@ public class AuthActivity extends BaseActivity implements AuthView {
             return;
         }
         showProgressDialog(getString(R.string.dialog_msg));
-        authPresenter.uploadPic(file);
+        if (file != null)
+            authPresenter.uploadPic(file);
+        else {
+            idPic = (String) SPUtils.get(getApplicationContext(), getString(R.string.sp_idPicture), "");
+            authPresenter.auth(application.getUserId(), name, school, date, idNum, idPic);
+        }
     }
 
     @Override
     public void failed(String msg) {
         closeProgressDialog();
-
     }
 
     @Override
     public void upLoadSucceed(RUrl rUrl) {
         idPic = rUrl.picUrl;
-        authPresenter.auth(application.getUserId(), name, school, date, idNum, rUrl.picUrl);
+        authPresenter.auth(application.getUserId(), name, school, date, idNum, idPic);
     }
 
     @Override
@@ -258,6 +262,7 @@ public class AuthActivity extends BaseActivity implements AuthView {
         SPUtils.put(this, getString(R.string.sp_intoSchoolDt), date);
         SPUtils.put(this, getString(R.string.sp_idCardNum), idNum);
         SPUtils.put(this, getString(R.string.sp_idPicture), idPic);
+        SPUtils.put(this, getString(R.string.sp_isAuth), true);
         finish();
     }
 }

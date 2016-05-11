@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.poomoo.commlib.LogUtils;
 import com.poomoo.commlib.MyConfig;
+import com.poomoo.commlib.SPUtils;
 import com.poomoo.model.response.RApplyJobBO;
 import com.poomoo.parttimejob.R;
 import com.poomoo.parttimejob.event.Events;
@@ -84,7 +85,7 @@ public class PersonalFragment extends BaseFragment {
     }
 
     private void initView() {
-        LogUtils.d(TAG, "头像:"+application.getHeadPic());
+        LogUtils.d(TAG, "头像:" + application.getHeadPic());
         if (!TextUtils.isEmpty(application.getHeadPic())) {
             LogUtils.d(TAG, "有头像");
             Glide.with(this).load(application.getHeadPic()).into(avatarImg);
@@ -92,6 +93,8 @@ public class PersonalFragment extends BaseFragment {
 
         if (!TextUtils.isEmpty(application.getRealName()))
             nameTxt.setText(application.getRealName());
+        if ((boolean) SPUtils.get(getActivity().getApplicationContext(), getString(R.string.sp_isAuth), false))
+            authTxt.setText("实名认证中");
     }
 
     @OnClick({R.id.llayout_signed, R.id.llayout_hired, R.id.llayout_toPost, R.id.llayout_settleMent})

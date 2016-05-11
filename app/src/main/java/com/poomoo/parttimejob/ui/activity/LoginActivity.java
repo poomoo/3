@@ -45,15 +45,13 @@ public class LoginActivity extends BaseActivity implements LoginView {
 
         loginPresenter = new LoginPresenter(this);
         if ((boolean) SPUtils.get(getApplicationContext(), getString(R.string.sp_isRemember), false)) {
-            nameEdt.setText((String) SPUtils.get(getApplicationContext(), getString(R.string.sp_phoneNum), ""));
             passWordEdt.setText((String) SPUtils.get(getApplicationContext(), getString(R.string.sp_passWord), ""));
             rememberImg.setImageResource(R.drawable.ic_remember_password_yes);
         }
-//        initSubscribers();
+        nameEdt.setText((String) SPUtils.get(getApplicationContext(), getString(R.string.sp_phoneNum), ""));
         LogUtils.d(TAG, "头像:" + SPUtils.get(this, getString(R.string.sp_headPic), ""));
         if (!TextUtils.isEmpty((String) SPUtils.get(this, getString(R.string.sp_headPic), ""))) {
             Glide.with(this).load(SPUtils.get(this, getString(R.string.sp_headPic), "")).placeholder(R.drawable.ic_defalut_avatar).into(avatarImg);
-
         }
 
     }
@@ -151,10 +149,10 @@ public class LoginActivity extends BaseActivity implements LoginView {
     public void loginSucceed(RUserBO rUserBO) {
         closeProgressDialog();
         SPUtils.put(getApplicationContext(), getString(R.string.sp_isLogin), true);
-        if ((boolean) SPUtils.get(getApplicationContext(), getString(R.string.sp_isRemember), false)) {
-            SPUtils.put(getApplicationContext(), getString(R.string.sp_phoneNum), tel);
+        if ((boolean) SPUtils.get(getApplicationContext(), getString(R.string.sp_isRemember), false))
             SPUtils.put(getApplicationContext(), getString(R.string.sp_passWord), passWord);
-        }
+
+        SPUtils.put(getApplicationContext(), getString(R.string.sp_phoneNum), tel);
         this.application.setUserId(rUserBO.userId);
         this.application.setNickName(rUserBO.nickName);
         this.application.setRealName(rUserBO.realName);
