@@ -136,6 +136,7 @@
     <string name="sp_currCityId">currCityId</string>
     <string name="sp_currCity">currCity</string>
     <string name="sp_isIndex">isIndex</string>
+    <string name="sp_resumeId">resumeId</string>
     <!--SharedPreference-->
 
     <!--dialog-->

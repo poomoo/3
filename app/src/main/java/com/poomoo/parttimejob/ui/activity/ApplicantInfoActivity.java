@@ -61,7 +61,7 @@ public class ApplicantInfoActivity extends BaseActivity implements ApplicantInfo
     }
 
     private void initView() {
-        Glide.with(this).load(rApplicantBO.headPic).placeholder(R.drawable.ic_login_logo).into(avatarImg);
+        Glide.with(this).load(rApplicantBO.headPic).placeholder(R.drawable.ic_defalut_avatar).into(avatarImg);
         sexImg.setImageResource(rApplicantBO.sex == 1 ? R.drawable.ic_man : R.drawable.ic_woman);
         sexTxt.setText(rApplicantBO.sex == 1 ? "男 " + rApplicantBO.age : "女 " + rApplicantBO.age);
         sexTxt.setBackgroundResource(rApplicantBO.sex == 1 ? R.drawable.style_label_male : R.drawable.style_label_female);

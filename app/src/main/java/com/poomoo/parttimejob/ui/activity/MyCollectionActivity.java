@@ -22,6 +22,7 @@ import java.util.List;
  * 日期: 2016/4/16 15:32.
  */
 public class MyCollectionActivity extends BaseListActivity<BaseJobBO> implements BaseListAdapter.OnItemClickListener, JobListView {
+    private JobsAdapter adapter;
     private AllJobListPresenter allJobListPresenter;
 
     @Override
@@ -31,12 +32,13 @@ public class MyCollectionActivity extends BaseListActivity<BaseJobBO> implements
         mListView.setPadding(0, setDividerSize(), 0, 0);
         mAdapter.setOnItemClickListener(this);
         allJobListPresenter = new AllJobListPresenter(this);
-        allJobListPresenter.getCollectionList(1);
+        allJobListPresenter.getCollectionList(application.getUserId());
     }
 
     @Override
     protected BaseListAdapter<BaseJobBO> onSetupAdapter() {
-        return new JobsAdapter(this, BaseListAdapter.ONLY_FOOTER, false);
+        adapter=new JobsAdapter(this, BaseListAdapter.ONLY_FOOTER, false);
+        return adapter;
     }
 
     @Override
@@ -47,13 +49,13 @@ public class MyCollectionActivity extends BaseListActivity<BaseJobBO> implements
     @Override
     public void onRefresh() {
         super.onRefresh();
-        allJobListPresenter.getCollectionList(1);
+        allJobListPresenter.getCollectionList(application.getUserId());
     }
 
     @Override
     public void onLoadActiveClick() {
         super.onLoadActiveClick();
-        allJobListPresenter.getCollectionList(1);
+        allJobListPresenter.getCollectionList(application.getUserId());
     }
 
     @Override
@@ -72,6 +74,8 @@ public class MyCollectionActivity extends BaseListActivity<BaseJobBO> implements
 
     @Override
     public void onItemClick(int position, long id, View view) {
-
+        Bundle bundle = new Bundle();
+        bundle.putInt(getString(R.string.intent_value), adapter.getItem(position).jobId);
+        openActivity(JobInfoActivity.class, bundle);
     }
 }

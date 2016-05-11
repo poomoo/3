@@ -382,7 +382,7 @@ public class ResumeActivity extends BaseActivity implements ResumeView {
     };
 
     public void selectArea(View view) {
-        if (areaPopUpWindow == null && areaList.size() > 0){
+        if (areaPopUpWindow == null && areaList.size() > 0) {
             areaPopUpWindow = new ProvincePopUpWindow(this, areaList, areaCategory);
         }
         if (areaList.size() > 0) {
@@ -468,7 +468,7 @@ public class ResumeActivity extends BaseActivity implements ResumeView {
         cityId = rResumeBO.cityId;
         areaId = rResumeBO.areaId;
         cityList = DataBaseHelper.getCity(provinceId);
-        areaList=DataBaseHelper.getArea(cityId);
+        areaList = DataBaseHelper.getArea(cityId);
         schoolName = rResumeBO.schoolName;
         email = rResumeBO.email;
         qqNum = rResumeBO.qqNum;
@@ -482,7 +482,7 @@ public class ResumeActivity extends BaseActivity implements ResumeView {
         cityTxt.setText(city);
         areaTxt.setText(area);
 
-        Glide.with(this).load(headPic).placeholder(R.drawable.ic_login_logo).into(userAvatarImg);
+        Glide.with(this).load(headPic).placeholder(R.drawable.ic_defalut_avatar).into(userAvatarImg);
         nameEdt.setText(realName);
         if (sex == 1) manRbtn.setChecked(true);
         else womanRbtn.setChecked(true);
@@ -497,6 +497,7 @@ public class ResumeActivity extends BaseActivity implements ResumeView {
 
         SPUtils.put(this, getString(R.string.sp_headPic), headPic);
         SPUtils.put(this, getString(R.string.sp_realName), realName);
+        SPUtils.put(this, getString(R.string.sp_resumeId), rResumeBO.resumeId);
         application.setHeadPic(headPic);
         application.setRealName(realName);
 

@@ -79,6 +79,12 @@ public class JobInfoPresenter extends BasePresenter {
                 }));
     }
 
+    /**
+     * 收藏
+     *
+     * @param jobId
+     * @param userId
+     */
     public void collet(int jobId, int userId) {
         QCollectBO qCollectBO = new QCollectBO(NetConfig.JOBACTION, NetConfig.COLLECT, jobId, userId, 1);
         mSubscriptions.add(Network.getJobApi().collect(qCollectBO)
@@ -93,6 +99,28 @@ public class JobInfoPresenter extends BasePresenter {
                     @Override
                     public void onNext(ResponseBO responseBO) {
                         jobInfoView.collectSucceed(responseBO.msg);
+                    }
+                }));
+    }
+
+    /**
+     * 浏览
+     *
+     * @param jobId
+     * @param userId
+     */
+    public void browse(int jobId, int userId) {
+        QCollectBO qCollectBO = new QCollectBO(NetConfig.JOBACTION, NetConfig.COLLECT, jobId, userId, 2);
+        mSubscriptions.add(Network.getJobApi().collect(qCollectBO)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new AbsAPICallback<ResponseBO>() {
+                    @Override
+                    protected void onError(ApiException e) {
+                    }
+
+                    @Override
+                    public void onNext(ResponseBO responseBO) {
                     }
                 }));
     }

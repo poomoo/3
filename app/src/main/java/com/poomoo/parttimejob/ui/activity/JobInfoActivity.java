@@ -116,6 +116,7 @@ public class JobInfoActivity extends BaseActivity implements JobInfoView {
         jobId = getIntent().getIntExtra(getString(R.string.intent_value), -1);
         jobInfoPresenter.queryJobInfo(jobId);
         jobInfoPresenter.queryRecommendJobs(1);
+        jobInfoPresenter.browse(jobId,application.getUserId());
     }
 
     /**

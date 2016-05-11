@@ -35,7 +35,7 @@ public class GridAdapter extends MyBaseAdapter<RApplicantBO> {
         LogUtils.d(TAG, "getView:" + position + "rApplicantBO:" + rApplicantBO.headPic);
         convertView = inflater.inflate(R.layout.item_grid_test, null);
         viewHolder.image = (ImageView) convertView.findViewById(R.id.img_grid);
-        Glide.with(context).load(rApplicantBO.headPic).placeholder(R.drawable.ic_login_logo).into(viewHolder.image);
+        Glide.with(context).load(rApplicantBO.headPic).placeholder(R.drawable.ic_defalut_avatar).into(viewHolder.image);
         return convertView;
     }
 

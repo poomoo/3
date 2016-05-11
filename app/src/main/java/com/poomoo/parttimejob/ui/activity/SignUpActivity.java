@@ -9,7 +9,9 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.poomoo.commlib.LogUtils;
 import com.poomoo.commlib.MyUtils;
+import com.poomoo.commlib.SPUtils;
 import com.poomoo.parttimejob.R;
 import com.poomoo.parttimejob.presentation.SignUpPresenter;
 import com.poomoo.parttimejob.ui.base.BaseActivity;
@@ -65,6 +67,10 @@ public class SignUpActivity extends BaseActivity implements SignUpView {
      * @param view
      */
     public void toSignUp(View view) {
+        if ((Integer) SPUtils.get(getApplicationContext(), getString(R.string.sp_resumeId), 0) == 0) {
+            MyUtils.showToast(getApplicationContext(), "请先填写简历");
+            return;
+        }
         content = introduceEdt.getText().toString().trim();
         showProgressDialog(getString(R.string.dialog_msg));
         signUpPresenter.signUp(jobId, application.getUserId(), content);

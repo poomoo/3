@@ -57,6 +57,7 @@ public class MyApplyActivity extends BaseActivity {
                 addTab(getResources().getString(R.string.tab_apply_settlement), MyApplyFragment.class, RApplyJobBO.JOB_SETTLEMENT);
             }
         };
+        mTab.setPage(type);
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.frame_container, mTab)
                 .commit();

@@ -52,7 +52,7 @@ public class LoginActivity extends BaseActivity implements LoginView {
 //        initSubscribers();
         LogUtils.d(TAG, "头像:" + SPUtils.get(this, getString(R.string.sp_headPic), ""));
         if (!TextUtils.isEmpty((String) SPUtils.get(this, getString(R.string.sp_headPic), ""))) {
-            Glide.with(this).load(SPUtils.get(this, getString(R.string.sp_headPic), "")).placeholder(R.drawable.ic_login_logo).into(avatarImg);
+            Glide.with(this).load(SPUtils.get(this, getString(R.string.sp_headPic), "")).placeholder(R.drawable.ic_defalut_avatar).into(avatarImg);
 
         }
 

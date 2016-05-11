@@ -37,7 +37,7 @@ public class MainGridAdapter extends MyBaseAdapter<RTypeBO> {
         convertView = inflater.inflate(R.layout.item_grid_main, null);
         viewHolder.image = (ImageView) convertView.findViewById(R.id.img_main);
         viewHolder.txt = (TextView) convertView.findViewById(R.id.txt_main);
-        Glide.with(context).load(item.icon).placeholder(R.drawable.ic_login_logo).into(viewHolder.image);
+        Glide.with(context).load(item.icon).placeholder(R.drawable.ic_defalut_avatar).into(viewHolder.image);
         viewHolder.txt.setText(item.name);
         return convertView;
     }

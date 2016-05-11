@@ -6,9 +6,13 @@ import android.view.View;
 import com.poomoo.commlib.MyUtils;
 import com.poomoo.model.base.BaseJobBO;
 import com.poomoo.model.response.RApplyJobBO;
+import com.poomoo.model.response.RTypeBO;
+import com.poomoo.parttimejob.R;
 import com.poomoo.parttimejob.adapter.JobsAdapter;
 import com.poomoo.parttimejob.adapter.BaseListAdapter;
 import com.poomoo.parttimejob.presentation.AllJobListPresenter;
+import com.poomoo.parttimejob.ui.activity.JobInfoActivity;
+import com.poomoo.parttimejob.ui.activity.JobListByCateActivity;
 import com.poomoo.parttimejob.ui.base.BaseListFragment;
 import com.poomoo.parttimejob.view.JobListView;
 
@@ -21,6 +25,7 @@ import java.util.List;
 public class MyApplyFragment extends BaseListFragment<BaseJobBO> implements BaseListAdapter.OnItemClickListener, JobListView {
     public int mCatalog;
 
+    private JobsAdapter adapter;
     private AllJobListPresenter allJobListPresenter;
 
     @Override
@@ -31,7 +36,8 @@ public class MyApplyFragment extends BaseListFragment<BaseJobBO> implements Base
 
     @Override
     protected BaseListAdapter<BaseJobBO> onSetupAdapter() {
-        return new JobsAdapter(getActivity(), BaseListAdapter.ONLY_FOOTER, true);
+        adapter = new JobsAdapter(getActivity(), BaseListAdapter.ONLY_FOOTER, true);
+        return adapter;
     }
 
     @Override
@@ -45,13 +51,14 @@ public class MyApplyFragment extends BaseListFragment<BaseJobBO> implements Base
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         allJobListPresenter = new AllJobListPresenter(this);
-        allJobListPresenter.getApplyList(1, mCatalog);
+        allJobListPresenter.getApplyList(application.getUserId(), mCatalog);
     }
 
     @Override
     public void onItemClick(int position, long id, View view) {
-//        UIManager.redirectNewsActivity(getActivity(), mAdapter.getItem(position));
-        MyUtils.showToast(getActivity().getApplicationContext(), "onItemClick");
+        Bundle bundle = new Bundle();
+        bundle.putInt(getString(R.string.intent_value), adapter.getItem(position).jobId);
+        openActivity(JobInfoActivity.class, bundle);
     }
 
     @Override
@@ -74,7 +81,7 @@ public class MyApplyFragment extends BaseListFragment<BaseJobBO> implements Base
     @Override
     public void onRefresh() {
         super.onRefresh();
-        allJobListPresenter.getApplyList(1, mCatalog);
+        allJobListPresenter.getApplyList(application.getUserId(), mCatalog);
     }
 
 
@@ -84,7 +91,7 @@ public class MyApplyFragment extends BaseListFragment<BaseJobBO> implements Base
     @Override
     public void onLoadActiveClick() {
         super.onLoadActiveClick();
-        allJobListPresenter.getApplyList(1, mCatalog);
+        allJobListPresenter.getApplyList(application.getUserId(), mCatalog);
     }
 
 }

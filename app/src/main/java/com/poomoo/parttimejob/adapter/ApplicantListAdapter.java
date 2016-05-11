@@ -50,7 +50,7 @@ public class ApplicantListAdapter extends BaseListAdapter<RApplicantBO> {
             holder.sexTxt.setBackgroundResource(R.drawable.style_label_female);
         }
         holder.intentTxt.setText(item.intention);
-        Glide.with(mContext).load(item.headPic).placeholder(R.drawable.ic_login_logo).into(holder.avatarImg);
+        Glide.with(mContext).load(item.headPic).placeholder(R.drawable.ic_defalut_avatar).into(holder.avatarImg);
     }
 
     public static final class ViewHolder extends RecyclerView.ViewHolder {

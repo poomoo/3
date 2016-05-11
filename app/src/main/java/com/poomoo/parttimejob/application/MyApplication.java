@@ -37,6 +37,7 @@ public class MyApplication extends LitePalApplication {
     private String locateCity = "";//定位城市
     private String currCity = "";//展示城市
     private int currCityId;//展示城市id
+    private int resumeId;//简历id
 
     private double lat;//纬度
     private double lng;//经度
@@ -241,6 +242,14 @@ public class MyApplication extends LitePalApplication {
 
     public void setCurrCityId(int currCityId) {
         this.currCityId = currCityId;
+    }
+
+    public int getResumeId() {
+        return resumeId;
+    }
+
+    public void setResumeId(int resumeId) {
+        this.resumeId = resumeId;
     }
 
     public double getLat() {

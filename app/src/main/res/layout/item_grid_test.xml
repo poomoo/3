@@ -9,7 +9,7 @@
         android:id="@+id/img_grid"
         android:layout_width="46dp"
         android:layout_height="46dp"
-        android:src="@drawable/ic_login_logo" />
+        android:src="@drawable/ic_defalut_avatar" />
 
     <TextView
         android:layout_width="2dp"
