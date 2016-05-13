@@ -19,6 +19,7 @@ import android.widget.PopupWindow;
 
 import com.poomoo.parttimejob.R;
 import com.poomoo.parttimejob.adapter.JobTypeAdapter;
+import com.poomoo.parttimejob.ui.fragment.JobFragment;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -54,25 +55,22 @@ public class ZonePopUpWindow extends PopupWindow {
         this.setContentView(mMenuView);
         this.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
         this.setHeight(ViewGroup.LayoutParams.MATCH_PARENT);
-        this.setFocusable(true);
+//        this.setFocusable(true);
         ColorDrawable dw = new ColorDrawable(0x00000000);
         this.setBackgroundDrawable(dw);
 //        this.setAnimationStyle(R.style.mypopwindow_anim_style);
 
-        confirmBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                selected = new ArrayList<>();
-                for (int i = 0; i < adapter.getIsCheckedMap().size(); i++) {
-                    if (adapter.getIsCheckedMap().get(i)) {
-                        String temp[] = stringList.get(i).split("#");
-                        selected.add(temp.length == 2 ? temp[1] : "");
-                    }
-
+        confirmBtn.setOnClickListener(v -> {
+            selected = new ArrayList<>();
+            for (int i = 0; i < adapter.getIsCheckedMap().size(); i++) {
+                if (adapter.getIsCheckedMap().get(i)) {
+                    selected.add(stringList.get(i));
                 }
-                selectCategory.selectCategory(selected);
-                dismiss();
+
             }
+            selectCategory.selectCategory(selected);
+            adapter.setLastCheckedMap();
+            dismiss();
         });
 
         list_type.setOnItemClickListener((parent, view, position, id) -> {
@@ -97,20 +95,21 @@ public class ZonePopUpWindow extends PopupWindow {
             adapter.notifyDataSetChanged();
         });
 
-        mMenuView.setOnTouchListener(new View.OnTouchListener() {
-            public boolean onTouch(View v, MotionEvent event) {
-                int height_top = mMenuView.findViewById(R.id.llayout_type).getTop();
-                int height_bottom = mMenuView.findViewById(R.id.llayout_type).getBottom();
-                int y = (int) event.getY();
-                if (event.getAction() == MotionEvent.ACTION_UP) {
-                    if (y < height_top || y > height_bottom) {
-                        dismiss();
-                    }
+        mMenuView.setOnTouchListener((v, event) -> {
+            int height_top = mMenuView.findViewById(R.id.llayout_type).getTop();
+            int height_bottom = mMenuView.findViewById(R.id.llayout_type).getBottom();
+            int y = (int) event.getY();
+            if (event.getAction() == MotionEvent.ACTION_UP) {
+                if (y < height_top || y > height_bottom) {
+                    JobFragment.instance.closeOtherPop(null);
                 }
-                return true;
             }
+            return true;
         });
 
+        this.setOnDismissListener(() -> {
+            adapter.setIsCheckedMap();
+        });
     }
 
     /**

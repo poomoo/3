@@ -221,7 +221,7 @@ public class MyApplication extends LitePalApplication {
     }
 
     public String getLocateCity() {
-        return locateCity.replace("市", "");
+        return locateCity.length() > 0 ? locateCity.replace("市", "") : "";
     }
 
     public void setLocateCity(String locateCity) {
@@ -229,7 +229,7 @@ public class MyApplication extends LitePalApplication {
     }
 
     public String getCurrCity() {
-        return currCity.replace("市", "");
+        return currCity.length() > 0 ? currCity.replace("市", "") : "";
     }
 
     public void setCurrCity(String currCity) {

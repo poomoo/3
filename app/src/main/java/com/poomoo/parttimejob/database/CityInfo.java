@@ -14,14 +14,13 @@ import java.util.List;
 public class CityInfo extends DataSupport {
     private int cityId;
     private String cityName;
-    private ProvinceInfo provinceInfo;
-    private List<AreaInfo> areaInfoList = new ArrayList<AreaInfo>();
+    private int provinceId;
 
-//    public CityInfo(int cityId, String cityName, List<AreaInfo> areaInfoList) {
-//        this.cityId = cityId;
-//        this.cityName = cityName;
-//        this.areaInfoList = areaInfoList;
-//    }
+    public CityInfo(int cityId, String cityName, int provinceId) {
+        this.cityId = cityId;
+        this.cityName = cityName;
+        this.provinceId = provinceId;
+    }
 
     public int getCityId() {
         return cityId;
@@ -39,19 +38,11 @@ public class CityInfo extends DataSupport {
         this.cityName = cityName;
     }
 
-    public ProvinceInfo getProvinceInfo() {
-        return provinceInfo;
+    public int getProvinceId() {
+        return provinceId;
     }
 
-    public void setProvinceInfo(ProvinceInfo provinceInfo) {
-        this.provinceInfo = provinceInfo;
-    }
-
-    public List<AreaInfo> getAreaInfoList() {
-        return areaInfoList;
-    }
-
-    public void setAreaInfoList(List<AreaInfo> areaInfoList) {
-        this.areaInfoList = areaInfoList;
+    public void setProvinceId(int provinceId) {
+        this.provinceId = provinceId;
     }
 }

@@ -53,7 +53,8 @@ public class LoginActivity extends BaseActivity implements LoginView {
         if (!TextUtils.isEmpty((String) SPUtils.get(this, getString(R.string.sp_headPic), ""))) {
             Glide.with(this).load(SPUtils.get(this, getString(R.string.sp_headPic), "")).placeholder(R.drawable.ic_defalut_avatar).into(avatarImg);
         }
-
+        application.setCurrCityId((Integer) SPUtils.get(getApplicationContext(), getString(R.string.sp_currCityId), 1));
+        application.setCurrCity((String) SPUtils.get(getApplicationContext(), getString(R.string.sp_currCity), "贵阳"));
     }
 
     @Override

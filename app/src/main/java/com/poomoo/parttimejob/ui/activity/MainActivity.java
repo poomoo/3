@@ -124,6 +124,10 @@ public class MainActivity extends BaseActivity {
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         // TODO 自动生成的方法存根
         if (keyCode == KeyEvent.KEYCODE_BACK) {
+            if (curFragment == jobFragment) {
+                if (JobFragment.instance.onKeyDown(keyCode, event))
+                    return true;
+            }
             exitApp();
         }
         return true;
@@ -136,6 +140,7 @@ public class MainActivity extends BaseActivity {
             exitTime = System.currentTimeMillis();
         } else {
             finish();
+            System.exit(0);//正常退出App
         }
     }
 

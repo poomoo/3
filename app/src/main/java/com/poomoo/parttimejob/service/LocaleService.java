@@ -66,6 +66,7 @@ public class LocaleService extends Service {
 //                    + location.getLatitude() + "location.getCity():" + location.getCity());
             application.setLat(location.getLatitude());
             application.setLng(location.getLongitude());
+            application.setCurrCity(location.getCity());
         }
     }
 

@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
+import com.poomoo.commlib.LogUtils;
 import com.poomoo.parttimejob.R;
 
 import java.util.HashMap;
@@ -20,13 +21,14 @@ import java.util.Map;
  */
 public class JobTypeAdapter extends MyBaseAdapter<String> {
     private int len;
-    //    private isCheckedMap<Boolean> isCheckedMap = new isCheckedMap<>();
     private Map<Integer, Boolean> isCheckedMap = new HashMap<>();
+    private Map<Integer, Boolean> lastCheckedMap = new HashMap<>();//上一次的状态
 
     public JobTypeAdapter(Context context, int len) {
         super(context);
         this.len = len;
         initIsCheckedMap();
+        setLastCheckedMap();
     }
 
     @Override
@@ -82,5 +84,15 @@ public class JobTypeAdapter extends MyBaseAdapter<String> {
 
     public Map<Integer, Boolean> getIsCheckedMap() {
         return isCheckedMap;
+    }
+
+    public void setLastCheckedMap() {
+        this.lastCheckedMap.putAll(isCheckedMap);
+    }
+
+    public void setIsCheckedMap() {
+        this.isCheckedMap.putAll(lastCheckedMap);
+        notifyDataSetChanged();
+        LogUtils.d("JobTypeAdapter","setIsCheckedMap"+lastCheckedMap);
     }
 }

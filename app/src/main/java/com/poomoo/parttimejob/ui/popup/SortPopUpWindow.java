@@ -20,6 +20,7 @@ import android.widget.PopupWindow;
 import com.poomoo.commlib.MyConfig;
 import com.poomoo.parttimejob.R;
 import com.poomoo.parttimejob.adapter.JobTypeAdapter;
+import com.poomoo.parttimejob.ui.fragment.JobFragment;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -56,7 +57,7 @@ public class SortPopUpWindow extends PopupWindow {
         this.setContentView(mMenuView);
         this.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
         this.setHeight(ViewGroup.LayoutParams.MATCH_PARENT);
-        this.setFocusable(true);
+//        this.setFocusable(true);
         ColorDrawable dw = new ColorDrawable(0x00000000);
         this.setBackgroundDrawable(dw);
 
@@ -65,6 +66,7 @@ public class SortPopUpWindow extends PopupWindow {
             adapter.getIsCheckedMap().put(position, true);
             adapter.notifyDataSetChanged();
             selectCategory.selectCategory((position + 1));
+            adapter.setLastCheckedMap();
             dismiss();
         });
 
@@ -74,12 +76,15 @@ public class SortPopUpWindow extends PopupWindow {
             int y = (int) event.getY();
             if (event.getAction() == MotionEvent.ACTION_UP) {
                 if (y < height_top || y > height_bottom) {
-                    dismiss();
+                    JobFragment.instance.closeOtherPop(null);
                 }
             }
             return true;
         });
 
+        this.setOnDismissListener(() -> {
+            adapter.setIsCheckedMap();
+        });
     }
 
     /**

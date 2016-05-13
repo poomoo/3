@@ -11,20 +11,12 @@ import org.litepal.crud.DataSupport;
 public class AreaInfo extends DataSupport {
     private int areaId;
     private String areaName;
-    private CityInfo cityInfo;
+    private int cityId;
 
-    public AreaInfo(int areaId, String areaName, CityInfo cityInfo) {
+    public AreaInfo(int areaId, String areaName, int cityId) {
         this.areaId = areaId;
         this.areaName = areaName;
-        this.cityInfo = cityInfo;
-    }
-
-    public CityInfo getCityInfo() {
-        return cityInfo;
-    }
-
-    public void setCityInfo(CityInfo cityInfo) {
-        this.cityInfo = cityInfo;
+        this.cityId = cityId;
     }
 
     public int getAreaId() {
@@ -41,5 +33,13 @@ public class AreaInfo extends DataSupport {
 
     public void setAreaName(String areaName) {
         this.areaName = areaName;
+    }
+
+    public int getCityId() {
+        return cityId;
+    }
+
+    public void setCityId(int cityId) {
+        this.cityId = cityId;
     }
 }

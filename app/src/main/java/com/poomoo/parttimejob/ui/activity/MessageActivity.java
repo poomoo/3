@@ -137,7 +137,8 @@ public class MessageActivity extends BaseActivity implements MessageView {
         adapter.clear();
         LogUtils.d(TAG, "rMessageBOList:" + rMessageBOList + "len:" + rMessageBOList.size());
         adapter.addItems(0, rMessageBOList);
-        recyclerView.smoothScrollToPosition(rMessageBOList.size() - 1);
+        if (rMessageBOList.size() > 0)
+            recyclerView.smoothScrollToPosition(rMessageBOList.size() - 1);
     }
 
     @Override

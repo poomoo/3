@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.poomoo.commlib.LogUtils;
 import com.poomoo.commlib.MyUtils;
+import com.poomoo.commlib.SPUtils;
 import com.poomoo.model.Page;
 import com.poomoo.model.base.BaseJobBO;
 import com.poomoo.model.response.RAdBO;
@@ -135,6 +136,8 @@ public class MainFragment extends BaseFragment implements SwipeRefreshLayout.OnR
                 .onNext((events) -> {
                     LogUtils.d(TAG, "initSubscribers onNext");
                     cityTxt.setText(application.getCurrCity());
+                    SPUtils.put(getActivity().getApplicationContext(), getString(R.string.sp_currCity), application.getCurrCity());
+                    SPUtils.put(getActivity().getApplicationContext(), getString(R.string.sp_currCityId), application.getCurrCityId());
                 }).create();
     }
 

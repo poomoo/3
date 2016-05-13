@@ -3,24 +3,11 @@
 package com.poomoo.api;
 
 
-import android.util.Log;
-
-import com.google.gson.Gson;
 import com.poomoo.api.api.CommApi;
 import com.poomoo.api.api.JobApi;
 import com.poomoo.api.api.UploadApi;
 import com.poomoo.api.api.UserApi;
-import com.poomoo.model.response.ResponseBO;
 
-import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;

@@ -75,35 +75,31 @@
             android:gravity="center"
             android:orientation="horizontal"
             android:paddingBottom="8dp"
-            android:paddingTop="8dp">
+            android:paddingTop="8dp"
+            android:visibility="gone">
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
 
             <RadioButton
                 android:id="@+id/rbtn_type"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:button="@null"
                 android:checked="true"
                 android:drawableRight="@drawable/selector_arrow_down"
                 android:gravity="center"
+                android:maxLength="5"
                 android:singleLine="true"
                 android:text="@string/tab_type"
                 android:textColor="@drawable/selector_navigation_filter_text_background"
                 android:textSize="16sp" />
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="2" />
 
             <RadioButton
                 android:id="@+id/rbtn_zone"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:button="@null"
                 android:checked="false"
                 android:drawableRight="@drawable/selector_arrow_down"
@@ -113,15 +109,12 @@
                 android:textColor="@drawable/selector_navigation_filter_text_background"
                 android:textSize="16sp" />
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="2" />
 
             <RadioButton
                 android:id="@+id/rbtn_sort"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:button="@null"
                 android:drawableRight="@drawable/selector_arrow_down"
                 android:gravity="center"
@@ -130,12 +123,79 @@
                 android:textColor="@drawable/selector_navigation_filter_text_background"
                 android:textSize="16sp" />
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
 
         </RadioGroup>
+
+        <LinearLayout
+            android:id="@+id/llayout_type"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/white"
+            android:gravity="center"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp">
+
+            <CheckedTextView
+                android:id="@+id/txt_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableRight="@drawable/selector_arrow_down"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:paddingLeft="4dp"
+                android:paddingRight="4dp"
+                android:text="@string/tab_type"
+                android:textColor="@drawable/selector_navigation_filter_text_background"
+                android:textSize="16sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/llayout_zone"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/white"
+            android:gravity="center">
+
+            <CheckedTextView
+                android:id="@+id/txt_zone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableRight="@drawable/selector_arrow_down"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:paddingLeft="4dp"
+                android:paddingRight="4dp"
+                android:text="@string/tab_zone"
+                android:textColor="@drawable/selector_navigation_filter_text_background"
+                android:textSize="16sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/llayout_sort"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/white"
+            android:gravity="center">
+
+            <CheckedTextView
+                android:id="@+id/txt_sort"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableRight="@drawable/selector_arrow_down"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:paddingLeft="4dp"
+                android:paddingRight="4dp"
+                android:text="@string/tab_sort"
+                android:textColor="@drawable/selector_navigation_filter_text_background"
+                android:textSize="16sp" />
+
+        </LinearLayout>
 
         <TextView
             android:id="@+id/txt_toFilter"

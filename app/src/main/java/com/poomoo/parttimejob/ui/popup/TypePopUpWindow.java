@@ -9,6 +9,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -20,9 +21,11 @@ import android.widget.ListView;
 import android.widget.PopupWindow;
 
 import com.poomoo.commlib.LogUtils;
+import com.poomoo.commlib.MyUtils;
 import com.poomoo.parttimejob.R;
 import com.poomoo.parttimejob.adapter.BaseListAdapter;
 import com.poomoo.parttimejob.adapter.JobTypeAdapter;
+import com.poomoo.parttimejob.ui.fragment.JobFragment;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 
 import java.util.ArrayList;
@@ -59,7 +62,7 @@ public class TypePopUpWindow extends PopupWindow {
         this.setContentView(mMenuView);
         this.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
         this.setHeight(ViewGroup.LayoutParams.MATCH_PARENT);
-        this.setFocusable(true);
+//        this.setFocusable(true);
         ColorDrawable dw = new ColorDrawable(0x00000000);
         this.setBackgroundDrawable(dw);
 //        this.setAnimationStyle(R.style.mypopwindow_anim_style);
@@ -68,12 +71,11 @@ public class TypePopUpWindow extends PopupWindow {
             selected = new ArrayList<>();
             for (int i = 0; i < adapter.getIsCheckedMap().size(); i++) {
                 if (adapter.getIsCheckedMap().get(i)) {
-                    String temp[] = stringList.get(i).split("#");
-                    selected.add(temp.length == 2 ? temp[1] : "");
+                    selected.add(stringList.get(i));
                 }
-
             }
             selectCategory.selectCategory(selected);
+            adapter.setLastCheckedMap();
             dismiss();
         });
 
@@ -86,7 +88,6 @@ public class TypePopUpWindow extends PopupWindow {
                 holder.checkBox.toggle();
                 // 将CheckBox的选中状况记录下来
                 adapter.getIsCheckedMap().put(position, holder.checkBox.isChecked());
-
                 if (!adapter.hasChecked())
                     adapter.getIsCheckedMap().put(0, true);
                 else
@@ -94,7 +95,6 @@ public class TypePopUpWindow extends PopupWindow {
 
                 if (adapter.isAllChecked())
                     adapter.initIsCheckedMap();
-
             }
             adapter.notifyDataSetChanged();
         });
@@ -105,10 +105,14 @@ public class TypePopUpWindow extends PopupWindow {
             int y = (int) event.getY();
             if (event.getAction() == MotionEvent.ACTION_UP) {
                 if (y < height_top || y > height_bottom) {
-                    dismiss();
+                    JobFragment.instance.closeOtherPop(null);
                 }
             }
             return true;
+        });
+
+        this.setOnDismissListener(() -> {
+            adapter.setIsCheckedMap();
         });
 
     }

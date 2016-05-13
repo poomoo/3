@@ -88,7 +88,7 @@ public class PersonalFragment extends BaseFragment {
         LogUtils.d(TAG, "头像:" + application.getHeadPic());
         if (!TextUtils.isEmpty(application.getHeadPic())) {
             LogUtils.d(TAG, "有头像");
-            Glide.with(this).load(application.getHeadPic()).into(avatarImg);
+            Glide.with(this).load(application.getHeadPic()).placeholder(R.drawable.ic_defalut_avatar).into(avatarImg);
         }
 
         if (!TextUtils.isEmpty(application.getRealName()))

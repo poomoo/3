@@ -5,16 +5,22 @@ package com.poomoo.parttimejob.ui.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.widget.PopupWindowCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckedTextView;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.poomoo.commlib.LogUtils;
+import com.poomoo.commlib.MyConfig;
 import com.poomoo.commlib.MyUtils;
+import com.poomoo.commlib.SPUtils;
 import com.poomoo.model.Page;
 import com.poomoo.model.base.BaseJobBO;
 import com.poomoo.model.response.RTypeBO;
@@ -60,6 +66,14 @@ public class JobFragment extends BaseFragment implements JobView, BaseListAdapte
     ErrorLayout errorLayout;
     @Bind(R.id.txt_position)
     TextView cityTxt;
+    @Bind(R.id.txt_type)
+    CheckedTextView typeTxt;
+    @Bind(R.id.txt_zone)
+    CheckedTextView zoneTxt;
+    @Bind(R.id.txt_sort)
+    CheckedTextView sortTxt;
+    @Bind(R.id.txt_divider)
+    TextView dividerTxt;
 
     private TypePopUpWindow typePopUpWindow = null;
     private ZonePopUpWindow zonePopUpWindow = null;
@@ -68,6 +82,7 @@ public class JobFragment extends BaseFragment implements JobView, BaseListAdapte
     private JobListPresenter jobListPresenter;
     private int currPage = 1;
     private JobsAdapter adapter;
+    public static JobFragment instance;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -79,11 +94,11 @@ public class JobFragment extends BaseFragment implements JobView, BaseListAdapte
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
         initView();
     }
 
     private void initView() {
+        instance = this;
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         recyclerView.addItemDecoration(new HorizontalDividerItemDecoration.Builder(getActivity())
                 .color(getResources().getColor(R.color.transparent))
@@ -122,68 +137,133 @@ public class JobFragment extends BaseFragment implements JobView, BaseListAdapte
                     application.setAreaId("");
                     application.setCateId("");
                     getJobList(true);
+                    SPUtils.put(getActivity().getApplicationContext(), getString(R.string.sp_currCity), application.getCurrCity());
+                    SPUtils.put(getActivity().getApplicationContext(), getString(R.string.sp_currCityId), application.getCurrCityId());
                 }).create();
     }
 
 
-    @OnClick({R.id.rbtn_type, R.id.rbtn_zone, R.id.rbtn_sort, R.id.txt_toFilter})
+    @OnClick({R.id.llayout_type, R.id.llayout_zone, R.id.llayout_sort, R.id.txt_toFilter})
     void select(View view) {
         switch (view.getId()) {
-            case R.id.rbtn_type:
+            case R.id.llayout_type:
                 if (typePopUpWindow == null)
                     typePopUpWindow = new TypePopUpWindow(getActivity(), DataBaseHelper.getType(), typeCategory);
-                typePopUpWindow.showAsDropDown(view);
+                closeOtherPop(typePopUpWindow);
+                if (typeTxt.isChecked())
+                    typePopUpWindow.dismiss();
+                else
+                    typePopUpWindow.showAsDropDown(dividerTxt);
+                typeTxt.toggle();
                 break;
-            case R.id.rbtn_zone:
+            case R.id.llayout_zone:
                 if (zonePopUpWindow == null)
                     zonePopUpWindow = new ZonePopUpWindow(getActivity(), DataBaseHelper.getCityAndArea(application.getCurrCity(), application.getCurrCityId()), zoneCategory);
-                zonePopUpWindow.showAsDropDown(view);
+                closeOtherPop(zonePopUpWindow);
+                if (zoneTxt.isChecked())
+                    zonePopUpWindow.dismiss();
+                else
+                    zonePopUpWindow.showAsDropDown(dividerTxt);
+                zoneTxt.toggle();
                 break;
-            case R.id.rbtn_sort:
+            case R.id.llayout_sort:
                 if (sortPopUpWindow == null)
                     sortPopUpWindow = new SortPopUpWindow(getActivity(), sortCategory);
-                sortPopUpWindow.showAsDropDown(view);
+                closeOtherPop(sortPopUpWindow);
+                if (sortTxt.isChecked())
+                    sortPopUpWindow.dismiss();
+                else
+                    sortPopUpWindow.showAsDropDown(dividerTxt);
+                sortTxt.toggle();
                 break;
             case R.id.txt_toFilter:
+                closeOtherPop(null);
                 openActivityForResult(FilterActivity.class, 1);
                 break;
         }
 
     }
 
+    public void closeOtherPop(PopupWindow popupWindow) {
+        if (typePopUpWindow != null && typePopUpWindow.isShowing() && typePopUpWindow != popupWindow) {
+            typePopUpWindow.dismiss();
+            typeTxt.toggle();
+        }
+
+        if (zonePopUpWindow != null && zonePopUpWindow.isShowing() && zonePopUpWindow != popupWindow) {
+            zonePopUpWindow.dismiss();
+            zoneTxt.toggle();
+        }
+
+        if (sortPopUpWindow != null && sortPopUpWindow.isShowing() && sortPopUpWindow != popupWindow) {
+            sortPopUpWindow.dismiss();
+            sortTxt.toggle();
+        }
+    }
+
+    private boolean isShowing() {
+        if (typePopUpWindow != null && typePopUpWindow.isShowing())
+            return true;
+        if (zonePopUpWindow != null && zonePopUpWindow.isShowing())
+            return true;
+        if (sortPopUpWindow != null && sortPopUpWindow.isShowing())
+            return true;
+        return false;
+    }
+
     TypePopUpWindow.SelectCategory typeCategory = type -> {
+        typeTxt.toggle();
         int len = type.size();
-        String temp = "";
-        for (int i = 0; i < len; i++)
-            temp += type.get(i) + ",";
-        LogUtils.d(TAG, "selectCategory:" + temp);
-        temp = temp.substring(0, temp.length() - 1);
-        LogUtils.d(TAG, "selectCategory2:" + temp);
-        application.setCateId(temp);
+        String name = "";
+        String id = "";
+        for (int i = 0; i < len; i++) {
+            String temp[] = type.get(i).split("#");
+            id += temp.length == 2 ? temp[1] + "," : "";
+            name += temp.length == 2 ? temp[0] + "/" : "类型";
+        }
+        LogUtils.d(TAG, "TYPE name" + name + "id" + id);
+        if (id.length() > 0)
+            id = id.substring(0, id.length() - 1);
+        if (name.length() > 0 && !name.equals("类型"))
+            name = name.substring(0, name.length() - 1);
+        application.setCateId(id);
         currPage = 1;
         getJobList(true);
+        typeTxt.setText(name);
     };
 
     ZonePopUpWindow.SelectCategory zoneCategory = type -> {
+        zoneTxt.toggle();
         int len = type.size();
-        String temp = "";
-        for (int i = 0; i < len; i++)
-            temp += type.get(i) + ",";
-        temp = temp.substring(0, temp.length() - 1);
-        application.setAreaId(temp);
+        String id = "";
+        String name = "";
+        for (int i = 0; i < len; i++) {
+            String temp[] = type.get(i).split("#");
+            id += temp.length == 2 ? temp[1] + "," : "";
+            name += temp.length == 2 ? temp[0] + "/" : "区域";
+        }
+        if (id.length() > 0)
+            id = id.substring(0, id.length() - 1);
+        if (name.length() > 0 && !name.equals("类型"))
+            name = name.substring(0, name.length() - 1);
+        application.setAreaId(id);
         currPage = 1;
         getJobList(true);
+        zoneTxt.setText(name);
     };
 
     SortPopUpWindow.SelectCategory sortCategory = type -> {
+        sortTxt.toggle();
         application.setOrderType(type);
         currPage = 1;
         getJobList(true);
+        sortTxt.setText(MyConfig.sortType[type - 1]);
     };
 
 
     @OnClick(R.id.llayout_city2)
     void click() {
+        closeOtherPop(null);
         openActivity(CityListActivity.class);
     }
 
@@ -285,6 +365,18 @@ public class JobFragment extends BaseFragment implements JobView, BaseListAdapte
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == 1)
             getJobList(true);
+    }
+
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        // TODO Auto-generated method stub
+        if (keyCode == event.KEYCODE_BACK) {
+            if (isShowing()) {
+                closeOtherPop(null);
+                return true;
+            } else
+                return false;
+        }
+        return true;
     }
 
 }

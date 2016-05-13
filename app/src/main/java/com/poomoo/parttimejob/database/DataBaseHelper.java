@@ -19,6 +19,7 @@ import java.util.List;
 public class DataBaseHelper {
     private static final String TAG = "DateBaseHelper";
 
+
     /**
      * 保存省份到本地
      *
@@ -26,7 +27,7 @@ public class DataBaseHelper {
      */
     public static void saveProvince(List<ProvinceInfo> provinceInfos) {
         for (ProvinceInfo provinceInfo : provinceInfos) {
-            Cursor cursor = DataSupport.findBySQL("select * from ProvinceInfo where provinceId =?", provinceInfo.getProvinceId() + "");
+            Cursor cursor = DataSupport.findBySQL("select * from ProvinceInfo where provinceId = ?", provinceInfo.getProvinceId() + "");
             if (cursor.getCount() == 0)
                 provinceInfo.save();
             cursor.close();
@@ -41,7 +42,7 @@ public class DataBaseHelper {
      */
     public static void saveCity(List<CityInfo> cityInfos) {
         for (CityInfo cityInfo : cityInfos) {
-            Cursor cursor = DataSupport.findBySQL("select * from CityInfo where cityId = ? and provinceInfo_id = ?", cityInfo.getCityId() + "", cityInfo.getProvinceInfo().getProvinceId() + "");
+            Cursor cursor = DataSupport.findBySQL("select * from CityInfo where cityId = ? and provinceId = ?", cityInfo.getCityId() + "", cityInfo.getProvinceId() + "");
             if (cursor.getCount() == 0)
                 cityInfo.save();
             cursor.close();
@@ -56,9 +57,12 @@ public class DataBaseHelper {
      */
     public static void saveArea(List<AreaInfo> areaInfos) {
         for (AreaInfo areaInfo : areaInfos) {
-            Cursor cursor = DataSupport.findBySQL("select * from AreaInfo where cityInfo_id = ? and areaId=?", areaInfo.getCityInfo().getCityId() + "", areaInfo.getAreaId() + "");
-            if (cursor.getCount() == 0)
+            LogUtils.d(TAG, "areaInfo:" + areaInfo.getAreaId() + ":" + areaInfo.getAreaName());
+            Cursor cursor = DataSupport.findBySQL("select * from AreaInfo where cityId = ? and areaId = ?", areaInfo.getCityId() + "", areaInfo.getAreaId() + "");
+            if (cursor.getCount() == 0) {
                 areaInfo.save();
+                LogUtils.d(TAG, "areaInfo" + areaInfo.getAreaName() + ":" + areaInfo.toString());
+            }
             cursor.close();
         }
         LogUtils.d(TAG, "saveArea完成");
@@ -105,7 +109,7 @@ public class DataBaseHelper {
      * @return
      */
     public static List<CityInfo> getCityList(int provinceId) {
-        List<CityInfo> cityList = DataSupport.where("provinceinfo_id = ?", provinceId + "").find(CityInfo.class);
+        List<CityInfo> cityList = DataSupport.where("provinceid = ?", provinceId + "").find(CityInfo.class);
         return cityList;
     }
 
@@ -117,7 +121,7 @@ public class DataBaseHelper {
      */
     public static List<AreaInfo> getAreaList(int cityId) {
         LogUtils.d(TAG, "getAreaList:" + cityId);
-        List<AreaInfo> areaList = DataSupport.where("cityinfo_id = ?", cityId + "").find(AreaInfo.class);
+        List<AreaInfo> areaList = DataSupport.where("cityId = ?", cityId + "").find(AreaInfo.class);
         return areaList;
     }
 
@@ -195,15 +199,30 @@ public class DataBaseHelper {
         cursor.moveToFirst();
         temp[0] = cursor.getString(0);
         LogUtils.d(TAG, "province:" + temp[0]);
-        cursor = DataSupport.findBySQL("select cityName from CityInfo where provinceinfo_id = ? and cityId = ?", provinceId + "", cityId + "");
+        cursor = DataSupport.findBySQL("select cityName from CityInfo where provinceId = ? and cityId = ?", provinceId + "", cityId + "");
         cursor.moveToFirst();
         temp[1] = cursor.getString(0);
         LogUtils.d(TAG, "city:" + temp[1]);
-        cursor = DataSupport.findBySQL("select areaName from AreaInfo where cityinfo_id = ? and areaId = ?", cityId + "", areaId + "");
+        cursor = DataSupport.findBySQL("select areaName from AreaInfo where cityId = ? and areaId = ?", cityId + "", areaId + "");
         cursor.moveToFirst();
         temp[2] = cursor.getString(0);
         LogUtils.d(TAG, "area:" + temp[2]);
         cursor.close();
         return temp;
+    }
+
+    /**
+     * 根据城市名查询城市ID
+     *
+     * @param cityName
+     * @return
+     */
+    public static int getCityId(String cityName) {
+        Cursor cursor = DataSupport.findBySQL("select cityId from CityInfo where cityName like '" + cityName + "%'");
+        cursor.moveToFirst();
+        if (cursor.getCount() > 0)
+            return cursor.getInt(0);
+        cursor.close();
+        return 0;
     }
 }

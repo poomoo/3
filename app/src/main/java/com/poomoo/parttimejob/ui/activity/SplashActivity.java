@@ -39,6 +39,7 @@ public class SplashActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         StatusBarUtil.setTransparent(this);
         importDB();
+        startService(new Intent(this, LocaleService.class));
         isIndex = (boolean) SPUtils.get(getApplicationContext(), getString(R.string.sp_isIndex), true);
         if (isIndex) {
             openActivity(IndexViewPagerActivity.class);
@@ -59,28 +60,25 @@ public class SplashActivity extends BaseActivity {
     }
 
     public void start() {
-        startService(new Intent(this, LocaleService.class));
         new Handler().postDelayed(() -> {
             if (!(boolean) SPUtils.get(getApplicationContext(), getString(R.string.sp_isLogin), false)) {
                 openActivity(LoginActivity.class);
-                application.setCurrCityId((Integer) SPUtils.get(getApplicationContext(), getString(R.string.sp_currCityId), 1));
-                application.setCurrCity((String) SPUtils.get(getApplicationContext(), getString(R.string.sp_currCityId), "贵阳"));
                 finish();
             } else {
                 application.setCurrCityId((Integer) SPUtils.get(getApplicationContext(), getString(R.string.sp_currCityId), 1));
-                application.setCurrCity((String) SPUtils.get(getApplicationContext(), getString(R.string.sp_currCityId), "贵阳"));
+                application.setCurrCity((String) SPUtils.get(getApplicationContext(), getString(R.string.sp_currCity), "贵阳"));
                 application.setUserId((Integer) SPUtils.get(getApplicationContext(), getString(R.string.sp_userId), 0));
                 application.setNickName((String) SPUtils.get(getApplicationContext(), getString(R.string.sp_nickName), ""));
                 application.setRealName((String) SPUtils.get(getApplicationContext(), getString(R.string.sp_realName), ""));
                 application.setTel((String) SPUtils.get(getApplicationContext(), getString(R.string.sp_phoneNum), ""));
                 application.setIdCardNum((String) SPUtils.get(getApplicationContext(), getString(R.string.sp_idCardNum), ""));
                 application.setHeadPic((String) SPUtils.get(getApplicationContext(), getString(R.string.sp_headPic), ""));
-                LogUtils.d(TAG, "HeadPic:" + application.getHeadPic());
-                LogUtils.d(TAG, "CurrCityId:" + application.getCurrCityId());
                 application.setLogin(true);
                 openActivity(MainActivity.class);
                 finish();
             }
+            LogUtils.d(TAG, "HeadPic:" + application.getHeadPic());
+            LogUtils.d(TAG, "CurrCityId:" + application.getCurrCityId());
         }, SPLASH_DISPLAY_LENGTH);
     }
 

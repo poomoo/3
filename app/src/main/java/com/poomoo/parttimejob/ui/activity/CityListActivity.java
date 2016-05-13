@@ -6,7 +6,6 @@ package com.poomoo.parttimejob.ui.activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.graphics.PixelFormat;
 import android.os.Bundle;
 import android.os.Handler;
@@ -19,8 +18,6 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.GridView;
@@ -32,7 +29,6 @@ import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
-import com.hp.hpl.sparta.xpath.PositionEqualsExpr;
 import com.poomoo.api.AbsAPICallback;
 import com.poomoo.api.ApiException;
 import com.poomoo.api.NetConfig;
@@ -60,7 +56,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 /**
@@ -226,30 +221,36 @@ public class CityListActivity extends BaseActivity implements OnScrollListener {
         resultList.setAdapter(resultListAdapter);
         resultList.setOnItemClickListener((parent, view, position, id) -> {
             currentCity = city_result.get(position).cityName;
-            if (!locateCity.equals(currentCity)) {
-                String title = "定位的城市是" + locateCity + ",是否跳转到" + currentCity + "?";
-                Dialog dialog = new AlertDialog.Builder(CityListActivity.this).setMessage(title).setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        application.setCurrCity(currentCity);
-//                            HistoryCityInfo cityInfo = new HistoryCityInfo();
-//                            cityInfo.setCityName(currentCity);
-//                            MyUtils.saveHistoryCity(cityInfo);
-                        finish();
-                        getActivityOutToRight();
-                    }
-                }).setNegativeButton("取消", (dialog1, which) -> {
-
-                }).create();
-                dialog.show();
-            } else {
-                application.setCurrCity(currentCity);
-//                    HistoryCityInfo cityInfo = new HistoryCityInfo();
-//                    cityInfo.setCityName(currentCity);
-//                    MyUtils.saveHistoryCity(cityInfo);
-                finish();
-                getActivityOutToRight();
-            }
+            currentCityId = city_result.get(position).cityId;
+            application.setCurrCity(currentCity);
+            application.setCurrCityId(currentCityId);
+            RxBus.getInstance().send(Events.EventEnum.DELIVER_CITY, null);
+            finish();
+            getActivityOutToRight();
+//            if (!locateCity.equals(currentCity)) {
+//                String title = "定位的城市是" + locateCity + ",是否跳转到" + currentCity + "?";
+//                Dialog dialog = new AlertDialog.Builder(CityListActivity.this).setMessage(title).setPositiveButton("确定", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        application.setCurrCity(currentCity);
+////                            HistoryCityInfo cityInfo = new HistoryCityInfo();
+////                            cityInfo.setCityName(currentCity);
+////                            MyUtils.saveHistoryCity(cityInfo);
+//                        finish();
+//                        getActivityOutToRight();
+//                    }
+//                }).setNegativeButton("取消", (dialog1, which) -> {
+//
+//                }).create();
+//                dialog.show();
+//            } else {
+//                application.setCurrCity(currentCity);
+////                    HistoryCityInfo cityInfo = new HistoryCityInfo();
+////                    cityInfo.setCityName(currentCity);
+////                    MyUtils.saveHistoryCity(cityInfo);
+//                finish();
+//                getActivityOutToRight();
+//            }
 
         });
         initOverlay();
@@ -325,29 +326,21 @@ public class CityListActivity extends BaseActivity implements OnScrollListener {
                         provinceInfos = new ArrayList<>();
                         int index = 0;
                         for (RAreaBO rAreaBO : rAreaBOs) {
-                            ProvinceInfo provinceInfo = new ProvinceInfo();
-                            provinceInfo.setProvinceId(rAreaBOs.get(index).provinceId);
-                            provinceInfo.setProvinceName(rAreaBOs.get(index++).provinceName);
+                            ProvinceInfo provinceInfo = new ProvinceInfo(rAreaBOs.get(index).provinceId, rAreaBOs.get(index++).provinceName);
                             int len = rAreaBO.cityList.size();
                             LogUtils.d(TAG, rAreaBO + ":" + len + "index:" + index + "rAreaBOs:" + rAreaBOs.size());
                             cityInfos = new ArrayList<>();
                             for (int i = 0; i < len; i++) {
-                                CityInfo cityInfo = new CityInfo();
-                                cityInfo.setCityId(rAreaBO.cityList.get(i).cityId);
-                                cityInfo.setCityName(rAreaBO.cityList.get(i).cityName);
-
+                                CityInfo cityInfo = new CityInfo(rAreaBO.cityList.get(i).cityId, rAreaBO.cityList.get(i).cityName, provinceInfo.getProvinceId());
                                 city_lists.add(rAreaBO.cityList.get(i));
                                 int len2 = rAreaBO.cityList.get(i).areaList.size();
                                 areaInfos = new ArrayList<>();
                                 for (int j = 0; j < len2; j++)
-                                    areaInfos.add(new AreaInfo(city_lists.get(i).areaList.get(j).areaId, city_lists.get(i).areaList.get(j).areaName, cityInfo));
+                                    areaInfos.add(new AreaInfo(city_lists.get(i).areaList.get(j).areaId, city_lists.get(i).areaList.get(j).areaName, cityInfo.getCityId()));
                                 DataBaseHelper.saveArea(areaInfos);
-                                cityInfo.setAreaInfoList(areaInfos);
-                                cityInfo.setProvinceInfo(provinceInfo);
                                 cityInfos.add(cityInfo);
                             }
                             DataBaseHelper.saveCity(cityInfos);
-                            provinceInfo.setCityInfoList(cityInfos);
                             provinceInfos.add(provinceInfo);
                         }
                         DataBaseHelper.saveProvince(provinceInfos);
@@ -566,26 +559,22 @@ public class CityListActivity extends BaseActivity implements OnScrollListener {
                 convertView = inflater.inflate(R.layout.frist_list_item, null);
                 TextView locateHint = (TextView) convertView.findViewById(R.id.locateHint);
                 city = (TextView) convertView.findViewById(R.id.lng_city);
-                city.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (locateProcess == 2) {
-                            application.setCurrCity(city.getText().toString());
-//                            HistoryCityInfo cityInfo = new HistoryCityInfo();
-//                            cityInfo.setCityName(locateCity);
-//                            MyUtils.saveHistoryCity(cityInfo);
-                            finish();
-                            getActivityOutToRight();
-                        } else if (locateProcess == 3) {
-                            locateProcess = 1;
-                            personList.setAdapter(adapter);
-                            adapter.notifyDataSetChanged();
-                            mLocationClient.stop();
-                            isNeedFresh = true;
-                            initLocation();
-                            locateCity = "";
-                            mLocationClient.start();
-                        }
+                city.setOnClickListener(v -> {
+                    if (locateProcess == 2) {
+                        application.setCurrCity(city.getText().toString());
+                        application.setCurrCityId(DataBaseHelper.getCityId(application.getCurrCity()));
+                        RxBus.getInstance().send(Events.EventEnum.DELIVER_CITY, null);
+                        finish();
+                        getActivityOutToRight();
+                    } else if (locateProcess == 3) {
+                        locateProcess = 1;
+                        personList.setAdapter(adapter);
+                        adapter.notifyDataSetChanged();
+                        mLocationClient.stop();
+                        isNeedFresh = true;
+                        initLocation();
+                        locateCity = "";
+                        mLocationClient.start();
                     }
                 });
                 ProgressBar pbLocate = (ProgressBar) convertView.findViewById(R.id.pbLocate);
@@ -609,41 +598,30 @@ public class CityListActivity extends BaseActivity implements OnScrollListener {
             } else if (viewType == 1) {
                 convertView = inflater.inflate(R.layout.recent_city, null);
                 GridView hotCity = (GridView) convertView.findViewById(R.id.recent_city);
-                hotCity.setOnItemClickListener(new OnItemClickListener() {
+                hotCity.setOnItemClickListener((parent1, view, position1, id) -> {
 
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view,
-                                            int position, long id) {
-
-                        currentCity = city_hot.get(position).cityName;
-                        LogUtils.i(TAG, "热门城市:" + "currentCity" + currentCity + "locateCity:" + locateCity);
-                        if (!locateCity.equals(currentCity)) {
-                            String message = "定位的城市是" + locateCity + ",是否跳转到" + currentCity + "?";
-                            Dialog dialog = new AlertDialog.Builder(CityListActivity.this).setMessage(message).setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    application.setCurrCity(currentCity);
+                    currentCity = city_hot.get(position1).cityName;
+                    LogUtils.i(TAG, "热门城市:" + "currentCity" + currentCity + "locateCity:" + locateCity);
+                    if (!locateCity.equals(currentCity)) {
+                        String message = "定位的城市是" + locateCity + ",是否跳转到" + currentCity + "?";
+                        Dialog dialog = new AlertDialog.Builder(CityListActivity.this).setMessage(message).setPositiveButton("确定", (dialog1, which) -> {
+                            application.setCurrCity(currentCity);
 //                                    HistoryCityInfo cityInfo = new HistoryCityInfo();
 //                                    cityInfo.setCityName(currentCity);
 //                                    MyUtils.saveHistoryCity(cityInfo);
-                                    finish();
-                                    getActivityOutToRight();
-                                }
-                            }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
+                            finish();
+                            getActivityOutToRight();
+                        }).setNegativeButton("取消", (dialog1, which) -> {
 
-                                }
-                            }).create();
-                            dialog.show();
-                        } else {
-                            application.setCurrCity(currentCity);
+                        }).create();
+                        dialog.show();
+                    } else {
+                        application.setCurrCity(currentCity);
 //                            HistoryCityInfo cityInfo = new HistoryCityInfo();
 //                            cityInfo.setCityName(currentCity);
 //                            MyUtils.saveHistoryCity(cityInfo);
-                            finish();
-                            getActivityOutToRight();
-                        }
+                        finish();
+                        getActivityOutToRight();
                     }
                 });
                 hotCity.setAdapter(new HotCityAdapter(context, this.hotList));

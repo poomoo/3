@@ -35,7 +35,7 @@ public class ServiceListAdapter extends BaseListAdapter<RServiceBO> {
         holder.nameTxt.setText(item.sysNickName);
         holder.dateTxt.setText(item.pushDt);
         holder.contentTxt.setText(item.content);
-        Glide.with(mContext).load(item.headPic).into(holder.avatarImg);
+        Glide.with(mContext).load(item.headPic).placeholder(R.drawable.ic_defalut_avatar).into(holder.avatarImg);
     }
 
     public static final class ServiceViewHolder extends RecyclerView.ViewHolder {
