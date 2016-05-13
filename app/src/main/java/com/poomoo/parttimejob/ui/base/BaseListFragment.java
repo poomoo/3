@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.poomoo.commlib.MyUtils;
-import com.poomoo.model.Entity;
 import com.poomoo.model.Page;
 import com.poomoo.parttimejob.R;
 import com.poomoo.parttimejob.adapter.BaseListAdapter;
@@ -24,7 +23,7 @@ import java.util.List;
 /**
  * @param <T>
  */
-public abstract class BaseListFragment<T extends Entity> extends BaseFragment
+public abstract class BaseListFragment<T> extends BaseFragment
         implements SwipeRefreshLayout.OnRefreshListener, ErrorLayout.OnActiveClickListener, BaseListAdapter.OnLoadingListener {
 
     protected static final String BUNDLE_STATE_REFRESH = "BUNDLE_STATE_REFRESH";
@@ -148,18 +147,6 @@ public abstract class BaseListFragment<T extends Entity> extends BaseFragment
             mAdapter.setState(BaseListAdapter.STATE_NO_MORE);
         } else {
             mAdapter.setState(BaseListAdapter.STATE_LOAD_MORE);
-        }
-        Iterator<T> iterator = result.iterator();
-        final List<T> data = mAdapter.getDataSet();
-        while (iterator.hasNext()) {
-            T obj = iterator.next();
-            for (int i = 0; i < data.size(); i++) {
-                if (data.get(i).getId().equals(obj.getId())) {
-                    data.set(i, obj);
-                    iterator.remove();
-                    break;
-                }
-            }
         }
         if (mCurrentPage == 0)
             mAdapter.addItems(0, result);

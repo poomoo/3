@@ -38,8 +38,8 @@ public class JobInfoPresenter extends BasePresenter {
      *
      * @param jobId
      */
-    public void queryJobInfo(int jobId) {
-        QJobInfoBO qJobInfoBO = new QJobInfoBO(NetConfig.JOBACTION, NetConfig.JOBINFO, jobId);
+    public void queryJobInfo(int jobId,int userId) {
+        QJobInfoBO qJobInfoBO = new QJobInfoBO(NetConfig.JOBACTION, NetConfig.JOBINFO, jobId,userId);
         mSubscriptions.add(Network.getJobApi().jobInfo(qJobInfoBO)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

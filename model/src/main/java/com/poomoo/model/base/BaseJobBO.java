@@ -3,13 +3,11 @@
  */
 package com.poomoo.model.base;
 
-import com.poomoo.model.Entity;
-
 /**
  * 作者: 李苜菲
  * 日期: 2016/4/15 15:20.
  */
-public class BaseJobBO extends Entity {
+public class BaseJobBO {
     public int jobId;//职位编号
     public String companyId;//企业编号
     public String jobName;//职位名称
@@ -22,6 +20,7 @@ public class BaseJobBO extends Entity {
     public String startWorkDt;//开始工作时间
     public String workSycle;//工作周期（0：不限，1：长期兼职，2：短期兼职，3：周末兼职）
     public String cityId;//城市编号
+    public String cityName;//城市名字
     public String areaId;//区域编号
     public double lat;//纬度
     public double lng;//经度
@@ -35,4 +34,5 @@ public class BaseJobBO extends Entity {
     public String applyDt;//申请时间
     public String collectDt;//收藏时间
     public String icon;
+    public String showPoiMsg;
 }

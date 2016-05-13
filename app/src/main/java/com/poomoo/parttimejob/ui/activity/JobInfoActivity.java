@@ -5,7 +5,6 @@ package com.poomoo.parttimejob.ui.activity;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -19,7 +18,6 @@ import android.widget.TextView;
 
 import com.poomoo.commlib.MyConfig;
 import com.poomoo.commlib.MyUtils;
-import com.poomoo.model.Page;
 import com.poomoo.model.base.BaseJobBO;
 import com.poomoo.model.response.RApplicantBO;
 import com.poomoo.model.response.RJobInfoBO;
@@ -34,7 +32,6 @@ import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import butterknife.Bind;
@@ -72,6 +69,8 @@ public class JobInfoActivity extends BaseActivity implements JobInfoView {
     ImageView collectImg;
     @Bind(R.id.txt_collet)
     TextView collectTxt;
+    @Bind(R.id.llayout_collect)
+    LinearLayout collectLlayout;
 
     private JobInfoPresenter jobInfoPresenter;
     private int[] pics = {R.drawable.ic_1, R.drawable.ic_2, R.drawable.ic_3, R.drawable.ic_4};
@@ -114,9 +113,9 @@ public class JobInfoActivity extends BaseActivity implements JobInfoView {
         jobInfoPresenter = new JobInfoPresenter(this);
         showProgressDialog(getString(R.string.dialog_msg));
         jobId = getIntent().getIntExtra(getString(R.string.intent_value), -1);
-        jobInfoPresenter.queryJobInfo(jobId);
+        jobInfoPresenter.queryJobInfo(jobId, application.getUserId());
         jobInfoPresenter.queryRecommendJobs(1);
-        jobInfoPresenter.browse(jobId,application.getUserId());
+        jobInfoPresenter.browse(jobId, application.getUserId());
     }
 
     /**
@@ -215,10 +214,14 @@ public class JobInfoActivity extends BaseActivity implements JobInfoView {
         jobNameTxt.setText(rJobInfoBO.jobName);
         jobTypeTxt.setText(rJobInfoBO.cateName);
         jobSexTxt.setText(rJobInfoBO.sexReq);
-        jobAreaTxt.setText(rJobInfoBO.areaName);
+        jobAreaTxt.setText(rJobInfoBO.areaName != null ? rJobInfoBO.areaName : rJobInfoBO.cityName);
         jobPubDateTxt.setText(rJobInfoBO.publishDt);
         jobDescTxt.setText(rJobInfoBO.jobDesc);
         telTxt.setText(rJobInfoBO.contactTel);
+        if (rJobInfoBO.isCollect) {
+            collectTxt.setText("已收藏");
+            collectLlayout.setClickable(false);
+        }
 
         adapter = new GridAdapter(this);
         gridView.setAdapter(adapter);

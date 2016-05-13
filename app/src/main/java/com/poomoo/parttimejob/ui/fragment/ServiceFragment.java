@@ -144,18 +144,6 @@ public class ServiceFragment extends BaseFragment implements SwipeRefreshLayout.
         } else {
             adapter.setState(BaseListAdapter.STATE_LOAD_MORE);
         }
-        Iterator<RServiceBO> iterator = rServiceBOs.iterator();
-        final List<RServiceBO> data = adapter.getDataSet();
-        while (iterator.hasNext()) {
-            RServiceBO obj = iterator.next();
-            for (int i = 0; i < data.size(); i++) {
-                if (data.get(i).getId().equals(obj.getId())) {
-                    data.set(i, obj);
-                    iterator.remove();
-                    break;
-                }
-            }
-        }
         if (currPage == 1)
             adapter.addItems(0, rServiceBOs);
         else

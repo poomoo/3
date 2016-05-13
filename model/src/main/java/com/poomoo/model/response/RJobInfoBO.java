@@ -14,6 +14,7 @@ import java.util.List;
 public class RJobInfoBO extends BaseJobBO {
     public int browseNum;
     public String cateName;
+    public boolean isCollect;
     public List<RApplicantBO> applyList;//--职位申请报名列表
 
 

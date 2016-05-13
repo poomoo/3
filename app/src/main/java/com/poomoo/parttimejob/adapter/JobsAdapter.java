@@ -41,7 +41,7 @@ public class JobsAdapter extends BaseListAdapter<BaseJobBO> {
         Glide.with(mContext).load(item.icon).into(holder.picImg);
         holder.jobNameTxt.setText(item.jobName);
         holder.payTxt.setText(MyUtils.formatPay(item.pay, true));
-        holder.areaTxt.setText(item.areaName);
+        holder.areaTxt.setText(item.areaName != null ? item.areaName : item.cityName);
         if (!TextUtils.isEmpty(item.applyDt))
             holder.dateTxt.setText(item.applyDt);
         else if (!TextUtils.isEmpty(item.publishDt))

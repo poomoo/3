@@ -7,9 +7,13 @@ import com.poomoo.model.base.BaseRequestBO;
  */
 public class QCateBO extends BaseRequestBO{
     public int cateId;
+    public int pageNum;
+    public int pageSize;
 
-    public QCateBO(String bizName, String method, int cateId) {
+    public QCateBO(String bizName, String method, int cateId, int pageNum, int pageSize) {
         super(bizName, method);
         this.cateId = cateId;
+        this.pageNum = pageNum;
+        this.pageSize = pageSize;
     }
 }

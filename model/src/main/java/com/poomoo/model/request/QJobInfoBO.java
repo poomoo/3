@@ -11,9 +11,11 @@ import com.poomoo.model.base.BaseRequestBO;
  */
 public class QJobInfoBO extends BaseRequestBO {
     public int jobId;
+    public int userId;
 
-    public QJobInfoBO(String bizName, String method, int jobId) {
+    public QJobInfoBO(String bizName, String method, int jobId, int userId) {
         super(bizName, method);
         this.jobId = jobId;
+        this.userId = userId;
     }
 }

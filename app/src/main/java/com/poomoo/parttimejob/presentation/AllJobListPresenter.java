@@ -81,22 +81,22 @@ public class AllJobListPresenter extends BasePresenter {
     /**
      * 按类型查询
      */
-    public void getJobListByCate(int cateId){
-        QCateBO qCateBO=new QCateBO(NetConfig.JOBACTION,NetConfig.CATEJOBLIST,cateId);
+    public void getJobListByCate(int cateId, int currPage) {
+        QCateBO qCateBO = new QCateBO(NetConfig.JOBACTION, NetConfig.CATEJOBLIST, cateId, currPage, Page.PAGE_SIZE);
         mSubscriptions.add(Network.getJobApi().getJobByCate(qCateBO)
-        .subscribeOn(Schedulers.io())
-        .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(new AbsAPICallback<List<BaseJobBO>>() {
-            @Override
-            protected void onError(ApiException e) {
-                jobListView.failed(e.getMessage());
-            }
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new AbsAPICallback<List<BaseJobBO>>() {
+                    @Override
+                    protected void onError(ApiException e) {
+                        jobListView.failed(e.getMessage());
+                    }
 
-            @Override
-            public void onNext(List<BaseJobBO> baseJobBOs) {
-                jobListView.succeed(baseJobBOs);
-            }
-        }));
+                    @Override
+                    public void onNext(List<BaseJobBO> baseJobBOs) {
+                        jobListView.succeed(baseJobBOs);
+                    }
+                }));
 
     }
 

@@ -10,7 +10,6 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
 import com.poomoo.commlib.MyUtils;
-import com.poomoo.model.Entity;
 import com.poomoo.model.Page;
 import com.poomoo.parttimejob.R;
 import com.poomoo.parttimejob.adapter.BaseListAdapter;
@@ -24,13 +23,13 @@ import java.util.List;
  * 作者: 李苜菲
  * 日期: 2016/4/16 15:34.
  */
-public abstract class BaseListActivity<T extends Entity> extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener, ErrorLayout.OnActiveClickListener, BaseListAdapter.OnLoadingListener {
+public abstract class BaseListActivity<T> extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener, ErrorLayout.OnActiveClickListener, BaseListAdapter.OnLoadingListener {
 
     protected SwipeRefreshLayout mSwipeRefreshLayout;
     protected RecyclerView mListView;
     protected ErrorLayout mErrorLayout;
 
-    protected int mCurrentPage = 0;
+    protected int mCurrentPage = 1;
     protected BaseListAdapter<T> mAdapter;
 
     public static final int STATE_NONE = 0;
@@ -113,7 +112,7 @@ public abstract class BaseListActivity<T extends Entity> extends BaseActivity im
     public void onLoadResultData(List<T> result) {
         if (result == null) return;
 
-        if (mCurrentPage == 0)
+        if (mCurrentPage == 1)
             mAdapter.clear();
 
         if (mAdapter.getDataSize() + result.size() == 0) {
@@ -127,22 +126,11 @@ public abstract class BaseListActivity<T extends Entity> extends BaseActivity im
         } else {
             mAdapter.setState(BaseListAdapter.STATE_LOAD_MORE);
         }
-        Iterator<T> iterator = result.iterator();
-        final List<T> data = mAdapter.getDataSet();
-        while (iterator.hasNext()) {
-            T obj = iterator.next();
-            for (int i = 0; i < data.size(); i++) {
-                if (data.get(i).getId().equals(obj.getId())) {
-                    data.set(i, obj);
-                    iterator.remove();
-                    break;
-                }
-            }
-        }
-        if (mCurrentPage == 0)
+        if (mCurrentPage == 1)
             mAdapter.addItems(0, result);
         else
             mAdapter.addItems(result);
+        mCurrentPage++;
     }
 
 
@@ -264,10 +252,7 @@ public abstract class BaseListActivity<T extends Entity> extends BaseActivity im
             mAdapter.setState(BaseListAdapter.STATE_REFRESHING);
             return;
         }
-        mCurrentPage++;
         mAdapter.setState(BaseListAdapter.STATE_LOADING);
-        Log.d("thanatos", "change adapter state");
-//        getPresenter().requestData(LOAD_MODE_UP_DRAG, mCurrentPage);
     }
 
     /**

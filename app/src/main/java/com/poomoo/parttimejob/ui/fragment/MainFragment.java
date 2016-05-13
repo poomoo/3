@@ -231,18 +231,6 @@ public class MainFragment extends BaseFragment implements SwipeRefreshLayout.OnR
         } else {
             adapter.setState(BaseListAdapter.STATE_LOAD_MORE);
         }
-        Iterator<BaseJobBO> iterator = rAdBOs.iterator();
-        final List<BaseJobBO> data = adapter.getDataSet();
-        while (iterator.hasNext()) {
-            BaseJobBO obj = iterator.next();
-            for (int i = 0; i < data.size(); i++) {
-                if (data.get(i).getId().equals(obj.getId())) {
-                    data.set(i, obj);
-                    iterator.remove();
-                    break;
-                }
-            }
-        }
         if (currPage == 1)
             adapter.addItems(0, rAdBOs);
         else

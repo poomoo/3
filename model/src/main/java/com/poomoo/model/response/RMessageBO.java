@@ -3,13 +3,11 @@
  */
 package com.poomoo.model.response;
 
-import com.poomoo.model.Entity;
-
 /**
  * 作者: 李苜菲
  * 日期: 2016/4/27 10:53.
  */
-public class RMessageBO extends Entity{
+public class RMessageBO  {
     public String content;
     public boolean isAdminReply;
     public int msgId;
