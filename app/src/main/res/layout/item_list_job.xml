@@ -10,15 +10,13 @@
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:padding="10dp">
 
         <RelativeLayout
             android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:background="@drawable/style_round_bg">
+            android:layout_height="60dp">
 
             <com.poomoo.parttimejob.ui.custom.RoundImageView2
                 android:id="@+id/img_jobPic"
@@ -30,7 +28,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
-                android:background="@color/transparentBlack"
                 android:gravity="center"
                 android:text="文员"
                 android:textColor="@color/white"

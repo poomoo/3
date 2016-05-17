@@ -3,13 +3,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
-    android:background="@drawable/boot"
     android:orientation="vertical">
 
-    <!--<ImageView-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:src="@drawable/ic_login_logo" />-->
+    <ImageView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+        android:scaleType="centerCrop"
+    android:src="@drawable/boot" />
 
     <!--<TextView-->
     <!--android:layout_width="wrap_content"-->

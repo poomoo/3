@@ -22,6 +22,7 @@ import com.baidu.mapapi.search.route.RoutePlanSearch;
 import com.baidu.mapapi.search.route.TransitRouteResult;
 import com.baidu.mapapi.search.route.WalkingRoutePlanOption;
 import com.baidu.mapapi.search.route.WalkingRouteResult;
+import com.poomoo.commlib.LogUtils;
 import com.poomoo.commlib.MyUtils;
 import com.poomoo.parttimejob.R;
 import com.poomoo.parttimejob.ui.base.BaseActivity;
@@ -80,6 +81,7 @@ public class MapActivity extends BaseActivity {
         WalkingRoutePlanOption walkOption = new WalkingRoutePlanOption();
 //        walkOption.from(PlanNode.withCityNameAndPlaceName("北京", startPlace));
 //        walkOption.to(PlanNode.withCityNameAndPlaceName("北京", endPlace));
+        LogUtils.d(TAG,"MYLOCATION:"+application.getLat()+":"+application.getLng());
         walkOption.from(PlanNode.withLocation(new LatLng(application.getLat(), application.getLng())));
         walkOption.to(PlanNode.withLocation(new LatLng(lat, lng)));
         routePlanSearch.walkingSearch(walkOption);

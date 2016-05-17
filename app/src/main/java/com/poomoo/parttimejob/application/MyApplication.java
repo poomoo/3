@@ -1,13 +1,11 @@
 package com.poomoo.parttimejob.application;
 
 import android.app.Activity;
-import android.database.sqlite.SQLiteDatabase;
 
 import com.baidu.mapapi.SDKInitializer;
 import com.poomoo.commlib.CrashHandler;
 
 import org.litepal.LitePalApplication;
-import org.litepal.tablemanager.Connector;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,6 +64,7 @@ public class MyApplication extends LitePalApplication {
         crashHandler.init(getApplicationContext());
 //        SQLiteDatabase db = Connector.getDatabase();//新建表
     }
+
 
     private void initImageLoader() {
 //        DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder() //

@@ -227,20 +227,6 @@ public class JobInfoActivity extends BaseActivity implements JobInfoView {
         gridView.setAdapter(adapter);
         rApplicantBOs = rJobInfoBO.applyList;
         adapter.addItems(rApplicantBOs);
-
-//        for (Integer integer : pics)
-
-//        for (int i = 0; i < 10; i++) {
-//            rApplicantBO = new RApplicantBO();
-//            rApplicantBO.age = i + 20;
-//            rApplicantBO.sex = i % 2 == 0 ? 1 : 2;
-//            rApplicantBO.nickName = "安卓" + i;
-//            rApplicantBO.intention = "求职意向你擦不到" + i;
-//            rApplicantBO.height = "165cm";
-//            rApplicantBO.schoolName = "北京姑娘大学";
-//            rApplicantBO.registDt = "2016-01-25";
-//            rApplicantBOs.add(rApplicantBO);
-//        }
     }
 
     @Override

@@ -74,20 +74,19 @@
             <android.support.design.widget.CoordinatorLayout xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/layout_coordinator"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/colorBg">
+                android:layout_height="match_parent">
 
                 <android.support.design.widget.AppBarLayout
                     android:id="@+id/appBarLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/colorBg"
+                    android:background="@color/white"
                     app:elevation="0dp">
 
                     <com.poomoo.parttimejob.ui.custom.SlideShowView
                         android:id="@+id/flipper_ad"
                         android:layout_width="match_parent"
-                        android:layout_height="180dp"
+                        android:layout_height="150dp"
                         app:layout_scrollFlags="scroll" />
 
                     <GridView
@@ -107,7 +106,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="10dp"
-                        android:background="@color/white"
                         android:focusable="true"
                         android:focusableInTouchMode="true"
                         android:gravity="center_vertical"

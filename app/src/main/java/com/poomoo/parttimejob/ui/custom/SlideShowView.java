@@ -142,7 +142,7 @@ public class SlideShowView extends FrameLayout {
             ImageView view = new ImageView(context);
             view.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
 //            view.setAdjustViewBounds(true);
-            view.setScaleType(ScaleType.FIT_XY);
+            view.setScaleType(ScaleType.CENTER_CROP);
             imageViewsList.add(view);
 
             ImageView dotView = new ImageView(context);
@@ -175,12 +175,9 @@ public class SlideShowView extends FrameLayout {
 //            LogUtils.i(TAG, "instantiateItem:" + position);
             ImageView imageView = imageViewsList.get(position);
             Glide.with(context).load(imageUrls[position]).into(imageView);
-            imageView.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (listener != null)
-                        listener.onResult(position);
-                }
+            imageView.setOnClickListener(v -> {
+                if (listener != null)
+                    listener.onResult(position);
             });
             container.addView(imageViewsList.get(position));
             return imageViewsList.get(position);
