@@ -9,14 +9,14 @@
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:padding="10dp">
+        android:padding="8dp">
 
         <RelativeLayout
-            android:layout_width="60dp"
-            android:layout_height="60dp">
+            android:layout_width="50dp"
+            android:layout_height="50dp">
 
             <com.poomoo.parttimejob.ui.custom.RoundImageView2
                 android:id="@+id/img_jobPic"
@@ -37,7 +37,7 @@
 
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:layout_marginTop="4dp"
             android:layout_weight="1"
@@ -56,8 +56,7 @@
                     android:singleLine="true"
                     android:text="在校大学生兼职在校大学生兼职在校大学生兼职"
                     android:textColor="@color/black"
-                    android:textSize="18sp" />
-
+                    android:textSize="16sp" />
 
                 <ImageView
                     android:id="@+id/img_jobType"
@@ -66,12 +65,7 @@
                     android:src="@drawable/ic_signed" />
             </LinearLayout>
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1" />
-
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="4dp"
@@ -81,33 +75,34 @@
                     android:id="@+id/txt_JobPay"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
                     android:text="90￥/天"
                     android:textColor="@color/colorBlue"
-                    android:textSize="20sp" />
+                    android:textSize="16sp" />
 
 
                 <TextView
                     android:id="@+id/txt_JobArea"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
                     android:layout_marginLeft="8dp"
+                    android:layout_toRightOf="@+id/txt_JobPay"
                     android:text="白云区"
                     android:textColor="@color/colorGray"
                     android:textSize="14sp" />
 
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1" />
 
                 <TextView
                     android:id="@+id/txt_jobDate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
                     android:text="2016-01-01"
                     android:textColor="@color/colorGray"
                     android:textSize="14sp" />
-            </LinearLayout>
+            </RelativeLayout>
         </LinearLayout>
 
     </LinearLayout>

@@ -126,6 +126,7 @@ public class ServiceFragment extends BaseFragment implements SwipeRefreshLayout.
         Bundle bundle = new Bundle();
         bundle.putInt(getString(R.string.intent_msgId), adapter.getItem(position).msgId);
         bundle.putString(getString(R.string.intent_value), adapter.getItem(position).sysNickName);
+        bundle.putString(getString(R.string.intent_msg), adapter.getItem(position).content);
         openActivity(MessageActivity.class, bundle);
     }
 

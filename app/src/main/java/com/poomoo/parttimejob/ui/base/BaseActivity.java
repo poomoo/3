@@ -41,7 +41,7 @@ public abstract class BaseActivity extends RxAppCompatActivity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(onBindLayout());
         application = (MyApplication) this.getApplication();
-        getWindow().setBackgroundDrawable(null);
+//        getWindow().setBackgroundDrawable(null);
     }
 
     protected abstract String onSetTitle();

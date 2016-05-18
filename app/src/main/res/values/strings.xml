@@ -109,6 +109,7 @@
 
     <!--intent-->
     <string name="intent_value">value</string>
+    <string name="intent_msg">msg</string>
     <string name="intent_msgId">msgId</string>
     <string name="intent_cateId">cateId</string>
     <string name="intent_lat">lat</string>

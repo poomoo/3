@@ -46,7 +46,7 @@
                     android:id="@+id/img_messageAvatarLeft"
                     android:layout_width="60dp"
                     android:layout_height="60dp"
-                    android:src="@drawable/ic_1" />
+                    android:src="@drawable/ic_defalut_avatar" />
             </LinearLayout>
 
             <LinearLayout
@@ -127,7 +127,7 @@
                     android:id="@+id/img_messageAvatarRight"
                     android:layout_width="60dp"
                     android:layout_height="60dp"
-                    android:src="@drawable/ic_2" />
+                    android:src="@drawable/ic_defalut_avatar" />
             </LinearLayout>
 
         </LinearLayout>

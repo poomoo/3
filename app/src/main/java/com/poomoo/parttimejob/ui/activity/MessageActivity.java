@@ -45,6 +45,7 @@ public class MessageActivity extends BaseActivity implements MessageView {
     private String name = "测试";
     private int msgId;
     private String content;
+    private String msg;
     private MessageListAdapter adapter;
     private MessagePresenter messagePresenter;
 
@@ -53,6 +54,7 @@ public class MessageActivity extends BaseActivity implements MessageView {
         super.onCreate(savedInstanceState);
         name = getIntent().getStringExtra(getString(R.string.intent_value));
         msgId = getIntent().getIntExtra(getString(R.string.intent_msgId), -1);
+        msg = getIntent().getStringExtra(getString(R.string.intent_msg));
         setBack();
         ButterKnife.bind(this);
         initView();
@@ -135,6 +137,10 @@ public class MessageActivity extends BaseActivity implements MessageView {
 //        }
         if (rMessageBOList == null) return;
         adapter.clear();
+        RMessageBO rMessageBO = new RMessageBO();
+        rMessageBO.isAdminReply = true;
+        rMessageBO.content = msg;
+        rMessageBOList.add(0, rMessageBO);
         LogUtils.d(TAG, "rMessageBOList:" + rMessageBOList + "len:" + rMessageBOList.size());
         adapter.addItems(0, rMessageBOList);
         if (rMessageBOList.size() > 0)

@@ -1,8 +1,10 @@
 package com.poomoo.parttimejob.adapter;
 
 import android.content.Context;
+import android.support.v4.text.TextUtilsCompat;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -38,7 +40,13 @@ public class MessageListAdapter extends BaseListAdapter<RMessageBO> {
         if (item.isAdminReply) {
             holder.linearLayoutLeft.setVisibility(View.VISIBLE);
             holder.linearLayoutRight.setVisibility(View.GONE);
-            holder.dateLeftTxt.setText(item.replyDt);
+            if (TextUtils.isEmpty(item.replyDt))
+                holder.dateLeftTxt.setVisibility(View.GONE);
+            else {
+                holder.dateLeftTxt.setVisibility(View.VISIBLE);
+                holder.dateLeftTxt.setText(item.replyDt);
+            }
+
             holder.contentLeftTxt.setText(item.content);
 //            Glide.with(mContext).load(item.headPic).into(holder.avatarLeftImg);
         } else {

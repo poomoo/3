@@ -49,6 +49,7 @@ public class MainActivity extends BaseActivity {
         ButterKnife.bind(this);
         instance = this;
         StatusBarUtil.setTransparent(this);
+        getWindow().setBackgroundDrawable(null);
     }
 
     @Override
