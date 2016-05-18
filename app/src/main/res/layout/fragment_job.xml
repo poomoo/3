@@ -46,7 +46,7 @@
             android:singleLine="true"
             android:text="@string/title_allJobs"
             android:textColor="@color/white"
-            android:textSize="20sp" />
+            android:textSize="18sp" />
 
 
         <!--右边菜单按钮-->
@@ -133,8 +133,8 @@
             android:layout_weight="1"
             android:background="@color/white"
             android:gravity="center"
-            android:paddingBottom="10dp"
-            android:paddingTop="10dp">
+            android:paddingBottom="12dp"
+            android:paddingTop="12dp">
 
             <CheckedTextView
                 android:id="@+id/txt_type"

@@ -15,32 +15,33 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="45dp"
         android:background="@color/white"
         android:gravity="center"
         android:orientation="horizontal"
-        android:paddingBottom="10dp"
-        android:paddingLeft="8dp"
-        android:paddingRight="8dp"
-        android:paddingTop="10dp">
+        android:paddingBottom="6dp"
+        android:paddingLeft="11dp"
+        android:paddingRight="7dp"
+        android:paddingTop="6dp">
 
         <EditText
             android:id="@+id/edt_content"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="35dp"
             android:layout_weight="1"
+            android:textSize="14sp"
             android:background="@drawable/style_edittext_message" />
 
         <Button
             android:id="@+id/btn_reply"
-            android:layout_width="60dp"
-            android:layout_height="40dp"
-            android:layout_marginLeft="6dp"
+            android:layout_width="49dp"
+            android:layout_height="35dp"
+            android:layout_marginLeft="9dp"
             android:background="@drawable/selector_btn_reply"
             android:gravity="center"
             android:onClick="toReply"
             android:text="@string/btn_reply"
             android:textColor="@color/white"
-            android:textSize="16sp" />
+            android:textSize="14sp" />
     </LinearLayout>
 </LinearLayout>

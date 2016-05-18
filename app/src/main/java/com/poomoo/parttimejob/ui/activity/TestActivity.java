@@ -54,7 +54,7 @@ public class TestActivity extends BaseActivity {
         listView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         listView.addItemDecoration(new HorizontalDividerItemDecoration.Builder(this)
                 .color(getResources().getColor(R.color.transparent))
-                .size((int) getResources().getDimension(R.dimen.divider_height5))
+                .size((int) getResources().getDimension(R.dimen.divider_height2))
                 .build());
 
         adapter = new JobsAdapter(this, BaseListAdapter.ONLY_FOOTER, false);

@@ -17,7 +17,6 @@ import com.poomoo.parttimejob.adapter.BaseListAdapter;
 import com.poomoo.parttimejob.ui.custom.ErrorLayout;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -119,7 +118,7 @@ public abstract class BaseListFragment<T> extends BaseFragment
      * @return
      */
     public int setDividerSize() {
-        return (int) getResources().getDimension(R.dimen.divider_height5);
+        return (int) getResources().getDimension(R.dimen.divider_height2);
     }
 
     public int setDividerColor() {

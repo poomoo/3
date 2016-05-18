@@ -26,7 +26,6 @@ import com.poomoo.parttimejob.ui.custom.ErrorLayout;
 import com.poomoo.parttimejob.view.SearchJobView;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 
-import java.util.Iterator;
 import java.util.List;
 
 import butterknife.Bind;
@@ -74,7 +73,7 @@ public class SearchJobActivity extends BaseActivity implements SearchJobView, Ba
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         recyclerView.addItemDecoration(new HorizontalDividerItemDecoration.Builder(this)
                 .color(getResources().getColor(R.color.transparent))
-                .size((int) getResources().getDimension(R.dimen.divider_height5))
+                .size((int) getResources().getDimension(R.dimen.divider_height2))
                 .build());
         adapter = new JobsAdapter(this, BaseListAdapter.ONLY_FOOTER, false);
         adapter.setOnItemClickListener(this);

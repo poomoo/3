@@ -9,8 +9,8 @@
         android:id="@+id/llayout_messageLeft"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="30dp"
+        android:layout_marginLeft="7dp"
+        android:layout_marginRight="100dp"
         android:orientation="vertical">
 
         <LinearLayout
@@ -26,7 +26,8 @@
                 android:background="@drawable/style_textview_datetime"
                 android:gravity="center"
                 android:text="12:04"
-                android:textColor="@color/white" />
+                android:textColor="@color/white"
+                android:textSize="12sp" />
 
         </LinearLayout>
 
@@ -44,8 +45,8 @@
 
                 <com.poomoo.parttimejob.ui.custom.RoundImageView2
                     android:id="@+id/img_messageAvatarLeft"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
                     android:src="@drawable/ic_defalut_avatar" />
             </LinearLayout>
 
@@ -58,10 +59,10 @@
                     android:id="@+id/txt_messageContentLeft"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:background="@drawable/ic_left"
                     android:text="测试测试测试测试测试测试"
                     android:textColor="@color/black"
-                    android:background="@drawable/ic_left"
-                    android:textSize="16sp" />
+                    android:textSize="14sp" />
 
             </LinearLayout>
 
@@ -72,8 +73,9 @@
         android:id="@+id/llayout_messageRight"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="10dp"
+        android:layout_marginLeft="100dp"
+        android:layout_marginRight="7dp"
+        android:layout_marginTop="10dp"
         android:orientation="vertical">
 
         <LinearLayout
@@ -89,7 +91,8 @@
                 android:background="@drawable/style_textview_datetime"
                 android:gravity="center"
                 android:text="12:04"
-                android:textColor="@color/white" />
+                android:textColor="@color/white"
+                android:textSize="12sp" />
 
         </LinearLayout>
 
@@ -111,10 +114,10 @@
                     android:id="@+id/txt_messageContentRight"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="测试测试测试测试测试测试"
                     android:background="@drawable/ic_right"
+                    android:text="测试测试测试测试测试测试"
                     android:textColor="@color/black"
-                    android:textSize="16sp" />
+                    android:textSize="14sp" />
 
             </LinearLayout>
 
@@ -125,8 +128,8 @@
 
                 <com.poomoo.parttimejob.ui.custom.RoundImageView2
                     android:id="@+id/img_messageAvatarRight"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
                     android:src="@drawable/ic_defalut_avatar" />
             </LinearLayout>
 

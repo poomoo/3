@@ -74,7 +74,7 @@ public class MessageActivity extends BaseActivity implements MessageView {
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         recyclerView.addItemDecoration(new HorizontalDividerItemDecoration.Builder(this)
                 .color(getResources().getColor(R.color.transparent))
-                .size((int) getResources().getDimension(R.dimen.divider_height5))
+                .size((int) getResources().getDimension(R.dimen.divider_height2))
                 .build());
         adapter = new MessageListAdapter(this, BaseListAdapter.NEITHER);
         recyclerView.setAdapter(adapter);

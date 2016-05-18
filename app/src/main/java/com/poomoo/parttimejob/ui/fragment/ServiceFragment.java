@@ -26,7 +26,6 @@ import com.poomoo.parttimejob.ui.custom.ErrorLayout;
 import com.poomoo.parttimejob.view.ServiceView;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 
-import java.util.Iterator;
 import java.util.List;
 
 import butterknife.Bind;
@@ -83,7 +82,7 @@ public class ServiceFragment extends BaseFragment implements SwipeRefreshLayout.
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         recyclerView.addItemDecoration(new HorizontalDividerItemDecoration.Builder(getActivity())
                 .color(getResources().getColor(R.color.transparent))
-                .size((int) getResources().getDimension(R.dimen.divider_height5))
+                .size((int) getResources().getDimension(R.dimen.divider_height2))
                 .build());
         swipeRefreshLayout.setOnRefreshListener(this);
         swipeRefreshLayout.setColorSchemeResources(

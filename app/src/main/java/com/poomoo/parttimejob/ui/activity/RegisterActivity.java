@@ -73,7 +73,6 @@ public class RegisterActivity extends BaseActivity implements RegisterView {
     }
 
     public void toDo(View view) {
-        openActivity(LoginActivity.class);
         finish();
     }
 
@@ -191,5 +190,6 @@ public class RegisterActivity extends BaseActivity implements RegisterView {
 
         openActivity(MainActivity.class);
         finish();
+        LoginActivity.instance.finish();
     }
 }

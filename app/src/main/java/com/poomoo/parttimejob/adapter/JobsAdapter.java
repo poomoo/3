@@ -40,7 +40,8 @@ public class JobsAdapter extends BaseListAdapter<BaseJobBO> {
         BaseJobBO item = items.get(position);
         Glide.with(mContext).load(item.icon).into(holder.picImg);
         holder.jobNameTxt.setText(item.jobName);
-        holder.payTxt.setText(MyUtils.formatPay(item.pay, true));
+        holder.payNumTxt.setText(MyUtils.formatPay(item.pay)[0]);
+        holder.payUnitTxt.setText(MyUtils.formatPay(item.pay)[1]);
         holder.areaTxt.setText(item.areaName != null ? item.areaName : item.cityName);
         if (!TextUtils.isEmpty(item.applyDt))
             holder.dateTxt.setText(item.applyDt);
@@ -73,8 +74,10 @@ public class JobsAdapter extends BaseListAdapter<BaseJobBO> {
     public static final class JobsViewHolder extends RecyclerView.ViewHolder {
         @Bind(R.id.txt_jobInfoName)
         TextView jobNameTxt;
-        @Bind(R.id.txt_JobPay)
-        TextView payTxt;
+        @Bind(R.id.txt_JobPayNum)
+        TextView payNumTxt;
+        @Bind(R.id.txt_JobPayUnit)
+        TextView payUnitTxt;
         @Bind(R.id.txt_JobArea)
         TextView areaTxt;
         @Bind(R.id.txt_jobDate)

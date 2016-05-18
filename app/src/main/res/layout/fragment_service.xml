@@ -20,7 +20,7 @@
             android:singleLine="true"
             android:text="@string/title_message"
             android:textColor="@color/white"
-            android:textSize="20sp" />
+            android:textSize="18sp" />
 
     </RelativeLayout>
 

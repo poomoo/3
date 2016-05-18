@@ -7,24 +7,25 @@
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:background="@color/white"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:padding="10dp">
+        android:paddingBottom="7dp"
+        android:paddingLeft="17dp"
+        android:paddingTop="7dp">
 
 
         <com.poomoo.parttimejob.ui.custom.RoundImageView2
             android:id="@+id/img_servicePic"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
             android:src="@drawable/ic_1" />
 
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="4dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="9dp"
             android:layout_weight="1"
             android:orientation="vertical">
 
@@ -40,25 +41,23 @@
                     android:singleLine="true"
                     android:text="客服小妹"
                     android:textColor="@color/black"
-                    android:textSize="18sp" />
+                    android:textSize="15sp" />
 
                 <TextView
                     android:id="@+id/txt_serviceDate"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_marginLeft="10dp"
+                    android:layout_marginLeft="5dp"
                     android:layout_weight="1"
                     android:gravity="center_vertical"
                     android:singleLine="true"
                     android:text="2016-09-01 12:34"
-                    android:textSize="14sp" />
+                    android:textSize="10sp" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="4dp"
-                android:layout_marginTop="4dp"
                 android:orientation="horizontal">
 
                 <TextView
@@ -67,7 +66,7 @@
                     android:layout_height="wrap_content"
                     android:singleLine="true"
                     android:text="您好，很高兴为您服务您好，很高兴为您服务您好，很高兴为您服务您好，很高兴为您服务您好，很高兴为您服务您好，很高兴为您服务"
-                    android:textSize="14sp" />
+                    android:textSize="10sp" />
 
             </LinearLayout>
         </LinearLayout>
@@ -80,6 +79,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginRight="17dp"
                 android:src="@drawable/ic_right_arrow_gray" />
         </LinearLayout>
 

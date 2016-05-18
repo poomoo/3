@@ -5,7 +5,6 @@ package com.poomoo.parttimejob.ui.fragment;
 
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
-import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.poomoo.commlib.LogUtils;
@@ -23,7 +21,6 @@ import com.poomoo.commlib.SPUtils;
 import com.poomoo.model.Page;
 import com.poomoo.model.base.BaseJobBO;
 import com.poomoo.model.response.RAdBO;
-import com.poomoo.model.response.RApplyJobBO;
 import com.poomoo.model.response.RTypeBO;
 import com.poomoo.parttimejob.R;
 import com.poomoo.parttimejob.adapter.BaseListAdapter;
@@ -31,7 +28,6 @@ import com.poomoo.parttimejob.adapter.JobsAdapter;
 import com.poomoo.parttimejob.adapter.MainGridAdapter;
 import com.poomoo.parttimejob.event.Events;
 import com.poomoo.parttimejob.event.RxBus;
-import com.poomoo.parttimejob.listener.AdvertisementListener;
 import com.poomoo.parttimejob.presentation.MainPresenter;
 import com.poomoo.parttimejob.ui.activity.CityListActivity;
 import com.poomoo.parttimejob.ui.activity.JobInfoActivity;
@@ -45,8 +41,6 @@ import com.poomoo.parttimejob.view.MainView;
 import com.trello.rxlifecycle.FragmentEvent;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import butterknife.Bind;
@@ -96,7 +90,7 @@ public class MainFragment extends BaseFragment implements SwipeRefreshLayout.OnR
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         recyclerView.addItemDecoration(new HorizontalDividerItemDecoration.Builder(getActivity())
                 .color(getResources().getColor(R.color.transparent))
-                .size((int) getResources().getDimension(R.dimen.divider_height5))
+                .size((int) getResources().getDimension(R.dimen.divider_height2))
                 .build());
 
         swipeRefreshLayout.setOnRefreshListener(this);

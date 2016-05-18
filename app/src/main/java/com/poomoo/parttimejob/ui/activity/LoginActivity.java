@@ -37,11 +37,13 @@ public class LoginActivity extends BaseActivity implements LoginView {
     private LoginPresenter loginPresenter;
     private String tel = "";
     private String passWord = "";
+    public static LoginActivity instance = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
+        instance = this;
 
         loginPresenter = new LoginPresenter(this);
         if ((boolean) SPUtils.get(getApplicationContext(), getString(R.string.sp_isRemember), false)) {
@@ -132,7 +134,6 @@ public class LoginActivity extends BaseActivity implements LoginView {
      */
     public void toRegister(View view) {
         openActivity(RegisterActivity.class);
-        finish();
     }
 
     /**

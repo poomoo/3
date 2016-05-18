@@ -89,9 +89,9 @@ public class SlideShowView extends FrameLayout {
         this.context = context;
         myPagerAdapter = new MyPagerAdapter();
         myPageChangeListener = new MyPageChangeListener();
-        initData();
-        if (isAutoPlay)
-            startPlay();
+//        initData();
+//        if (isAutoPlay)
+//            startPlay();
     }
 
     public void setPics(String[] urls, AdvertisementListener listener) {

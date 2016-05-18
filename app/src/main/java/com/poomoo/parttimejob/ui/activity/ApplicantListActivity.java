@@ -58,7 +58,7 @@ public class ApplicantListActivity extends BaseActivity implements ApplicantList
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         recyclerView.addItemDecoration(new HorizontalDividerItemDecoration.Builder(this)
                 .color(getResources().getColor(R.color.transparent))
-                .size((int) getResources().getDimension(R.dimen.divider_height5))
+                .size((int) getResources().getDimension(R.dimen.divider_height2))
                 .build());
         adapter = new ApplicantListAdapter(this, BaseListAdapter.ONLY_FOOTER);
         adapter.setOnItemClickListener(this);

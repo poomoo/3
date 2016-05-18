@@ -43,8 +43,10 @@ import butterknife.ButterKnife;
  * 日期: 2016/4/9 11:48.
  */
 public class JobInfoActivity extends BaseActivity implements JobInfoView {
-    @Bind(R.id.txt_jobInfoPay)
-    TextView payTxt;
+    @Bind(R.id.txt_jobInfoPayNum)
+    TextView payNumTxt;
+    @Bind(R.id.txt_jobInfoPayUnit)
+    TextView payUnitTxt;
     @Bind(R.id.txt_jobInfoBrowse)
     TextView browseTxt;
     @Bind(R.id.txt_jobInfoName)
@@ -105,7 +107,7 @@ public class JobInfoActivity extends BaseActivity implements JobInfoView {
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         recyclerView.addItemDecoration(new HorizontalDividerItemDecoration.Builder(this)
                 .color(getResources().getColor(R.color.transparent))
-                .size((int) getResources().getDimension(R.dimen.divider_height5))
+                .size((int) getResources().getDimension(R.dimen.divider_height2))
                 .build());
         jobsAdapter = new JobsAdapter(this, BaseListAdapter.NEITHER, false);
         recyclerView.setAdapter(jobsAdapter);
@@ -209,7 +211,8 @@ public class JobInfoActivity extends BaseActivity implements JobInfoView {
     public void succeed(RJobInfoBO rJobInfoBO) {
         closeProgressDialog();
         this.rJobInfoBO = rJobInfoBO;
-        payTxt.setText(MyUtils.formatPay(rJobInfoBO.pay, false));
+        payNumTxt.setText(MyUtils.formatPay(rJobInfoBO.pay)[0]);
+        payUnitTxt.setText(MyUtils.formatPay(rJobInfoBO.pay)[1]);
         browseTxt.setText(rJobInfoBO.browseNum + "");
         jobNameTxt.setText(rJobInfoBO.jobName);
         jobTypeTxt.setText(rJobInfoBO.cateName);

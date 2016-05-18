@@ -5,7 +5,6 @@ package com.poomoo.parttimejob.ui.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.widget.PopupWindowCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -46,7 +45,6 @@ import com.trello.rxlifecycle.FragmentEvent;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import butterknife.Bind;
@@ -88,6 +86,7 @@ public class JobFragment extends BaseFragment implements JobView, BaseListAdapte
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_job, container, false);
         ButterKnife.bind(this, view);
+        MainActivity.instance.setBackGround2();
         return view;
     }
 
@@ -102,7 +101,7 @@ public class JobFragment extends BaseFragment implements JobView, BaseListAdapte
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         recyclerView.addItemDecoration(new HorizontalDividerItemDecoration.Builder(getActivity())
                 .color(getResources().getColor(R.color.transparent))
-                .size((int) getResources().getDimension(R.dimen.divider_height5))
+                .size((int) getResources().getDimension(R.dimen.divider_height2))
                 .build());
 
         swipeRefreshLayout.setOnRefreshListener(this);
@@ -244,7 +243,7 @@ public class JobFragment extends BaseFragment implements JobView, BaseListAdapte
         }
         if (id.length() > 0)
             id = id.substring(0, id.length() - 1);
-        if (name.length() > 0 && !name.equals("类型"))
+        if (name.length() > 0 && !name.equals("区域"))
             name = name.substring(0, name.length() - 1);
         application.setAreaId(id);
         currPage = 1;
@@ -318,18 +317,6 @@ public class JobFragment extends BaseFragment implements JobView, BaseListAdapte
             adapter.setState(BaseListAdapter.STATE_LOAD_MORE);
             errorLayout.setState(ErrorLayout.HIDE);
         }
-//        Iterator<BaseJobBO> iterator = baseJobBOs.iterator();
-//        final List<BaseJobBO> data = adapter.getDataSet();
-//        while (iterator.hasNext()) {
-//            BaseJobBO obj = iterator.next();
-//            for (int i = 0; i < data.size(); i++) {
-//                if (data.get(i).getId().equals(obj.getId())) {
-//                    data.set(i, obj);
-//                    iterator.remove();
-//                    break;
-//                }
-//            }
-//        }
         LogUtils.d(TAG, "succeed:" + baseJobBOs.size());
         if (currPage == 1)
             adapter.addItems(0, baseJobBOs);
@@ -356,9 +343,9 @@ public class JobFragment extends BaseFragment implements JobView, BaseListAdapte
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
         if (!hidden)
-            MainActivity.instance.setBackGround2();
-
+        MainActivity.instance.setBackGround2();
     }
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {

@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 
 import com.poomoo.commlib.MyUtils;
 import com.poomoo.model.Page;
@@ -16,7 +15,6 @@ import com.poomoo.parttimejob.adapter.BaseListAdapter;
 import com.poomoo.parttimejob.ui.custom.ErrorLayout;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -97,7 +95,7 @@ public abstract class BaseListActivity<T> extends BaseActivity implements SwipeR
      * @return
      */
     public int setDividerSize() {
-        return (int) getResources().getDimension(R.dimen.divider_height5);
+        return (int) getResources().getDimension(R.dimen.divider_height2);
     }
 
     public int setDividerColor() {

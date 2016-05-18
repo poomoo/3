@@ -104,9 +104,9 @@ public class MyUtils {
      * @param pay
      * @return
      */
-    public static SpannableString formatPay(String pay, boolean color) {
-        SpannableString ss;
-        ss = new SpannableString(pay);
+    public static String[] formatPay(String pay) {
+        String[] ss = new String[2];
+//        ss = new SpannableString(pay);
         int len = pay.length();
         int pos = 0;
         for (int i = 0; i < len; i++) {
@@ -118,13 +118,14 @@ public class MyUtils {
                 break;
             }
         }
-        if (color) {
-            ss.setSpan(new ForegroundColorSpan(Color.parseColor("#1fa3e7")), 0, pos, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-            ss.setSpan(new ForegroundColorSpan(Color.parseColor("#8e8e8e")), pos, len, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        }
-        ss.setSpan(new RelativeSizeSpan(1f), 0, pos, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        ss.setSpan(new RelativeSizeSpan(0.7f), pos, len, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-
+//        if (color) {
+//            ss.setSpan(new ForegroundColorSpan(Color.parseColor("#1fa3e7")), 0, pos, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+//            ss.setSpan(new ForegroundColorSpan(Color.parseColor("#8e8e8e")), pos, len, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+//        }
+//        ss.setSpan(new RelativeSizeSpan(1f), 0, pos, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+//        ss.setSpan(new RelativeSizeSpan(0.7f), pos, len, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        ss[0] = pay.substring(0, pos);
+        ss[1] = pay.substring(pos, len);
         return ss;
     }
 
