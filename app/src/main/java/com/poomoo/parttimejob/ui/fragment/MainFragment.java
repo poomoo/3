@@ -72,6 +72,7 @@ public class MainFragment extends BaseFragment implements SwipeRefreshLayout.OnR
     private int currPage = 1;
 
     private MainPresenter mainPresenter;
+    private boolean isLoadAd = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -185,13 +186,15 @@ public class MainFragment extends BaseFragment implements SwipeRefreshLayout.OnR
 
     @Override
     public void onRefresh() {
-//        mainPresenter.loadAd();
+        if (!isLoadAd)
+            mainPresenter.loadAd();
         currPage = 1;
         mainPresenter.queryRecommendJobs(currPage);
     }
 
     @Override
     public void loadAdSucceed(List<RAdBO> rAdBOs) {
+        isLoadAd = true;
         int len = rAdBOs.size();
         urls = new String[len];
         for (int i = 0; i < len; i++) {

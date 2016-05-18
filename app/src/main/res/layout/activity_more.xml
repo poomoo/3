@@ -10,16 +10,18 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
         android:orientation="vertical">
 
         <RelativeLayout
-            android:onClick="toChangePassWord"
-            android:clickable="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/white"
-            android:padding="10dp">
+            android:clickable="true"
+            android:onClick="toChangePassWord"
+            android:paddingBottom="8dp"
+            android:paddingLeft="17dp"
+            android:paddingRight="17dp"
+            android:paddingTop="8dp">
 
             <ImageView
                 android:id="@+id/feedBack"
@@ -48,13 +50,16 @@
         </RelativeLayout>
 
         <RelativeLayout
-            android:onClick="toAbout"
-            android:clickable="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="1dp"
             android:background="@color/white"
-            android:padding="10dp">
+            android:clickable="true"
+            android:onClick="toAbout"
+            android:paddingBottom="8dp"
+            android:paddingLeft="17dp"
+            android:paddingRight="17dp"
+            android:paddingTop="8dp">
 
             <ImageView
                 android:id="@+id/more"
@@ -88,9 +93,9 @@
     <Button
         android:id="@+id/btn_logOut"
         style="@style/myButton"
-        android:onClick="toLogOut"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="46dp"
         android:layout_marginTop="30dp"
+        android:onClick="toLogOut"
         android:text="退出当前账号" />
 </LinearLayout>
