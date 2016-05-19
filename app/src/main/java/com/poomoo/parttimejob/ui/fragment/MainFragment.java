@@ -237,7 +237,7 @@ public class MainFragment extends BaseFragment implements SwipeRefreshLayout.OnR
 
     @Override
     public void failed(String msg) {
-        swipeRefreshLayout.setRefreshing(false);
+        swipeRefreshLayout.post(() -> swipeRefreshLayout.setRefreshing(false));
         MyUtils.showToast(getActivity().getApplicationContext(), msg);
     }
 
