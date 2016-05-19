@@ -75,7 +75,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="10dp"
                 android:layout_toRightOf="@+id/more"
-                android:text="关于灵智博睿"
+                android:text="关于兼职GO"
                 android:textColor="@color/black"
                 android:textSize="18sp" />
 
