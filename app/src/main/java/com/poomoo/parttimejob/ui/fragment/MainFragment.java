@@ -73,6 +73,7 @@ public class MainFragment extends BaseFragment implements SwipeRefreshLayout.OnR
 
     private MainPresenter mainPresenter;
     private boolean isLoadAd = false;
+    private boolean isLoadType = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -88,6 +89,7 @@ public class MainFragment extends BaseFragment implements SwipeRefreshLayout.OnR
     }
 
     private void initView() {
+        slideShowView.setLayoutParams(new AppBarLayout.LayoutParams(AppBarLayout.LayoutParams.MATCH_PARENT, MyUtils.getScreenWidth(getActivity()) / 3));//设置广告栏的宽高比为3:1
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         recyclerView.addItemDecoration(new HorizontalDividerItemDecoration.Builder(getActivity())
                 .color(getResources().getColor(R.color.transparent))
@@ -151,34 +153,6 @@ public class MainFragment extends BaseFragment implements SwipeRefreshLayout.OnR
         }
     }
 
-//    @OnClick({R.id.rBtn_1, R.id.rBtn_2, R.id.rBtn_3, R.id.rBtn_4})
-//    void cate(View view) {
-//        int cateId = 0;
-//        String title = "";
-//        switch (view.getId()) {
-//            case R.id.rBtn_1:
-//                cateId = 1;
-//                title = getString(R.string.label_main1);
-//                break;
-//            case R.id.rBtn_2:
-//                cateId = 2;
-//                title = getString(R.string.label_main2);
-//                break;
-//            case R.id.rBtn_3:
-//                cateId = 3;
-//                title = getString(R.string.label_main3);
-//                break;
-//            case R.id.rBtn_4:
-//                cateId = 4;
-//                title = getString(R.string.label_main4);
-//                break;
-//        }
-//        Bundle bundle = new Bundle();
-//        bundle.putString(getString(R.string.intent_value), title);
-//        bundle.putInt(getString(R.string.intent_cateId), cateId);
-//        openActivity(JobListByCateActivity.class, bundle);
-//    }
-
     @Override
     public void onLoading() {
         mainPresenter.queryRecommendJobs(currPage);
@@ -188,6 +162,8 @@ public class MainFragment extends BaseFragment implements SwipeRefreshLayout.OnR
     public void onRefresh() {
         if (!isLoadAd)
             mainPresenter.loadAd();
+        if (!isLoadType)
+            mainPresenter.loadCate();
         currPage = 1;
         mainPresenter.queryRecommendJobs(currPage);
     }
@@ -202,6 +178,9 @@ public class MainFragment extends BaseFragment implements SwipeRefreshLayout.OnR
             rAdBO = rAdBOs.get(i);
             urls[i] = rAdBO.picture;
         }
+//        urls[len] = "http://hunchaowang.com/hckj/images/slide1.jpg";
+//        urls[len+1] = "http://img5.imgtn.bdimg.com/it/u=1831523257,4273085642&fm=21&gp=0.jpg";
+//        urls[len+2] = "http://img0.imgtn.bdimg.com/it/u=2724261082,1059352100&fm=21&gp=0.jpg";
         slideShowView.setPics(urls, position -> {
 
         });
@@ -209,6 +188,7 @@ public class MainFragment extends BaseFragment implements SwipeRefreshLayout.OnR
 
     @Override
     public void loadTypeSucceed(List<RTypeBO> rTypeBOs) {
+        isLoadType = true;
         gridAdapter.setItems(rTypeBOs);
     }
 

@@ -65,7 +65,6 @@ public class SlideShowView extends FrameLayout {
 
     private AdvertisementListener listener;
 
-
     //Handler
     private Handler handler = new Handler() {
 
@@ -73,7 +72,6 @@ public class SlideShowView extends FrameLayout {
         public void handleMessage(Message msg) {
             // TODO Auto-generated method stub
             super.handleMessage(msg);
-//            LogUtils.i(TAG, "currentItem:" + currentItem);
             if (currentItem == 0)
                 viewPager.setCurrentItem(currentItem, false);
             else
@@ -81,17 +79,12 @@ public class SlideShowView extends FrameLayout {
         }
 
     };
-    private float ratio = 2f;
-    private boolean isfirst = true;
 
     public SlideShowView(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.context = context;
         myPagerAdapter = new MyPagerAdapter();
         myPageChangeListener = new MyPageChangeListener();
-//        initData();
-//        if (isAutoPlay)
-//            startPlay();
     }
 
     public void setPics(String[] urls, AdvertisementListener listener) {
@@ -113,14 +106,11 @@ public class SlideShowView extends FrameLayout {
         }
     }
 
-
     /**
      * 初始化相关Data
      */
     private void initData() {
         imageViewsList = new ArrayList<>();
-        // 一步任务获取图片
-//        new GetListTask().execute("");
         initUI(context);
     }
 
@@ -141,8 +131,6 @@ public class SlideShowView extends FrameLayout {
         for (int i = 0; i < imageUrls.length; i++) {
             ImageView view = new ImageView(context);
             view.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
-//            view.setAdjustViewBounds(true);
-            view.setScaleType(ScaleType.CENTER_CROP);
             imageViewsList.add(view);
 
             ImageView dotView = new ImageView(context);
@@ -165,14 +153,11 @@ public class SlideShowView extends FrameLayout {
     private class MyPagerAdapter extends PagerAdapter {
         @Override
         public void destroyItem(ViewGroup container, int position, Object object) {
-//            LogUtils.i(TAG, "destroyItem:" + position);
-//            container.removeView(imageViewsList.get(position));
             container.removeView((ImageView) object);
         }
 
         @Override
         public Object instantiateItem(ViewGroup container, final int position) {
-//            LogUtils.i(TAG, "instantiateItem:" + position);
             ImageView imageView = imageViewsList.get(position);
             Glide.with(context).load(imageUrls[position]).into(imageView);
             imageView.setOnClickListener(v -> {
@@ -186,7 +171,6 @@ public class SlideShowView extends FrameLayout {
         @Override
         public int getCount() {
             // TODO Auto-generated method stub
-//            LogUtils.i(TAG, "imageViewsList.size():" + imageViewsList.size());
             return imageViewsList.size();
         }
 
@@ -200,8 +184,6 @@ public class SlideShowView extends FrameLayout {
         public int getItemPosition(Object object) {
             return POSITION_NONE;
         }
-
-
     }
 
     /**
@@ -244,25 +226,13 @@ public class SlideShowView extends FrameLayout {
         @Override
         public void onPageSelected(int pos) {
             // TODO Auto-generated method stub
-
-            currentItem = pos;
-//            LogUtils.i(TAG, "dotViewsList:" + dotViewsList.size());
-            for (int i = 0; i < dotViewsList.size(); i++) {
-                if (i == pos) {
-//                    (dotViewsList.get(pos)).setBackgroundResource(R.drawable.ic_dot_selected);
-                } else {
-//                    (dotViewsList.get(i)).setBackgroundResource(R.drawable.ic_dot_normal);
-                }
-            }
         }
-
     }
 
     /**
      * 执行轮播图切换任务
      */
     private class SlideShowTask implements Runnable {
-
         @Override
         public void run() {
             // TODO Auto-generated method stub
@@ -273,71 +243,4 @@ public class SlideShowView extends FrameLayout {
         }
 
     }
-
-
-    /**
-     * 销毁ImageView资源，回收内存
-     */
-    private void destoryBitmaps() {
-
-        for (int i = 0; i < IMAGE_COUNT; i++) {
-            ImageView imageView = imageViewsList.get(i);
-            Drawable drawable = imageView.getDrawable();
-            if (drawable != null) {
-                //解除drawable对view的引用
-                drawable.setCallback(null);
-            }
-        }
-    }
-
-
-    /**
-     * 异步任务,获取数据
-     */
-    class GetListTask extends AsyncTask<String, Integer, Boolean> {
-
-        @Override
-        protected Boolean doInBackground(String... params) {
-            try {
-                // 这里一般调用服务端接口获取一组轮播图片，下面是从百度找的几个图片
-
-                imageUrls = new String[]{
-                        "http://img1.3lian.com/img013/v4/96/d/53.jpg",
-                        "http://p1.gexing.com/G1/M00/2B/71/rBACE1NghIvyY0VfAAC2vmi1Uzo574.jpg",
-                        "http://img1.3lian.com/img013/v4/96/d/51.jpg",
-                        "http://img.sc115.com/uploads/sc/psd/140312/1403122.jpg"
-                };
-                return true;
-            } catch (Exception e) {
-                e.printStackTrace();
-                return false;
-            }
-        }
-
-        @Override
-        protected void onPostExecute(Boolean result) {
-            super.onPostExecute(result);
-            if (result) {
-                initUI(context);
-            }
-        }
-    }
-
-//    @Override
-//    public boolean dispatchTouchEvent(MotionEvent ev) {
-//        LogUtils.i("test", "子dispatchTouchEvent" + ev.getAction());
-//        return true;
-//    }
-
-//    @Override
-//    public boolean onInterceptTouchEvent(MotionEvent ev) {
-//        LogUtils.i("test", "子onInterceptTouchEvent" + ev.getAction());
-//        return super.onInterceptTouchEvent(ev);
-//    }
-
-//    @Override
-//    public boolean onTouchEvent(MotionEvent ev) {
-//        LogUtils.i("test", "子onTouchEvent" + ev.getAction());
-//        return super.onInterceptTouchEvent(ev);
-//    }
 }
