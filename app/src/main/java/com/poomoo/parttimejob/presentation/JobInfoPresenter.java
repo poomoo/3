@@ -9,6 +9,7 @@ import com.poomoo.api.NetConfig;
 import com.poomoo.api.Network;
 import com.poomoo.model.Page;
 import com.poomoo.model.base.BaseJobBO;
+import com.poomoo.model.request.QCancelCollectBO;
 import com.poomoo.model.request.QCollectBO;
 import com.poomoo.model.request.QJobInfoBO;
 import com.poomoo.model.request.QRecommendBO;
@@ -19,7 +20,6 @@ import com.poomoo.parttimejob.view.JobInfoView;
 import java.util.List;
 
 import rx.android.schedulers.AndroidSchedulers;
-import rx.android.schedulers.HandlerScheduler;
 import rx.schedulers.Schedulers;
 
 /**
@@ -85,7 +85,7 @@ public class JobInfoPresenter extends BasePresenter {
      * @param jobId
      * @param userId
      */
-    public void collet(int jobId, int userId) {
+    public void collect(int jobId, int userId) {
         QCollectBO qCollectBO = new QCollectBO(NetConfig.JOBACTION, NetConfig.COLLECT, jobId, userId, 1);
         mSubscriptions.add(Network.getJobApi().collect(qCollectBO)
                 .subscribeOn(Schedulers.io())
@@ -99,6 +99,30 @@ public class JobInfoPresenter extends BasePresenter {
                     @Override
                     public void onNext(ResponseBO responseBO) {
                         jobInfoView.collectSucceed(responseBO.msg);
+                    }
+                }));
+    }
+
+    /**
+     * 收藏
+     *
+     * @param jobId
+     * @param userId
+     */
+    public void cancelCollect(int jobId, int userId) {
+        QCancelCollectBO qCancelCollectBO = new QCancelCollectBO(NetConfig.JOBACTION, NetConfig.CANCELCOLLECT, jobId, userId);
+        mSubscriptions.add(Network.getJobApi().cancelCollect(qCancelCollectBO)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new AbsAPICallback<ResponseBO>() {
+                    @Override
+                    protected void onError(ApiException e) {
+                        jobInfoView.cancelFailed(e.getMessage());
+                    }
+
+                    @Override
+                    public void onNext(ResponseBO responseBO) {
+                        jobInfoView.cancelSucceed(responseBO.msg);
                     }
                 }));
     }

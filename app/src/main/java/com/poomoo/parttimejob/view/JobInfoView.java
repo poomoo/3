@@ -20,4 +20,8 @@ public interface JobInfoView extends BaseView {
     void collectSucceed(String msg);
 
     void collectFailed(String msg);
+
+    void cancelSucceed(String msg);
+
+    void cancelFailed(String msg);
 }

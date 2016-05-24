@@ -83,6 +83,7 @@ public class JobInfoActivity extends BaseActivity implements JobInfoView {
     private RJobInfoBO rJobInfoBO;
     private JobsAdapter jobsAdapter;
     private int jobId;
+    private boolean isCollected = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -174,7 +175,10 @@ public class JobInfoActivity extends BaseActivity implements JobInfoView {
             MyUtils.showToast(getApplicationContext(), MyConfig.pleaseLogin);
             return;
         }
-        jobInfoPresenter.collet(jobId, application.getUserId());
+        if (!isCollected)
+            jobInfoPresenter.collect(jobId, application.getUserId());
+        else
+            jobInfoPresenter.cancelCollect(jobId, application.getUserId());
     }
 
     /**
@@ -222,8 +226,8 @@ public class JobInfoActivity extends BaseActivity implements JobInfoView {
         jobDescTxt.setText(rJobInfoBO.jobDesc);
         telTxt.setText(rJobInfoBO.contactTel);
         if (rJobInfoBO.isCollect) {
-            collectTxt.setText("已收藏");
-            collectLlayout.setClickable(false);
+            collectTxt.setText("取消收藏");
+            isCollected = true;
         }
 
         adapter = new GridAdapter(this);
@@ -240,12 +244,25 @@ public class JobInfoActivity extends BaseActivity implements JobInfoView {
 
     @Override
     public void collectSucceed(String msg) {
+        isCollected = true;
         MyUtils.showToast(getApplicationContext(), "收藏成功");
-        collectTxt.setText("已收藏");
+        collectTxt.setText("取消收藏");
     }
 
     @Override
     public void collectFailed(String msg) {
+        MyUtils.showToast(getApplicationContext(), msg);
+    }
+
+    @Override
+    public void cancelSucceed(String msg) {
+        isCollected = false;
+        MyUtils.showToast(getApplicationContext(), "取消收藏成功");
+        collectTxt.setText("收藏");
+    }
+
+    @Override
+    public void cancelFailed(String msg) {
         MyUtils.showToast(getApplicationContext(), msg);
     }
 

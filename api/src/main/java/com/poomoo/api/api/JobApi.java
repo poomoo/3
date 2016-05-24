@@ -6,6 +6,7 @@ package com.poomoo.api.api;
 import com.poomoo.model.base.BaseJobBO;
 import com.poomoo.model.request.QAllJobBO;
 import com.poomoo.model.request.QApplyBO;
+import com.poomoo.model.request.QCancelCollectBO;
 import com.poomoo.model.request.QCateBO;
 import com.poomoo.model.request.QCollectBO;
 import com.poomoo.model.request.QSignUpBO;
@@ -58,4 +59,7 @@ public interface JobApi {
 
     @POST("lzrb/app/call.htm")
     Observable<ResponseBO> signUp(@Body QSignUpBO data);
+
+    @POST("lzrb/app/call.htm")
+    Observable<ResponseBO> cancelCollect(@Body QCancelCollectBO data);
 }
