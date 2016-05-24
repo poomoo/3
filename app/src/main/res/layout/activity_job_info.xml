@@ -10,6 +10,7 @@
         layout="@layout/pub_layout_title_bar" />
 
     <ScrollView
+        android:id="@+id/scroll_jobInfo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/bottom"

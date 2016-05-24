@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.poomoo.commlib.MyConfig;
@@ -73,6 +74,8 @@ public class JobInfoActivity extends BaseActivity implements JobInfoView {
     TextView collectTxt;
     @Bind(R.id.llayout_collect)
     LinearLayout collectLlayout;
+    @Bind(R.id.scroll_jobInfo)
+    ScrollView infoView;
 
     private JobInfoPresenter jobInfoPresenter;
     private int[] pics = {R.drawable.ic_1, R.drawable.ic_2, R.drawable.ic_3, R.drawable.ic_4};
@@ -119,6 +122,7 @@ public class JobInfoActivity extends BaseActivity implements JobInfoView {
         jobInfoPresenter.queryJobInfo(jobId, application.getUserId());
         jobInfoPresenter.queryRecommendJobs(1);
         jobInfoPresenter.browse(jobId, application.getUserId());
+        infoView.setVisibility(View.GONE);
     }
 
     /**
@@ -215,6 +219,7 @@ public class JobInfoActivity extends BaseActivity implements JobInfoView {
     @Override
     public void succeed(RJobInfoBO rJobInfoBO) {
         closeProgressDialog();
+        infoView.setVisibility(View.VISIBLE);
         this.rJobInfoBO = rJobInfoBO;
         payNumTxt.setText(MyUtils.formatPay(rJobInfoBO.pay)[0]);
         payUnitTxt.setText(MyUtils.formatPay(rJobInfoBO.pay)[1]);

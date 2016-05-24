@@ -10,7 +10,7 @@ package com.poomoo.api;
 public class NetConfig {
     public static String RemoteUrl = "http://lzrb.91jiaoyou.cn/";
     public static String LocalUrl = "http://192.168.0.104:8088/";
-    public static String url = RemoteUrl;
+    public static String url = LocalUrl;
     public static String imageUrl = url + "lzrb/app/common/uploadPic.ajax";
 
 

@@ -16,8 +16,8 @@
 
         <com.poomoo.parttimejob.ui.custom.RoundImageView2
             android:id="@+id/img_applicantAvatar"
-            android:layout_width="74dp"
-            android:layout_height="74dp"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
             android:src="@drawable/ic_dial"
             app:borderRadius="@dimen/avatar_radius"
             app:type="round" />
@@ -36,7 +36,7 @@
             android:layout_height="wrap_content"
             android:text="丽丽"
             android:textColor="@color/black"
-            android:textSize="18sp" />
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/txt_applicantSex"

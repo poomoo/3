@@ -46,7 +46,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/style_label_male"
                 android:text="男 25"
-                android:textSize="18sp" />
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/txt_applicantHeight"
@@ -55,7 +55,7 @@
                 android:layout_marginLeft="10dp"
                 android:background="@drawable/style_label_height"
                 android:text="170cm"
-                android:textSize="18sp" />
+                android:textSize="16sp" />
         </LinearLayout>
 
         <TextView
@@ -99,7 +99,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="4dp"
                     android:text="昵称　　"
-                    android:textSize="18sp" />
+                    android:textSize="16sp" />
             </LinearLayout>
 
             <LinearLayout
@@ -115,7 +115,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="丽丽"
-                    android:textSize="18sp" />
+                    android:textSize="16sp" />
 
                 <ImageView
                     android:id="@+id/img_applicantSex"
@@ -154,7 +154,7 @@
                     android:layout_marginLeft="4dp"
                     android:layout_marginTop="1dp"
                     android:text="求职意向"
-                    android:textSize="18sp" />
+                    android:textSize="16sp" />
             </LinearLayout>
 
             <TextView
@@ -164,7 +164,7 @@
                 android:layout_marginRight="12dp"
                 android:layout_weight="2"
                 android:text="实习岗、校园大使工实习岗、校园大使工实习岗、校园大使工"
-                android:textSize="18sp" />
+                android:textSize="16sp" />
         </LinearLayout>
 
         <TextView
@@ -208,7 +208,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="4dp"
                     android:text="学校　　"
-                    android:textSize="18sp" />
+                    android:textSize="16sp" />
             </LinearLayout>
 
             <TextView
@@ -218,7 +218,7 @@
                 android:layout_marginRight="12dp"
                 android:layout_weight="2"
                 android:text="桂林理工大学博文管理学院"
-                android:textSize="18sp" />
+                android:textSize="16sp" />
         </LinearLayout>
 
         <TextView
@@ -263,7 +263,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="4dp"
                     android:text="注册时间"
-                    android:textSize="18sp" />
+                    android:textSize="16sp" />
             </LinearLayout>
 
             <TextView
@@ -274,7 +274,7 @@
                 android:layout_gravity="right"
                 android:layout_marginRight="12dp"
                 android:text="2016-01-10"
-                android:textSize="18sp" />
+                android:textSize="16sp" />
         </RelativeLayout>
     </LinearLayout>
 
