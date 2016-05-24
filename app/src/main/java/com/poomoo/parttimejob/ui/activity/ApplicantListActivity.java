@@ -75,3 +75,4 @@ public class ApplicantListActivity extends BaseActivity implements ApplicantList
         openActivity(ApplicantInfoActivity.class, bundle);
     }
 }
+
