@@ -10,9 +10,11 @@ import com.poomoo.api.Network;
 import com.poomoo.model.Page;
 import com.poomoo.model.base.BaseJobBO;
 import com.poomoo.model.request.QApplyBO;
+import com.poomoo.model.request.QCancelCollectBO;
 import com.poomoo.model.request.QCateBO;
 import com.poomoo.model.request.QRecommendBO;
 import com.poomoo.model.request.QUserIdBO;
+import com.poomoo.model.response.ResponseBO;
 import com.poomoo.parttimejob.view.JobListView;
 
 import java.util.List;
@@ -55,28 +57,7 @@ public class AllJobListPresenter extends BasePresenter {
                 }));
     }
 
-    /**
-     * 我的收藏
-     *
-     * @param userId
-     */
-    public void getCollectionList(int userId) {
-        QUserIdBO qUserIdBO = new QUserIdBO(NetConfig.JOBACTION, NetConfig.COLLECTIONLIST, userId);
-        mSubscriptions.add(Network.getJobApi().getCollectionList(qUserIdBO)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new AbsAPICallback<List<BaseJobBO>>() {
-                    @Override
-                    protected void onError(ApiException e) {
-                        jobListView.failed(e.getMessage());
-                    }
 
-                    @Override
-                    public void onNext(List<BaseJobBO> list) {
-                        jobListView.succeed(list);
-                    }
-                }));
-    }
 
     /**
      * 按类型查询

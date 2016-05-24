@@ -175,6 +175,7 @@ public class JobInfoActivity extends BaseActivity implements JobInfoView {
             MyUtils.showToast(getApplicationContext(), MyConfig.pleaseLogin);
             return;
         }
+        showProgressDialog(getString(R.string.dialog_msg));
         if (!isCollected)
             jobInfoPresenter.collect(jobId, application.getUserId());
         else
@@ -244,6 +245,7 @@ public class JobInfoActivity extends BaseActivity implements JobInfoView {
 
     @Override
     public void collectSucceed(String msg) {
+        closeProgressDialog();
         isCollected = true;
         MyUtils.showToast(getApplicationContext(), "收藏成功");
         collectTxt.setText("取消收藏");
@@ -251,11 +253,13 @@ public class JobInfoActivity extends BaseActivity implements JobInfoView {
 
     @Override
     public void collectFailed(String msg) {
+        closeProgressDialog();
         MyUtils.showToast(getApplicationContext(), msg);
     }
 
     @Override
     public void cancelSucceed(String msg) {
+        closeProgressDialog();
         isCollected = false;
         MyUtils.showToast(getApplicationContext(), "取消收藏成功");
         collectTxt.setText("收藏");
@@ -263,6 +267,7 @@ public class JobInfoActivity extends BaseActivity implements JobInfoView {
 
     @Override
     public void cancelFailed(String msg) {
+        closeProgressDialog();
         MyUtils.showToast(getApplicationContext(), msg);
     }
 

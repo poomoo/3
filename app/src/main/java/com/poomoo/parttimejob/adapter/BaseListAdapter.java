@@ -70,13 +70,18 @@ public abstract class BaseListAdapter<T> extends RecyclerView.Adapter {
         notifyDataSetChanged();
     }
 
-    public  void addItems(List<T> objs) {
+    public void addItems(List<T> objs) {
         items.addAll(objs);
         notifyDataSetChanged();
     }
 
     public final void addItems(int position, List<T> objs) {
         items.addAll(position, objs);
+        notifyDataSetChanged();
+    }
+
+    public final void removeItem(int positon) {
+        items.remove(positon);
         notifyDataSetChanged();
     }
 

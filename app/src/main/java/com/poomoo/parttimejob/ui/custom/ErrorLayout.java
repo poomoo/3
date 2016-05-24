@@ -20,6 +20,7 @@ public class ErrorLayout extends FrameLayout {
     public static final int LOAD_FAILED = 2;
     public static final int NOT_NETWORK = 3;
     public static final int EMPTY_DATA = 4;
+    public static final int NO_COLLECTED = 5;
 
     private ProgressBar probar;
     private TextView vText;
@@ -44,12 +45,9 @@ public class ErrorLayout extends FrameLayout {
         vText = (TextView) view.findViewById(R.id.state_text);
         vLoadFailure = (TextView) view.findViewById(R.id.load_failed);
 
-        vLoadFailure.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (listener != null)
-                    listener.onLoadActiveClick();
-            }
+        vLoadFailure.setOnClickListener(v -> {
+            if (listener != null)
+                listener.onLoadActiveClick();
         });
 
         addView(view);
@@ -91,6 +89,13 @@ public class ErrorLayout extends FrameLayout {
                 setVisibility(VISIBLE);
                 vLoadFailure.setVisibility(VISIBLE);
                 vLoadFailure.setText("没有数据");
+                vText.setVisibility(GONE);
+                probar.setVisibility(GONE);
+
+            case NO_COLLECTED:
+                setVisibility(VISIBLE);
+                vLoadFailure.setVisibility(VISIBLE);
+                vLoadFailure.setText("没有收藏记录");
                 vText.setVisibility(GONE);
                 probar.setVisibility(GONE);
         }

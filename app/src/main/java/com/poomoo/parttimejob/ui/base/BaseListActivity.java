@@ -114,7 +114,7 @@ public abstract class BaseListActivity<T> extends BaseActivity implements SwipeR
             mAdapter.clear();
 
         if (mAdapter.getDataSize() + result.size() == 0) {
-            mErrorLayout.setState(ErrorLayout.EMPTY_DATA);
+            mErrorLayout.setState(ErrorLayout.NO_COLLECTED);
             mSwipeRefreshLayout.setRefreshing(false);
             mSwipeRefreshLayout.setEnabled(false);
             mAdapter.setState(BaseListAdapter.STATE_HIDE);

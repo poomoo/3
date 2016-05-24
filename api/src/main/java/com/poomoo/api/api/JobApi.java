@@ -9,6 +9,7 @@ import com.poomoo.model.request.QApplyBO;
 import com.poomoo.model.request.QCancelCollectBO;
 import com.poomoo.model.request.QCateBO;
 import com.poomoo.model.request.QCollectBO;
+import com.poomoo.model.request.QMyCollectionBO;
 import com.poomoo.model.request.QSignUpBO;
 import com.poomoo.model.request.QUserIdBO;
 import com.poomoo.model.request.QJobInfoBO;
@@ -49,7 +50,7 @@ public interface JobApi {
     Observable<List<BaseJobBO>> getApplyList(@Body QApplyBO data);
 
     @POST("lzrb/app/call.htm")
-    Observable<List<BaseJobBO>> getCollectionList(@Body QUserIdBO data);
+    Observable<List<BaseJobBO>> getCollectionList(@Body QMyCollectionBO data);
 
     @POST("lzrb/app/call.htm")
     Observable<List<BaseJobBO>> getJobByCate(@Body QCateBO data);

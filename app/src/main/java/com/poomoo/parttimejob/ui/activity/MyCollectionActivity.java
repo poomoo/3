@@ -3,16 +3,21 @@
  */
 package com.poomoo.parttimejob.ui.activity;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.os.Bundle;
 import android.view.View;
 
+import com.poomoo.commlib.LogUtils;
+import com.poomoo.commlib.MyUtils;
 import com.poomoo.model.base.BaseJobBO;
 import com.poomoo.parttimejob.R;
-import com.poomoo.parttimejob.adapter.JobsAdapter;
 import com.poomoo.parttimejob.adapter.BaseListAdapter;
-import com.poomoo.parttimejob.presentation.AllJobListPresenter;
+import com.poomoo.parttimejob.adapter.JobsAdapter;
+import com.poomoo.parttimejob.presentation.MyCollectionPresenter;
 import com.poomoo.parttimejob.ui.base.BaseListActivity;
-import com.poomoo.parttimejob.view.JobListView;
+import com.poomoo.parttimejob.ui.custom.ErrorLayout;
+import com.poomoo.parttimejob.view.MyCollectionView;
 
 import java.util.List;
 
@@ -21,9 +26,10 @@ import java.util.List;
  * 作者: 李苜菲
  * 日期: 2016/4/16 15:32.
  */
-public class MyCollectionActivity extends BaseListActivity<BaseJobBO> implements BaseListAdapter.OnItemClickListener, JobListView {
+public class MyCollectionActivity extends BaseListActivity<BaseJobBO> implements BaseListAdapter.OnItemClickListener, BaseListAdapter.OnItemLongClickListener, MyCollectionView {
     private JobsAdapter adapter;
-    private AllJobListPresenter allJobListPresenter;
+    private MyCollectionPresenter myCollectionPresenter;
+    private int cancelPos = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,13 +37,14 @@ public class MyCollectionActivity extends BaseListActivity<BaseJobBO> implements
         setBack();
         mListView.setPadding(0, setDividerSize(), 0, 0);
         mAdapter.setOnItemClickListener(this);
-        allJobListPresenter = new AllJobListPresenter(this);
-        allJobListPresenter.getCollectionList(application.getUserId());
+        mAdapter.setOnItemLongClickListener(this);
+        myCollectionPresenter = new MyCollectionPresenter(this);
+        myCollectionPresenter.getCollectionList(application.getUserId(), mCurrentPage);
     }
 
     @Override
     protected BaseListAdapter<BaseJobBO> onSetupAdapter() {
-        adapter=new JobsAdapter(this, BaseListAdapter.ONLY_FOOTER, false);
+        adapter = new JobsAdapter(this, BaseListAdapter.ONLY_FOOTER, false);
         return adapter;
     }
 
@@ -49,13 +56,21 @@ public class MyCollectionActivity extends BaseListActivity<BaseJobBO> implements
     @Override
     public void onRefresh() {
         super.onRefresh();
-        allJobListPresenter.getCollectionList(application.getUserId());
+        mCurrentPage = 1;
+        myCollectionPresenter.getCollectionList(application.getUserId(), mCurrentPage);
+    }
+
+    @Override
+    public void onLoading() {
+        super.onLoading();
+        myCollectionPresenter.getCollectionList(application.getUserId(), mCurrentPage);
     }
 
     @Override
     public void onLoadActiveClick() {
         super.onLoadActiveClick();
-        allJobListPresenter.getCollectionList(application.getUserId());
+        mCurrentPage = 1;
+        myCollectionPresenter.getCollectionList(application.getUserId(), mCurrentPage);
     }
 
     @Override
@@ -73,9 +88,39 @@ public class MyCollectionActivity extends BaseListActivity<BaseJobBO> implements
     }
 
     @Override
+    public void cancelSucceed(String msg) {
+        closeProgressDialog();
+        MyUtils.showToast(getApplicationContext(), msg);
+        adapter.removeItem(cancelPos);
+        if (adapter.getItemCount() == 1) {
+            mErrorLayout.setState(ErrorLayout.NO_COLLECTED);
+            mSwipeRefreshLayout.setRefreshing(false);
+            mSwipeRefreshLayout.setEnabled(false);
+            mAdapter.setState(BaseListAdapter.STATE_HIDE);
+        }
+    }
+
+    @Override
+    public void cancelFailed(String msg) {
+        closeProgressDialog();
+        MyUtils.showToast(getApplicationContext(), msg);
+    }
+
+    @Override
     public void onItemClick(int position, long id, View view) {
         Bundle bundle = new Bundle();
         bundle.putInt(getString(R.string.intent_value), adapter.getItem(position).jobId);
         openActivity(JobInfoActivity.class, bundle);
+    }
+
+    @Override
+    public void onLongClick(int position, long id, View view) {
+        Dialog dialog = new AlertDialog.Builder(this).setMessage("确认删除该条职位收藏信息").setNegativeButton("取消", (dialog1, which) -> {
+        }).setPositiveButton("确定", (dialog1, which) -> {
+            cancelPos = position;
+            showProgressDialog(getString(R.string.dialog_msg));
+            myCollectionPresenter.cancelCollect(adapter.getItem(position).jobId, application.getUserId());
+        }).create();
+        dialog.show();
     }
 }

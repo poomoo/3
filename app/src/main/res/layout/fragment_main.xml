@@ -93,12 +93,12 @@
                         android:id="@+id/grid_main"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@color/colorBg"
+                        android:background="@color/white"
                         android:focusable="true"
                         android:focusableInTouchMode="true"
                         android:numColumns="4"
-                        android:paddingTop="8dp"
                         android:paddingBottom="8dp"
+                        android:paddingTop="8dp"
                         app:layout_scrollFlags="scroll" />
 
                     <LinearLayout
