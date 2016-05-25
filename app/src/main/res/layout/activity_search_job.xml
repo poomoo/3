@@ -22,14 +22,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dip"
-            android:imeOptions="actionSearch"
-            android:singleLine="true"
             android:background="@drawable/style_edittext_search"
             android:drawableLeft="@drawable/ic_search_gray"
             android:drawablePadding="5dp"
-            android:inputType="text"
             android:hint="@string/hint_inputSearchJob"
+            android:imeOptions="actionSearch"
+            android:inputType="text"
             android:padding="6dp"
+            android:singleLine="true"
             android:textColor="#515151"
             android:textSize="12sp" />
     </LinearLayout>
@@ -37,8 +37,7 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_search"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp" />
+        android:layout_height="wrap_content" />
     <!--ErrorLayout-->
     <com.poomoo.parttimejob.ui.custom.ErrorLayout
         android:id="@+id/error_frame"

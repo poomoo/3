@@ -3,8 +3,6 @@
  */
 package com.poomoo.commlib;
 
-import android.text.format.DateFormat;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -65,6 +63,51 @@ public class MyDateFormat {
 //            long years = toYears(delta);
 //            return (years <= 0 ? 1 : years) + ONE_YEAR_AGO;
 //        }
+    }
+
+    public static String formatToMessage(String date) {
+        if (date.length() > 10)
+            format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        else
+            format = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat format2 = new SimpleDateFormat("HH:mm:ss");
+        Date date1 = null;
+        String yearMonthDay;
+        try {
+            date1 = format.parse(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        yearMonthDay = format2.format(date1);
+        long delta = new Date().getTime() - date1.getTime();
+        if (delta > 1L * ONE_DAY) {
+            return date;
+        } else {
+            return yearMonthDay;
+        }
+    }
+
+    /**
+     * @param date1
+     * @param date2
+     * @return true-大于5分钟 false
+     */
+    public static boolean minus(String date1, String date2) {
+        if (date1.length() == 0)
+            return true;
+        format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date d1 = null;
+        Date d2 = null;
+        try {
+            d1 = format.parse(date1);
+            d2 = format.parse(date2);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        long delta = d1.getTime() - d2.getTime();
+        LogUtils.d("MyDateFormat", "delta-->" + delta);
+        if (delta > 5L * ONE_MINUTE) return true;//五分钟内不需要显示
+        return false;
     }
 
     private static long toSeconds(long date) {

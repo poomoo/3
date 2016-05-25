@@ -91,6 +91,7 @@ public class ErrorLayout extends FrameLayout {
                 vLoadFailure.setText("没有数据");
                 vText.setVisibility(GONE);
                 probar.setVisibility(GONE);
+                break;
 
             case NO_COLLECTED:
                 setVisibility(VISIBLE);
@@ -98,6 +99,7 @@ public class ErrorLayout extends FrameLayout {
                 vLoadFailure.setText("没有收藏记录");
                 vText.setVisibility(GONE);
                 probar.setVisibility(GONE);
+                break;
         }
     }
 

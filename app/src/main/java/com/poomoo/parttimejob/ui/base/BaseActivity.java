@@ -155,18 +155,14 @@ public abstract class BaseActivity extends RxAppCompatActivity {
             progressDialog.setCanceledOnTouchOutside(false);
         }
         progressDialog.show();
-        progressDialog.setOnKeyListener(new DialogInterface.OnKeyListener() {
-
-            @Override
-            public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
-                // TODO Auto-generated method stub
-                if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
-                    progressDialog.dismiss();
-                    progressDialog = null;
-                    finish();
-                }
-                return false;
+        progressDialog.setOnKeyListener((dialog, keyCode, event) -> {
+            // TODO Auto-generated method stub
+            if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
+                progressDialog.dismiss();
+                progressDialog = null;
+                finish();
             }
+            return false;
         });
     }
 

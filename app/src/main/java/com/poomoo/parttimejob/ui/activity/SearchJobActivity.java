@@ -7,12 +7,10 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import com.poomoo.commlib.MyUtils;
 import com.poomoo.model.Page;
@@ -80,20 +78,17 @@ public class SearchJobActivity extends BaseActivity implements SearchJobView, Ba
         adapter.setOnLoadingListener(this);
         recyclerView.setAdapter(adapter);
 
-        editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    // 在这里编写自己想要实现的功能
-                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
-                    content = editText.getText().toString().trim();
-                    if (content.length() > 0)
-                        search();
-                    return true;
-                }
-                return false;
+        editText.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                // 在这里编写自己想要实现的功能
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
+                content = editText.getText().toString().trim();
+                if (content.length() > 0)
+                    search();
+                return true;
             }
+            return false;
         });
     }
 
