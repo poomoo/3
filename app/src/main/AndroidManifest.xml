@@ -54,6 +54,7 @@
         <activity android:name=".ui.activity.JobListByCateActivity" />
         <activity android:name=".ui.activity.MoreJobsActivity" />
         <activity android:name=".ui.activity.MapActivity" />
+        <activity android:name=".ui.activity.ProtocolActivity" />
 
         <service
             android:name="com.baidu.location.f"

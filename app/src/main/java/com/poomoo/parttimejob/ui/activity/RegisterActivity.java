@@ -97,6 +97,7 @@ public class RegisterActivity extends BaseActivity implements RegisterView {
     }
 
     public void protocol(View view) {
+        openActivity(ProtocolActivity.class);
     }
 
     public void toConfirm(View view) {
