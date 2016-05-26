@@ -111,7 +111,7 @@ public class ResumePresenter extends BasePresenter {
                 .subscribe(new AbsAPICallback<RResumeBO>() {
                     @Override
                     protected void onError(ApiException e) {
-                        resumeView.failed(e.getMessage());
+                        resumeView.downFailed(e.getMessage());
                     }
 
                     @Override

@@ -154,6 +154,7 @@ public class ResumeActivity extends BaseActivity implements ResumeView {
             return false;
         });
         showProgressDialog(getString(R.string.dialog_msg));
+        telTxt.setText(application.getTel());
         resumePresenter.downResume(application.getUserId());
     }
 
@@ -283,26 +284,20 @@ public class ResumeActivity extends BaseActivity implements ResumeView {
                 cal.get(Calendar.DAY_OF_MONTH));
 
         // 手动设置按钮
-        mDialog.setButton(DialogInterface.BUTTON_POSITIVE, "确定", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                // 通过mDialog.getDatePicker()获得dialog上的DatePicker组件，然后可以获取日期信息
-                DatePicker datePicker = mDialog.getDatePicker();
-                nYear = datePicker.getYear();
-                nMonth = datePicker.getMonth() + 1;
-                nDay = datePicker.getDayOfMonth();
+        mDialog.setButton(DialogInterface.BUTTON_POSITIVE, "确定", (dialog, which) -> {
+            // 通过mDialog.getDatePicker()获得dialog上的DatePicker组件，然后可以获取日期信息
+            DatePicker datePicker = mDialog.getDatePicker();
+            nYear = datePicker.getYear();
+            nMonth = datePicker.getMonth() + 1;
+            nDay = datePicker.getDayOfMonth();
 
-                playDt = nYear + "-" + nMonth + "-" + nDay;
-                birthday = playDt;
-                dateTxt.setText(playDt);
+            playDt = nYear + "-" + nMonth + "-" + nDay;
+            birthday = playDt;
+            dateTxt.setText(playDt);
 
-            }
         });
         // 取消按钮，如果不需要直接不设置即可
-        mDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "取消", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-            }
+        mDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "取消", (dialog, which) -> {
         });
 
         mDialog.show();
@@ -491,7 +486,6 @@ public class ResumeActivity extends BaseActivity implements ResumeView {
         schoolNameEdt.setText(schoolName);
         emailEdt.setText(email);
         qqNumEdt.setText(qqNum);
-        telTxt.setText(application.getTel());
         workResumeEdt.setText(workResume);
         workExpEdt.setText(workExp);
 
@@ -507,7 +501,9 @@ public class ResumeActivity extends BaseActivity implements ResumeView {
     @Override
     public void downFailed(String msg) {
         closeProgressDialog();
-        MyUtils.showToast(getApplicationContext(), msg);
-        finish();
+        if (!msg.contains("-2")) {//-2表示没有简历
+            MyUtils.showToast(getApplicationContext(), msg);
+            finish();
+        }
     }
 }
