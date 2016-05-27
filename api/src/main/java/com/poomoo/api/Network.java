@@ -30,11 +30,13 @@ public class Network {
     private static Converter.Factory gsonConverterFactory = GsonConverterFactory.create();
     private static CallAdapter.Factory rxJavaCallAdapterFactory = RxJavaCallAdapterFactory.create();
     private static String TAG = "Network";
+    public static HttpLoggingInterceptor.Level level = HttpLoggingInterceptor.Level.BODY;
+
 
     public static UserApi getUserApi() {
         if (userApi == null) {
             HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
-            loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+            loggingInterceptor.setLevel(level);
             OkHttpClient.Builder clientBuilder = new OkHttpClient.Builder().addInterceptor(loggingInterceptor);
             clientBuilder.connectTimeout(1, TimeUnit.MINUTES);
             Retrofit retrofit = new Retrofit.Builder()
@@ -51,7 +53,7 @@ public class Network {
     public static CommApi getCommApi() {
         if (commApi == null) {
             HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
-            loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+            loggingInterceptor.setLevel(level);
             OkHttpClient.Builder clientBuilder = new OkHttpClient.Builder().addInterceptor(loggingInterceptor);
             clientBuilder.connectTimeout(1, TimeUnit.MINUTES);
             Retrofit retrofit = new Retrofit.Builder()
@@ -68,7 +70,7 @@ public class Network {
     public static JobApi getJobApi() {
         if (jobApi == null) {
             HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
-            loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+            loggingInterceptor.setLevel(level);
             OkHttpClient.Builder clientBuilder = new OkHttpClient.Builder().addInterceptor(loggingInterceptor);
             clientBuilder.connectTimeout(1, TimeUnit.MINUTES);
             Retrofit retrofit = new Retrofit.Builder()

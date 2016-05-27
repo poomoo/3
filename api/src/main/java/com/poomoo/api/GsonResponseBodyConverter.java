@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.poomoo.commlib.LogUtils;
 import com.poomoo.model.response.ResponseBO;
 
 import org.json.JSONArray;
@@ -34,7 +35,7 @@ class GsonResponseBodyConverter<T> implements Converter<ResponseBody, T> {
     public T convert(ResponseBody value) throws IOException {
         final String response = value.string();
         ResponseBO responseBO = gson.fromJson(response, ResponseBO.class);
-        Log.d("convert", "返回的数据:" + responseBO + "type:" + type);
+        LogUtils.d("convert", "返回的数据:" + responseBO + "type:" + type);
         if (responseBO.rsCode == 1) {
             if (type.equals(ResponseBO.class))
                 return (T) responseBO;
@@ -42,13 +43,11 @@ class GsonResponseBodyConverter<T> implements Converter<ResponseBody, T> {
             String jsonData = responseBO.jsonData.toString();
             if (!TextUtils.isEmpty(jsonData)) {
                 if (jsonData.contains("records")) {
-//                    Log.d("convert", "含有records:" + jsonData);
                     responseBO.records = new ArrayList();
                     JSONObject jsonObject;
                     try {
                         jsonObject = new JSONObject(jsonData);
                         String records = jsonObject.getString("records");
-//                        Log.d("convert", "records:" + records + ":" + type);
                         return gson.fromJson(records, type);
                     } catch (JSONException e) {
                         e.printStackTrace();

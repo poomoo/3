@@ -126,7 +126,8 @@ public class MainFragment extends BaseFragment implements SwipeRefreshLayout.OnR
     }
 
     private void initSubscribers() {
-        LogUtils.d(TAG, "currCity" + application.getCurrCity());
+        application.setCurrCityId((Integer) SPUtils.get(getActivity().getApplicationContext(), getString(R.string.sp_currCityId), 1));
+        application.setCurrCity((String) SPUtils.get(getActivity().getApplicationContext(), getString(R.string.sp_currCity), "贵阳"));
         cityTxt.setText(application.getCurrCity());
         RxBus.with(this)
                 .setEvent(Events.EventEnum.DELIVER_CITY)

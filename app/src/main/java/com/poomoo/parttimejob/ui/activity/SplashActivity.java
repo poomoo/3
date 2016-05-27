@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.WindowManager;
 
+import com.poomoo.api.HttpLoggingInterceptor;
+import com.poomoo.api.Network;
 import com.poomoo.commlib.LogUtils;
 import com.poomoo.commlib.SPUtils;
 import com.poomoo.commlib.StatusBarUtil;
@@ -38,6 +40,10 @@ public class SplashActivity extends BaseActivity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         super.onCreate(savedInstanceState);
         StatusBarUtil.setTransparent(this);
+        //不显示日志
+        LogUtils.isDebug = false;
+        Network.level= HttpLoggingInterceptor.Level.NONE;
+
         importDB();
         startService(new Intent(this, LocaleService.class));
         isIndex = (boolean) SPUtils.get(getApplicationContext(), getString(R.string.sp_isIndex), true);
@@ -61,8 +67,6 @@ public class SplashActivity extends BaseActivity {
 
     public void start() {
         new Handler().postDelayed(() -> {
-            application.setCurrCityId((Integer) SPUtils.get(getApplicationContext(), getString(R.string.sp_currCityId), 1));
-            application.setCurrCity((String) SPUtils.get(getApplicationContext(), getString(R.string.sp_currCity), "贵阳"));
             if (!(boolean) SPUtils.get(getApplicationContext(), getString(R.string.sp_isLogin), false)) {
                 openActivity(LoginActivity.class);
                 finish();
@@ -77,9 +81,6 @@ public class SplashActivity extends BaseActivity {
                 openActivity(MainActivity.class);
                 finish();
             }
-            LogUtils.d(TAG, "HeadPic:" + application.getHeadPic());
-            LogUtils.d(TAG, "CurrCityId:" + application.getCurrCityId());
-            LogUtils.d(TAG, "CurrCity:" + application.getCurrCity());
         }, SPLASH_DISPLAY_LENGTH);
     }
 
