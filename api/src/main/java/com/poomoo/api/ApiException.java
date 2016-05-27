@@ -76,7 +76,8 @@ public class ApiException extends RuntimeException {
                 message = "未知错误";
 
         }
-        return message + "(code:" + code + ")";
+//        return message + "(code:" + code + ")";
+        return message;
     }
 }
 
