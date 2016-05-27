@@ -5,11 +5,11 @@
     android:gravity="center"
     android:orientation="vertical">
 
-    <com.poomoo.parttimejob.ui.custom.RoundImageView2
+    <ImageView
         android:id="@+id/img_main"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:src="@drawable/ic_defalut_avatar" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:scaleType="centerInside"/>
 
     <TextView
         android:id="@+id/txt_main"

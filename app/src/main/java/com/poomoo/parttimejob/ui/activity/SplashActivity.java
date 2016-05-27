@@ -61,12 +61,12 @@ public class SplashActivity extends BaseActivity {
 
     public void start() {
         new Handler().postDelayed(() -> {
+            application.setCurrCityId((Integer) SPUtils.get(getApplicationContext(), getString(R.string.sp_currCityId), 1));
+            application.setCurrCity((String) SPUtils.get(getApplicationContext(), getString(R.string.sp_currCity), "贵阳"));
             if (!(boolean) SPUtils.get(getApplicationContext(), getString(R.string.sp_isLogin), false)) {
                 openActivity(LoginActivity.class);
                 finish();
             } else {
-                application.setCurrCityId((Integer) SPUtils.get(getApplicationContext(), getString(R.string.sp_currCityId), 1));
-                application.setCurrCity((String) SPUtils.get(getApplicationContext(), getString(R.string.sp_currCity), "贵阳"));
                 application.setUserId((Integer) SPUtils.get(getApplicationContext(), getString(R.string.sp_userId), 0));
                 application.setNickName((String) SPUtils.get(getApplicationContext(), getString(R.string.sp_nickName), ""));
                 application.setRealName((String) SPUtils.get(getApplicationContext(), getString(R.string.sp_realName), ""));
@@ -79,6 +79,7 @@ public class SplashActivity extends BaseActivity {
             }
             LogUtils.d(TAG, "HeadPic:" + application.getHeadPic());
             LogUtils.d(TAG, "CurrCityId:" + application.getCurrCityId());
+            LogUtils.d(TAG, "CurrCity:" + application.getCurrCity());
         }, SPLASH_DISPLAY_LENGTH);
     }
 

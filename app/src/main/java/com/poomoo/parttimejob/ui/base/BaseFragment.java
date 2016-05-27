@@ -20,8 +20,8 @@ public abstract class BaseFragment extends RxFragment {
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
-        application = (MyApplication) getActivity().getApplication();
         super.onActivityCreated(savedInstanceState);
+        application = (MyApplication) getActivity().getApplication();
     }
 
     /**

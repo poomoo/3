@@ -106,7 +106,7 @@ public class JobInfoActivity extends BaseActivity implements JobInfoView {
     // 首先在您的Activity中添加如下成员变量
     public static final UMSocialService mController = UMServiceFactory.getUMSocialService("com.umeng.share");
     private String content = "边玩边赚钱,就是这么任性!";
-    private String website = "http://www.baidu.com";
+    private String website = "http://lzrb.91jiaoyou.cn/lzrb/download/wap.html";
     private String title = "点击下载兼职GO APP";
 
     @Override
@@ -304,8 +304,8 @@ public class JobInfoActivity extends BaseActivity implements JobInfoView {
      * : 用户点击该分享时跳转到的目标地址 [必填] ( 若不填写则默认设置为友盟主页 )
      */
     private void addQQZonePlatform() {
-        String appId = "1105034933";
-        String appKey = "EjvftRWhsTXReJug";
+        String appId = "1105430386";
+        String appKey = "Nsi92kmIuu6oDpe5";
         // 添加QQ支持, 并且设置QQ分享内容的target url
         UMQQSsoHandler qqSsoHandler = new UMQQSsoHandler(this, appId, appKey);
         qqSsoHandler.setTargetUrl(website);
