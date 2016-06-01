@@ -7,7 +7,7 @@ package com.poomoo.parttimejob.event;
 public class Events<T> {
 
     public enum EventEnum {
-        DELIVER_AVATAR, DELIVER_CITY
+        DELIVER_AVATAR, DELIVER_CITY, SET_INTENTION
     }
 
     public EventEnum what;

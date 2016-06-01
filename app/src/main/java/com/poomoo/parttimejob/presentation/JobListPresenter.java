@@ -31,27 +31,6 @@ public class JobListPresenter extends BasePresenter {
     }
 
     /**
-     * 工作类型
-     */
-    public void getType() {
-        QJobTypeBO qJobTypeBO = new QJobTypeBO(NetConfig.JOBACTION, NetConfig.JOBTYPE, 2);
-        mSubscriptions.add(Network.getJobApi().getType(qJobTypeBO)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new AbsAPICallback<List<RTypeBO>>() {
-                    @Override
-                    protected void onError(ApiException e) {
-
-                    }
-
-                    @Override
-                    public void onNext(List<RTypeBO> rTypeBOs) {
-                        jobView.type(rTypeBOs);
-                    }
-                }));
-    }
-
-    /**
      * @param lat
      * @param lng
      * @param cityId

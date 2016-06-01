@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.poomoo.commlib.LogUtils;
 import com.poomoo.commlib.MyUtils;
 import com.poomoo.model.Page;
 import com.poomoo.parttimejob.R;
@@ -280,7 +281,7 @@ public abstract class BaseListFragment<T> extends BaseFragment
         }
         mCurrentPage++;
         mAdapter.setState(BaseListAdapter.STATE_LOADING);
-        Log.d("thanatos", "change adapter state");
+        LogUtils.d("thanatos", "change adapter state");
 //        getPresenter().requestData(LOAD_MODE_UP_DRAG, mCurrentPage);
     }
 

@@ -58,7 +58,6 @@ public class AllJobListPresenter extends BasePresenter {
     }
 
 
-
     /**
      * 按类型查询
      */
@@ -86,8 +85,8 @@ public class AllJobListPresenter extends BasePresenter {
      *
      * @param pageNum
      */
-    public void queryRecommendJobs(int pageNum) {
-        QRecommendBO qRecommendBO = new QRecommendBO(NetConfig.JOBACTION, NetConfig.RECOMMENDLIST, pageNum, Page.PAGE_SIZE);
+    public void queryRecommendJobs(int userId, int cityId, int pageNum) {
+        QRecommendBO qRecommendBO = new QRecommendBO(NetConfig.JOBACTION, NetConfig.RECOMMENDLIST,userId==0?"":userId+"",cityId, pageNum, Page.PAGE_SIZE);
         mSubscriptions.add(Network.getJobApi().getRecommendList(qRecommendBO)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

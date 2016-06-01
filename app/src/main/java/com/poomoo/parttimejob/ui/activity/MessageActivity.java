@@ -82,6 +82,7 @@ public class MessageActivity extends BaseActivity implements MessageView {
         showProgressDialog(getString(R.string.dialog_msg));
         messagePresenter.getMessageList(application.getUserId(), msgId);
 
+        replyBtn.setClickable(false);
         contentEdt.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {

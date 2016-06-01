@@ -10,11 +10,14 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.bumptech.glide.util.LogTime;
 import com.poomoo.commlib.LogUtils;
 import com.poomoo.commlib.MyUtils;
 import com.poomoo.model.response.RIntentionBO;
 import com.poomoo.parttimejob.R;
 import com.poomoo.parttimejob.database.DataBaseHelper;
+import com.poomoo.parttimejob.event.Events;
+import com.poomoo.parttimejob.event.RxBus;
 import com.poomoo.parttimejob.presentation.JobIntentionPresenter;
 import com.poomoo.parttimejob.ui.base.BaseActivity;
 import com.poomoo.parttimejob.ui.custom.FreeTimeView;
@@ -60,7 +63,7 @@ public class JobIntentionActivity extends BaseActivity implements JobIntentionVi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
-
+        LogUtils.d(TAG, "onCreate");
         initTitleBar();
         mInflater = LayoutInflater.from(this);
         jobIntentionPresenter = new JobIntentionPresenter(this);
@@ -69,6 +72,7 @@ public class JobIntentionActivity extends BaseActivity implements JobIntentionVi
 
         showProgressDialog(getString(R.string.dialog_msg));
         jobIntentionPresenter.JobIntentionDown(application.getUserId(), typeInfos);
+        LogUtils.d(TAG, "onCreate endZ");
     }
 
     private void initTitleBar() {
@@ -148,8 +152,11 @@ public class JobIntentionActivity extends BaseActivity implements JobIntentionVi
         }
         otherInfo = otherEdt.getText().toString().trim();
         LogUtils.d(TAG, "cateId:" + cateId + "areaId:" + areaId + "workday:" + workday);
+        String type = "1";
+        if (TextUtils.isEmpty(cateId) && TextUtils.isEmpty(areaId) && TextUtils.isEmpty(workday) && TextUtils.isEmpty(otherInfo))
+            type = "2";
         showProgressDialog(getString(R.string.dialog_msg));
-        jobIntentionPresenter.JobIntentionUp(application.getUserId(), cateId, workday, areaId, otherInfo);
+        jobIntentionPresenter.JobIntentionUp(application.getUserId(), type, cateId, workday, areaId, otherInfo);
     }
 
     /**
@@ -171,6 +178,7 @@ public class JobIntentionActivity extends BaseActivity implements JobIntentionVi
     @Override
     public void UpSucceed(String msg) {
         closeProgressDialog();
+        RxBus.getInstance().send(Events.EventEnum.SET_INTENTION, null);
         MyUtils.showToast(getApplicationContext(), msg);
         finish();
     }

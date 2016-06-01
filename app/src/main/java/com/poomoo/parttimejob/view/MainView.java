@@ -19,4 +19,6 @@ public interface MainView {
     void loadRecommendsSucceed(List<BaseJobBO> rAdBOs);
 
     void failed(String msg);
+
+    void type(List<RTypeBO> rTypeBOs);
 }

@@ -76,8 +76,8 @@ public class MainPresenter extends BasePresenter {
      *
      * @param pageNum
      */
-    public void queryRecommendJobs(int pageNum) {
-        QRecommendBO qRecommendBO = new QRecommendBO(NetConfig.JOBACTION, NetConfig.RECOMMENDLIST, pageNum, Page.PAGE_SIZE);
+    public void queryRecommendJobs(int userId, int cityId, int pageNum) {
+        QRecommendBO qRecommendBO = new QRecommendBO(NetConfig.JOBACTION, NetConfig.RECOMMENDLIST, userId == 0 ? "" : userId + "", cityId, pageNum, Page.PAGE_SIZE);
         mSubscriptions.add(Network.getJobApi().getRecommendList(qRecommendBO)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -90,6 +90,27 @@ public class MainPresenter extends BasePresenter {
                     @Override
                     public void onNext(List<BaseJobBO> baseJobBOs) {
                         mainView.loadRecommendsSucceed(baseJobBOs);
+                    }
+                }));
+    }
+
+    /**
+     * 工作类型
+     */
+    public void getType() {
+        QJobTypeBO qJobTypeBO = new QJobTypeBO(NetConfig.JOBACTION, NetConfig.JOBTYPE, 2);
+        mSubscriptions.add(Network.getJobApi().getType(qJobTypeBO)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new AbsAPICallback<List<RTypeBO>>() {
+                    @Override
+                    protected void onError(ApiException e) {
+
+                    }
+
+                    @Override
+                    public void onNext(List<RTypeBO> rTypeBOs) {
+                        mainView.type(rTypeBOs);
                     }
                 }));
     }

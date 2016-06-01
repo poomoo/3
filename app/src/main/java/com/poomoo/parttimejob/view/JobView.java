@@ -13,7 +13,5 @@ import java.util.List;
  * 日期: 2016/4/23 15:53.
  */
 public interface JobView extends BaseView {
-    void type(List<RTypeBO> rTypeBOs);
-
     void succeed(List<BaseJobBO> baseJobBOs);
 }

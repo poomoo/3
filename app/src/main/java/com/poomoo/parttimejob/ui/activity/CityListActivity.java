@@ -3,8 +3,6 @@
  */
 package com.poomoo.parttimejob.ui.activity;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
 import android.graphics.PixelFormat;
 import android.os.Bundle;
@@ -76,11 +74,11 @@ public class CityListActivity extends BaseActivity implements OnScrollListener {
     private OverlayThread overlayThread; // 显示首字母对话框
     private List<RAreaBO.city> allCity_lists; // 所有城市列表
     private List<RAreaBO.city> city_lists = new ArrayList<>();// 城市列表
-    private List<RAreaBO.city> city_hot;
+    private List<RAreaBO.city> city_AllHot;
+    private List<RAreaBO.city> city_NewHot;
     private List<RAreaBO.city> city_result;
     private List<CityInfo> cityInfos = new ArrayList<>();//保存城市
     private List<AreaInfo> areaInfos = new ArrayList<>();//保存区域
-    //    private List<String> city_history;
     private EditText sh;
     private TextView tv_noresult;
 
@@ -133,13 +131,8 @@ public class CityListActivity extends BaseActivity implements OnScrollListener {
         locateCity = application.getLocateCity();
 
         allCity_lists = new ArrayList<>();
-        city_hot = new ArrayList<>();
+        city_AllHot = new ArrayList<>();
         city_result = new ArrayList<>();
-//        city_history = new ArrayList<>();
-//
-//        city_history = MyUtils.getHistoryCitys();
-
-//        helper = new DatabaseHelper(this);
         sh.addTextChangedListener(new TextWatcher() {
 
             @Override
@@ -186,32 +179,13 @@ public class CityListActivity extends BaseActivity implements OnScrollListener {
             if (position >= 2) {
                 currentCity = allCity_lists.get(position).cityName;
                 currentCityId = allCity_lists.get(position).cityId;
-                application.setCurrCity(currentCity);
-                application.setCurrCityId(currentCityId);
-                RxBus.getInstance().send(Events.EventEnum.DELIVER_CITY, null);
-                finish();
-                getActivityOutToRight();
-//                    if (!locateCity.equals(currentCity)) {
-//                        String title = "定位的城市是" + locateCity + ",是否跳转到" + currentCity + "?";
-//                        Dialog dialog = new AlertDialog.Builder(CityListActivity.this).setMessage(title).setPositiveButton("确定", new DialogInterface.OnClickListener() {
-//                            @Override
-//                            public void onClick(DialogInterface dialog, int which) {
-//                                application.setCurrCity(currentCity);
-//                                finish();
-//                                getActivityOutToRight();
-//                            }
-//                        }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
-//                            @Override
-//                            public void onClick(DialogInterface dialog, int which) {
-//
-//                            }
-//                        }).create();
-//                        dialog.show();
-//                    } else {
-//                        application.setCurrCity(currentCity);
-//                        finish();
-//                        getActivityOutToRight();
-//                    }
+                if (!application.getCurrCity().equals(currentCity)) {
+                    application.setCurrCity(currentCity);
+                    application.setCurrCityId(currentCityId);
+                    RxBus.getInstance().send(Events.EventEnum.DELIVER_CITY, null);
+                    finish();
+                    getActivityOutToRight();
+                }
             }
         });
         locateProcess = 1;
@@ -222,40 +196,17 @@ public class CityListActivity extends BaseActivity implements OnScrollListener {
         resultList.setOnItemClickListener((parent, view, position, id) -> {
             currentCity = city_result.get(position).cityName;
             currentCityId = city_result.get(position).cityId;
-            application.setCurrCity(currentCity);
-            application.setCurrCityId(currentCityId);
-            RxBus.getInstance().send(Events.EventEnum.DELIVER_CITY, null);
-            finish();
-            getActivityOutToRight();
-//            if (!locateCity.equals(currentCity)) {
-//                String title = "定位的城市是" + locateCity + ",是否跳转到" + currentCity + "?";
-//                Dialog dialog = new AlertDialog.Builder(CityListActivity.this).setMessage(title).setPositiveButton("确定", new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        application.setCurrCity(currentCity);
-////                            HistoryCityInfo cityInfo = new HistoryCityInfo();
-////                            cityInfo.setCityName(currentCity);
-////                            MyUtils.saveHistoryCity(cityInfo);
-//                        finish();
-//                        getActivityOutToRight();
-//                    }
-//                }).setNegativeButton("取消", (dialog1, which) -> {
-//
-//                }).create();
-//                dialog.show();
-//            } else {
-//                application.setCurrCity(currentCity);
-////                    HistoryCityInfo cityInfo = new HistoryCityInfo();
-////                    cityInfo.setCityName(currentCity);
-////                    MyUtils.saveHistoryCity(cityInfo);
-//                finish();
-//                getActivityOutToRight();
-//            }
-
+            if (!application.getCurrCity().equals(currentCity)) {
+                application.setCurrCity(currentCity);
+                application.setCurrCityId(currentCityId);
+                RxBus.getInstance().send(Events.EventEnum.DELIVER_CITY, null);
+                finish();
+                getActivityOutToRight();
+            }
         });
         initOverlay();
         cityInit();
-        setAdapter(allCity_lists, city_hot);
+        setAdapter(allCity_lists);
 
         mLocationClient = new LocationClient(this.getApplicationContext());
         mMyLocationListener = new MyLocationListener();
@@ -283,14 +234,21 @@ public class CityListActivity extends BaseActivity implements OnScrollListener {
         int len = city_lists.size();
         RAreaBO rAreaBO = new RAreaBO();
         RAreaBO.city city;
+//        if (city_AllHot.size() > 0)
+//            city_AllHot.clear();
+        city_NewHot = new ArrayList<>();
         for (int i = 0; i < len; i++) {
-            LogUtils.d(TAG, "isHot:" + city_lists.get(i).isHot);
-            if (city_lists.get(i).isHot.equals("1")) {
+            LogUtils.d(TAG, "热门城市 isHot:" + city_lists.get(i).cityName + city_lists.get(i).isHot);
+            if (city_lists.get(i).isHot != null && city_lists.get(i).isHot.equals("1")) {
                 city = rAreaBO.new city(city_lists.get(i).cityName, "2");
-                city_hot.add(city);
+                city.cityId = city_lists.get(i).cityId;
+                city_NewHot.add(city);
                 LogUtils.d(TAG, "add");
             }
-
+        }
+        if (city_NewHot.size() > city_AllHot.size()) {
+            city_AllHot.removeAll(city_NewHot);
+            city_AllHot.addAll(city_NewHot);
         }
     }
 
@@ -300,6 +258,7 @@ public class CityListActivity extends BaseActivity implements OnScrollListener {
             RAreaBO.city city;
             city = new RAreaBO().new city(cityInfos.get(i).getCityName(), "");
             city.cityId = cityInfos.get(i).getCityId();
+            city.isHot = cityInfos.get(i).getIsHot();
             city_lists.add(city);
         }
         initCity();
@@ -315,8 +274,10 @@ public class CityListActivity extends BaseActivity implements OnScrollListener {
                 .subscribe(new AbsAPICallback<List<RAreaBO>>() {
                     @Override
                     protected void onError(ApiException e) {
-                        closeProgressDialog();
-                        MyUtils.showToast(getApplicationContext(), e.getMessage());
+                        runOnUiThread(() -> {
+                            closeProgressDialog();
+                            MyUtils.showToast(getApplicationContext(), e.getMessage());
+                        });
                     }
 
                     @Override
@@ -331,7 +292,7 @@ public class CityListActivity extends BaseActivity implements OnScrollListener {
                             LogUtils.d(TAG, rAreaBO + ":" + len + "index:" + index + "rAreaBOs:" + rAreaBOs.size());
                             cityInfos = new ArrayList<>();
                             for (int i = 0; i < len; i++) {
-                                CityInfo cityInfo = new CityInfo(rAreaBO.cityList.get(i).cityId, rAreaBO.cityList.get(i).cityName, provinceInfo.getProvinceId());
+                                CityInfo cityInfo = new CityInfo(rAreaBO.cityList.get(i).cityId, rAreaBO.cityList.get(i).cityName, rAreaBO.cityList.get(i).isHot, provinceInfo.getProvinceId());
                                 city_lists.add(rAreaBO.cityList.get(i));
                                 int len2 = rAreaBO.cityList.get(i).areaList.size();
                                 areaInfos = new ArrayList<>();
@@ -345,7 +306,6 @@ public class CityListActivity extends BaseActivity implements OnScrollListener {
                         }
                         DataBaseHelper.saveProvince(provinceInfos);
                         runOnUiThread(() -> initCity());
-
                     }
                 });
     }
@@ -353,7 +313,7 @@ public class CityListActivity extends BaseActivity implements OnScrollListener {
     private void initCity() {
         setPinYin(city_lists);
         LogUtils.i(TAG, "city_lists:" + city_lists.toString());
-//                        hotCityInit();
+        hotCityInit();
         Collections.sort(city_lists, comparator);
         if (allCity_lists.size() > 2)
             allCity_lists = allCity_lists.subList(0, 2);
@@ -410,8 +370,8 @@ public class CityListActivity extends BaseActivity implements OnScrollListener {
         }
     };
 
-    private void setAdapter(List<RAreaBO.city> list, List<RAreaBO.city> hotList) {
-        adapter = new ListAdapter(this, list, hotList);
+    private void setAdapter(List<RAreaBO.city> list) {
+        adapter = new ListAdapter(this, list);
         personList.setAdapter(adapter);
     }
 
@@ -507,17 +467,12 @@ public class CityListActivity extends BaseActivity implements OnScrollListener {
         private Context context;
         private LayoutInflater inflater;
         private List<RAreaBO.city> list;
-        private List<RAreaBO.city> hotList;
-        //        private List<String> hisCity;
         final int VIEW_TYPE = 3;
 
-        public ListAdapter(Context context, List<RAreaBO.city> list,
-                           List<RAreaBO.city> hotList) {
+        public ListAdapter(Context context, List<RAreaBO.city> list) {
             this.inflater = LayoutInflater.from(context);
             this.list = list;
             this.context = context;
-            this.hotList = hotList;
-//            this.hisCity = hisCity;
             alphaIndexer = new HashMap<>();
         }
 
@@ -561,11 +516,13 @@ public class CityListActivity extends BaseActivity implements OnScrollListener {
                 city = (TextView) convertView.findViewById(R.id.lng_city);
                 city.setOnClickListener(v -> {
                     if (locateProcess == 2) {
-                        application.setCurrCity(city.getText().toString());
-                        application.setCurrCityId(DataBaseHelper.getCityId(application.getCurrCity()));
-                        RxBus.getInstance().send(Events.EventEnum.DELIVER_CITY, null);
-                        finish();
-                        getActivityOutToRight();
+                        if (!application.getCurrCity().equals(city.getText().toString())) {
+                            application.setCurrCity(city.getText().toString());
+                            application.setCurrCityId(DataBaseHelper.getCityId(application.getCurrCity()));
+                            RxBus.getInstance().send(Events.EventEnum.DELIVER_CITY, null);
+                            finish();
+                            getActivityOutToRight();
+                        }
                     } else if (locateProcess == 3) {
                         locateProcess = 1;
                         personList.setAdapter(adapter);
@@ -599,32 +556,16 @@ public class CityListActivity extends BaseActivity implements OnScrollListener {
                 convertView = inflater.inflate(R.layout.recent_city, null);
                 GridView hotCity = (GridView) convertView.findViewById(R.id.recent_city);
                 hotCity.setOnItemClickListener((parent1, view, position1, id) -> {
-
-                    currentCity = city_hot.get(position1).cityName;
-                    LogUtils.i(TAG, "热门城市:" + "currentCity" + currentCity + "locateCity:" + locateCity);
-                    if (!locateCity.equals(currentCity)) {
-                        String message = "定位的城市是" + locateCity + ",是否跳转到" + currentCity + "?";
-                        Dialog dialog = new AlertDialog.Builder(CityListActivity.this).setMessage(message).setPositiveButton("确定", (dialog1, which) -> {
-                            application.setCurrCity(currentCity);
-//                                    HistoryCityInfo cityInfo = new HistoryCityInfo();
-//                                    cityInfo.setCityName(currentCity);
-//                                    MyUtils.saveHistoryCity(cityInfo);
-                            finish();
-                            getActivityOutToRight();
-                        }).setNegativeButton("取消", (dialog1, which) -> {
-
-                        }).create();
-                        dialog.show();
-                    } else {
-                        application.setCurrCity(currentCity);
-//                            HistoryCityInfo cityInfo = new HistoryCityInfo();
-//                            cityInfo.setCityName(currentCity);
-//                            MyUtils.saveHistoryCity(cityInfo);
+                    if (!application.getCurrCity().equals(city_AllHot.get(position1).cityName)) {
+                        application.setCurrCity(city_AllHot.get(position1).cityName);
+                        application.setCurrCityId(city_AllHot.get(position1).cityId);
+                        RxBus.getInstance().send(Events.EventEnum.DELIVER_CITY, null);
                         finish();
                         getActivityOutToRight();
                     }
+                    LogUtils.i(TAG, "热门城市:" + "currentCity" + currentCity + "locateCity:" + locateCity);
                 });
-                hotCity.setAdapter(new HotCityAdapter(context, this.hotList));
+                hotCity.setAdapter(new HotCityAdapter(context));
                 TextView hotHint = (TextView) convertView
                         .findViewById(R.id.recentHint);
                 hotHint.setText(list.get(position).cityName);
@@ -670,17 +611,15 @@ public class CityListActivity extends BaseActivity implements OnScrollListener {
     class HotCityAdapter extends BaseAdapter {
         private Context context;
         private LayoutInflater inflater;
-        private List<RAreaBO.city> hotCitys;
 
-        public HotCityAdapter(Context context, List<RAreaBO.city> hotCitys) {
+        public HotCityAdapter(Context context) {
             this.context = context;
             inflater = LayoutInflater.from(this.context);
-            this.hotCitys = hotCitys;
         }
 
         @Override
         public int getCount() {
-            return hotCitys.size();
+            return city_AllHot.size();
         }
 
         @Override
@@ -695,9 +634,10 @@ public class CityListActivity extends BaseActivity implements OnScrollListener {
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
+            LogUtils.d(TAG, "热门城市 getView" + position);
             convertView = inflater.inflate(R.layout.item_city, null);
             TextView city = (TextView) convertView.findViewById(R.id.city);
-            city.setText(hotCitys.get(position).cityName);
+            city.setText(city_AllHot.get(position).cityName);
             return convertView;
         }
     }

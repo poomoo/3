@@ -26,6 +26,8 @@ import com.poomoo.parttimejob.R;
 import com.poomoo.parttimejob.adapter.BaseListAdapter;
 import com.poomoo.parttimejob.adapter.JobsAdapter;
 import com.poomoo.parttimejob.adapter.MainGridAdapter;
+import com.poomoo.parttimejob.database.DataBaseHelper;
+import com.poomoo.parttimejob.database.TypeInfo;
 import com.poomoo.parttimejob.event.Events;
 import com.poomoo.parttimejob.event.RxBus;
 import com.poomoo.parttimejob.presentation.MainPresenter;
@@ -41,6 +43,7 @@ import com.poomoo.parttimejob.view.MainView;
 import com.trello.rxlifecycle.FragmentEvent;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
@@ -116,18 +119,19 @@ public class MainFragment extends BaseFragment implements SwipeRefreshLayout.OnR
         gridAdapter = new MainGridAdapter(getActivity());
         gridView.setAdapter(gridAdapter);
         gridView.setOnItemClickListener(this);
-
+        LogUtils.d(TAG, "userId;" + application.getUserId());
         mainPresenter = new MainPresenter(this);
         mainPresenter.loadAd();
         mainPresenter.loadCate();
-        mainPresenter.queryRecommendJobs(currPage);
+        application.setCurrCityId((Integer) SPUtils.get(getActivity().getApplicationContext(), getString(R.string.sp_currCityId), 1));
+        application.setCurrCity((String) SPUtils.get(getActivity().getApplicationContext(), getString(R.string.sp_currCity), "贵阳"));
+        mainPresenter.queryRecommendJobs(application.getUserId(), application.getCurrCityId(), currPage);
+        mainPresenter.getType();
 
         initSubscribers();
     }
 
     private void initSubscribers() {
-        application.setCurrCityId((Integer) SPUtils.get(getActivity().getApplicationContext(), getString(R.string.sp_currCityId), 1));
-        application.setCurrCity((String) SPUtils.get(getActivity().getApplicationContext(), getString(R.string.sp_currCity), "贵阳"));
         cityTxt.setText(application.getCurrCity());
         RxBus.with(this)
                 .setEvent(Events.EventEnum.DELIVER_CITY)
@@ -137,6 +141,16 @@ public class MainFragment extends BaseFragment implements SwipeRefreshLayout.OnR
                     cityTxt.setText(application.getCurrCity());
                     SPUtils.put(getActivity().getApplicationContext(), getString(R.string.sp_currCity), application.getCurrCity());
                     SPUtils.put(getActivity().getApplicationContext(), getString(R.string.sp_currCityId), application.getCurrCityId());
+                    currPage = 1;
+                    mainPresenter.queryRecommendJobs(application.getUserId(), application.getCurrCityId(), currPage);
+                }).create();
+
+        RxBus.with(this)
+                .setEvent(Events.EventEnum.SET_INTENTION)
+                .setEndEvent(FragmentEvent.DESTROY)
+                .onNext((events) -> {
+                    currPage = 1;
+                    mainPresenter.queryRecommendJobs(application.getUserId(), application.getCurrCityId(), currPage);
                 }).create();
     }
 
@@ -157,7 +171,7 @@ public class MainFragment extends BaseFragment implements SwipeRefreshLayout.OnR
 
     @Override
     public void onLoading() {
-        mainPresenter.queryRecommendJobs(currPage);
+        mainPresenter.queryRecommendJobs(application.getUserId(), application.getCurrCityId(), currPage);
     }
 
     @Override
@@ -167,7 +181,7 @@ public class MainFragment extends BaseFragment implements SwipeRefreshLayout.OnR
         if (!isLoadType)
             mainPresenter.loadCate();
         currPage = 1;
-        mainPresenter.queryRecommendJobs(currPage);
+        mainPresenter.queryRecommendJobs(application.getUserId(), application.getCurrCityId(), currPage);
     }
 
     @Override
@@ -221,6 +235,19 @@ public class MainFragment extends BaseFragment implements SwipeRefreshLayout.OnR
     public void failed(String msg) {
         swipeRefreshLayout.post(() -> swipeRefreshLayout.setRefreshing(false));
         MyUtils.showToast(getActivity().getApplicationContext(), msg);
+    }
+
+    @Override
+    public void type(List<RTypeBO> rTypeBOs) {
+        List<TypeInfo> typeInfos = new ArrayList<>();
+        for (RTypeBO rTypeBO : rTypeBOs) {
+            TypeInfo typeInfo = new TypeInfo();
+            typeInfo.setCateId(rTypeBO.cateId);
+            typeInfo.setName(rTypeBO.name);
+            typeInfos.add(typeInfo);
+        }
+        LogUtils.d(TAG, "type:" + typeInfos.size());
+        DataBaseHelper.saveType(typeInfos);
     }
 
     @Override

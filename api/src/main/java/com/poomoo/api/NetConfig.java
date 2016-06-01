@@ -16,6 +16,7 @@ public class NetConfig {
 
     /*action 10000*/
     public final static String USERACTION = "10000";//用户相关接口统一业务编号
+    public final static String CHECK = "10001";//校验手机号是否已注册
     public final static String CODE = "10002";//获取验证码
     public final static String REGISTER = "10004";//注册
     public final static String LOGIN = "10005";//登录

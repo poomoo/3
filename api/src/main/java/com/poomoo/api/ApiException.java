@@ -1,6 +1,7 @@
 package com.poomoo.api;
 
-import android.util.Log;
+
+import com.poomoo.commlib.LogUtils;
 
 /**
  * Created by liukun on 16/3/10.
@@ -39,7 +40,7 @@ public class ApiException extends RuntimeException {
      * @return
      */
     public static String getApiExceptionMessage(int code, String msg) {
-        Log.d("getApiExceptionMessage", code + "");
+        LogUtils.d("getApiExceptionMessage", code + "");
         String message;
         switch (code) {
             case NETWORKEX:

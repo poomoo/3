@@ -91,9 +91,8 @@ public class RegisterActivity extends BaseActivity implements RegisterView {
             MyUtils.showToast(getApplicationContext(), MyConfig.phoneNumIllegal);
             return;
         }
-        countDownTimer = new TimeCountDownUtil(MyConfig.SMSCOUNTDOWNTIME, MyConfig.COUNTDOWNTIBTERVAL, getCodeTxt);
-        countDownTimer.start();
-        registerPresenter.getCode(tel);
+        showProgressDialog(getString(R.string.dialog_msg));
+        registerPresenter.checkPhone(tel);
     }
 
     public void protocol(View view) {
@@ -132,6 +131,20 @@ public class RegisterActivity extends BaseActivity implements RegisterView {
     }
 
     @Override
+    public void checkSucceed(String msg) {
+        closeProgressDialog();
+        countDownTimer = new TimeCountDownUtil(MyConfig.SMSCOUNTDOWNTIME, MyConfig.COUNTDOWNTIBTERVAL, getCodeTxt);
+        countDownTimer.start();
+        registerPresenter.getCode(tel);
+    }
+
+    @Override
+    public void checkFailed(String msg) {
+        closeProgressDialog();
+        MyUtils.showToast(getApplicationContext(), "该手机号已注册!");
+    }
+
+    @Override
     public void code(String msg) {
         MyUtils.showToast(getApplicationContext(), msg);
     }
@@ -144,6 +157,7 @@ public class RegisterActivity extends BaseActivity implements RegisterView {
 
     @Override
     public void registerFailed(String msg) {
+        closeProgressDialog();
         MyUtils.showToast(getApplicationContext(), msg);
     }
 

@@ -14,9 +14,10 @@ import com.poomoo.commlib.LogUtils;
 import com.poomoo.commlib.SPUtils;
 import com.poomoo.commlib.StatusBarUtil;
 import com.poomoo.parttimejob.R;
-import com.poomoo.parttimejob.database.DataBaseHelper;
 import com.poomoo.parttimejob.service.LocaleService;
 import com.poomoo.parttimejob.ui.base.BaseActivity;
+
+import org.litepal.tablemanager.Connector;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -41,10 +42,11 @@ public class SplashActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         StatusBarUtil.setTransparent(this);
         //不显示日志
-        LogUtils.isDebug = false;
-        Network.level= HttpLoggingInterceptor.Level.NONE;
+//        LogUtils.isDebug = false;
+//        Network.level = HttpLoggingInterceptor.Level.NONE;
 
         importDB();
+        Connector.getDatabase();
         startService(new Intent(this, LocaleService.class));
         isIndex = (boolean) SPUtils.get(getApplicationContext(), getString(R.string.sp_isIndex), true);
         if (isIndex) {
@@ -111,9 +113,10 @@ public class SplashActivity extends BaseActivity {
                 is.close();
                 LogUtils.d(TAG, "导入数据库文件结束");
             }
-
         } catch (Exception e) {
             LogUtils.d(TAG, "EXCEPTION:" + e.getMessage());
         }
     }
+
+
 }

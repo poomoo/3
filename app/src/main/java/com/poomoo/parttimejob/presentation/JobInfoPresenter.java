@@ -38,8 +38,8 @@ public class JobInfoPresenter extends BasePresenter {
      *
      * @param jobId
      */
-    public void queryJobInfo(int jobId,int userId) {
-        QJobInfoBO qJobInfoBO = new QJobInfoBO(NetConfig.JOBACTION, NetConfig.JOBINFO, jobId,userId);
+    public void queryJobInfo(int jobId, int userId) {
+        QJobInfoBO qJobInfoBO = new QJobInfoBO(NetConfig.JOBACTION, NetConfig.JOBINFO, jobId, userId);
         mSubscriptions.add(Network.getJobApi().jobInfo(qJobInfoBO)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -61,8 +61,8 @@ public class JobInfoPresenter extends BasePresenter {
      *
      * @param pageNum
      */
-    public void queryRecommendJobs(int pageNum) {
-        QRecommendBO qRecommendBO = new QRecommendBO(NetConfig.JOBACTION, NetConfig.RECOMMENDLIST, pageNum, Page.PAGE_SIZE);
+    public void queryRecommendJobs(int userId, int cityId, int pageNum) {
+        QRecommendBO qRecommendBO = new QRecommendBO(NetConfig.JOBACTION, NetConfig.RECOMMENDLIST, userId==0?"":userId+"", cityId, pageNum, Page.PAGE_SIZE);
         mSubscriptions.add(Network.getJobApi().getRecommendList(qRecommendBO)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

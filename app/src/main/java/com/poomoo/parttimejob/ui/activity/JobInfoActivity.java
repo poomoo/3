@@ -141,7 +141,7 @@ public class JobInfoActivity extends BaseActivity implements JobInfoView {
         showProgressDialog(getString(R.string.dialog_msg));
         jobId = getIntent().getIntExtra(getString(R.string.intent_value), -1);
         jobInfoPresenter.queryJobInfo(jobId, application.getUserId());
-        jobInfoPresenter.queryRecommendJobs(1);
+        jobInfoPresenter.queryRecommendJobs(application.getUserId(), application.getCurrCityId(), 1);
         jobInfoPresenter.browse(jobId, application.getUserId());
         infoView.setVisibility(View.GONE);
     }

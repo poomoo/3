@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.poomoo.commlib.LogUtils;
 import com.poomoo.parttimejob.R;
 
 import java.util.ArrayList;
@@ -187,7 +188,7 @@ public abstract class BaseListAdapter<T> extends RecyclerView.Adapter {
 
             case VIEW_TYPE_FOOTER:
                 if (mState == STATE_LOAD_MORE && onLoadingListener != null) {
-                    Log.d("thanatos", "loading...");
+                    LogUtils.d("thanatos", "loading...");
                     onLoadingListener.onLoading();
                 }
                 FooterViewHolder fvh = (FooterViewHolder) h;

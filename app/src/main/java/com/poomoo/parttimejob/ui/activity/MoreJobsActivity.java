@@ -33,7 +33,7 @@ public class MoreJobsActivity extends BaseListActivity<BaseJobBO> implements Bas
         mListView.setPadding(0, setDividerSize(), 0, 0);
         mAdapter.setOnItemClickListener(this);
         allJobListPresenter = new AllJobListPresenter(this);
-        allJobListPresenter.queryRecommendJobs(currPage);
+        allJobListPresenter.queryRecommendJobs(application.getUserId(), application.getCurrCityId(), currPage);
     }
 
     @Override
@@ -50,14 +50,14 @@ public class MoreJobsActivity extends BaseListActivity<BaseJobBO> implements Bas
     public void onRefresh() {
         super.onRefresh();
         currPage = 1;
-        allJobListPresenter.queryRecommendJobs(currPage);
+        allJobListPresenter.queryRecommendJobs(application.getUserId(), application.getCurrCityId(),currPage);
     }
 
     @Override
     public void onLoadActiveClick() {
         super.onLoadActiveClick();
         currPage = 1;
-        allJobListPresenter.queryRecommendJobs(currPage);
+        allJobListPresenter.queryRecommendJobs(application.getUserId(), application.getCurrCityId(),currPage);
     }
 
     @Override

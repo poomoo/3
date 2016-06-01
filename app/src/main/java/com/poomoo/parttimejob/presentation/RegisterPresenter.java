@@ -8,6 +8,7 @@ import com.poomoo.api.ApiException;
 import com.poomoo.api.NetConfig;
 import com.poomoo.api.Network;
 import com.poomoo.commlib.LogUtils;
+import com.poomoo.model.request.QCheckBO;
 import com.poomoo.model.request.QCodeBO;
 import com.poomoo.model.request.QLoginBO;
 import com.poomoo.model.request.QRegisterBO;
@@ -30,8 +31,27 @@ public class RegisterPresenter extends BasePresenter {
         this.registerView = registerView;
     }
 
+    public void checkPhone(String tel) {
+        QCheckBO qCheckBO = new QCheckBO(NetConfig.USERACTION, NetConfig.CHECK, tel);
+        mSubscriptions.add(Network.getUserApi().checkPhone(qCheckBO)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new AbsAPICallback<ResponseBO>() {
+                    @Override
+                    protected void onError(ApiException e) {
+                        registerView.checkFailed(e.getMessage());
+                    }
+
+                    @Override
+                    public void onNext(ResponseBO responseBO) {
+                        registerView.checkSucceed("");
+                    }
+                }));
+    }
+
+
     public void getCode(String tel) {
-        QCodeBO qCodeBO = new QCodeBO(NetConfig.USERACTION,NetConfig.CODE,tel);
+        QCodeBO qCodeBO = new QCodeBO(NetConfig.USERACTION, NetConfig.CODE, tel);
         mSubscriptions.add(Network.getUserApi().getCode(qCodeBO)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -52,7 +72,7 @@ public class RegisterPresenter extends BasePresenter {
 
 
     public void register(String tel, String code, String password, String inviteCode, String deviceNum) {
-        QRegisterBO qRegisterBO = new QRegisterBO(NetConfig.USERACTION,NetConfig.REGISTER,tel,password,code,inviteCode,deviceNum,1);
+        QRegisterBO qRegisterBO = new QRegisterBO(NetConfig.USERACTION, NetConfig.REGISTER, tel, password, code, inviteCode, deviceNum, 1);
         mSubscriptions.add(Network.getUserApi().register(qRegisterBO)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

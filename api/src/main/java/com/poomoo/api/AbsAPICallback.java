@@ -1,8 +1,7 @@
 package com.poomoo.api;
 
-import android.util.Log;
-
 import com.google.gson.JsonParseException;
+import com.poomoo.commlib.LogUtils;
 
 import org.json.JSONException;
 
@@ -27,7 +26,7 @@ public abstract class AbsAPICallback<T> extends Subscriber<T> {
         }
 
         ApiException ex;
-        Log.d("network", "异常:" + e);
+        LogUtils.d("network", "异常:" + e);
         if (e instanceof SocketTimeoutException) {
             ex = new ApiException(ApiException.TIMEOUTEX);
             onError(ex);

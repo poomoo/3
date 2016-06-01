@@ -5,6 +5,8 @@ import android.graphics.BitmapFactory;
 import android.os.Environment;
 import android.util.Log;
 
+import com.poomoo.commlib.LogUtils;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -16,7 +18,7 @@ public class FileUtils {
             + "/formats/";
 
     public static File saveBitmap(Bitmap bm, String picName) {
-        Log.e("", "保存图片");
+        LogUtils.e("", "保存图片");
         File f = new File(SDPATH, picName + ".JPEG");
         try {
             if (!isFileExist("")) {
@@ -41,7 +43,7 @@ public class FileUtils {
 
 
     public static File saveBitmapByPath(Bitmap bm, String path) {
-        Log.e("", "保存图片");
+        LogUtils.e("", "保存图片");
         File f = new File(path);
 
         if (f.exists()) {

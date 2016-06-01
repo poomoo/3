@@ -153,6 +153,7 @@ public class PersonalFragment extends BaseFragment {
                 break;
             case R.id.rlayout_setting:
                 openActivity(JobIntentionActivity.class);
+                LogUtils.d(TAG,"openActivity");
                 break;
             case R.id.rlayout_feedBack:
                 openActivity(FeedBackActivity.class);

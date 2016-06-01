@@ -31,8 +31,8 @@ public class JobIntentionPresenter extends BasePresenter {
     }
 
 
-    public void JobIntentionUp(int userId, String cateId, String workday, String workAreaId, String otherInfo) {
-        QJobIntentionBO qJobIntentionBO = new QJobIntentionBO(NetConfig.USERACTION, NetConfig.INTENTIONUP, userId, cateId, workday, workAreaId, otherInfo);
+    public void JobIntentionUp(int userId,String type, String cateId, String workday, String workAreaId, String otherInfo) {
+        QJobIntentionBO qJobIntentionBO = new QJobIntentionBO(NetConfig.USERACTION, NetConfig.INTENTIONUP,type, userId, cateId, workday, workAreaId, otherInfo);
         mSubscriptions.add(Network.getUserApi().jobIntentionUp(qJobIntentionBO)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

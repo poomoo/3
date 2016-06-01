@@ -7,7 +7,6 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -75,7 +74,7 @@ public class CalendarView extends View implements View.OnTouchListener {
     @Override
     protected void onLayout(boolean changed, int left, int top, int right,
                             int bottom) {
-        Log.i(TAG, "[onLayout] changed:"
+        LogUtils.i(TAG, "[onLayout] changed:"
                 + (changed ? "new size" : "not change") + " left:" + left
                 + " top:" + top + " right:" + right + " bottom:" + bottom);
         if (changed) {
@@ -104,7 +103,7 @@ public class CalendarView extends View implements View.OnTouchListener {
             row = 6;
         else
             row = 5;
-        Log.i(TAG, "calculateRow:" + row + "");
+        LogUtils.i(TAG, "calculateRow:" + row + "");
         surface.init(row + 1);
     }
 
@@ -381,7 +380,7 @@ public class CalendarView extends View implements View.OnTouchListener {
 
 
         public void init(int row) {
-            Log.i(TAG, "init:" + row);
+            LogUtils.i(TAG, "init:" + row);
             float temp = height / row;
             weekHeight = (float) ((temp) * 0.7);
             cellHeight = (height - weekHeight) / (row - 1);

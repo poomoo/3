@@ -3,7 +3,7 @@
 
     <dbname value="partTimeJob" />
 
-    <version value="1" />
+    <version value="2" />
 
     <list>
         <mapping class="com.poomoo.parttimejob.database.AreaInfo" />

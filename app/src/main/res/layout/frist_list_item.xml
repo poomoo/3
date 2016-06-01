@@ -22,7 +22,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/style_label_city"
         android:clickable="true"
-        android:drawableLeft="@drawable/ic_search_gray"
+        android:drawableLeft="@drawable/ic_job3"
         android:focusable="false"
         android:gravity="center"
         android:padding="8dp"

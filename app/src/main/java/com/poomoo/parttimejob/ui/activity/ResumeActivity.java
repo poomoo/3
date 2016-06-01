@@ -148,11 +148,7 @@ public class ResumeActivity extends BaseActivity implements ResumeView {
 
 
     private void initView() {
-
-        userAvatarImg.setOnLongClickListener(v -> {
-            select_pics();
-            return false;
-        });
+        userAvatarImg.setOnClickListener(v -> select_pics());
         showProgressDialog(getString(R.string.dialog_msg));
         telTxt.setText(application.getTel());
         resumePresenter.downResume(application.getUserId());
@@ -501,7 +497,7 @@ public class ResumeActivity extends BaseActivity implements ResumeView {
     @Override
     public void downFailed(String msg) {
         closeProgressDialog();
-        if (!msg.contains("-2")) {//-2表示没有简历
+        if (!msg.contains("参数为空")) {//-2表示没有简历
             MyUtils.showToast(getApplicationContext(), msg);
             finish();
         }

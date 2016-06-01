@@ -11,11 +11,16 @@ import com.poomoo.model.base.BaseRequestBO;
  * 日期: 2016/4/22 10:30.
  */
 public class QRecommendBO extends BaseRequestBO {
+    public String userId;
+    public int cityId;
     public int pageNum;
     public int pageSize;
 
-    public QRecommendBO(String bizName, String method, int pageNum,int pageSize) {
+    public QRecommendBO(String bizName, String method, String userId, int cityId, int pageNum, int pageSize) {
         super(bizName, method);
+        if (!userId.equals(""))
+            this.userId = userId;
+        this.cityId = cityId;
         this.pageNum = pageNum;
         this.pageSize = pageSize;
     }

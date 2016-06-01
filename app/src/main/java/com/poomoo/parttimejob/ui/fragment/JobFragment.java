@@ -115,7 +115,7 @@ public class JobFragment extends BaseFragment implements JobView, BaseListAdapte
         adapter.setOnItemClickListener(this);
 
         jobListPresenter = new JobListPresenter(this);
-        jobListPresenter.getType();
+//        jobListPresenter.getType();
         getJobList(true);
 
         initSubscribers();
@@ -281,19 +281,6 @@ public class JobFragment extends BaseFragment implements JobView, BaseListAdapte
     public void onRefresh() {
         currPage = 1;
         getJobList(true);
-    }
-
-    @Override
-    public void type(List<RTypeBO> rTypeBOs) {
-        List<TypeInfo> typeInfos = new ArrayList<>();
-        for (RTypeBO rTypeBO : rTypeBOs) {
-            TypeInfo typeInfo = new TypeInfo();
-            typeInfo.setCateId(rTypeBO.cateId);
-            typeInfo.setName(rTypeBO.name);
-            typeInfos.add(typeInfo);
-        }
-        LogUtils.d(TAG, "type:" + typeInfos.size());
-        DataBaseHelper.saveType(typeInfos);
     }
 
     @Override
