@@ -20,6 +20,7 @@ import com.poomoo.parttimejob.adapter.BaseListAdapter;
 import com.poomoo.parttimejob.application.MyApplication;
 import com.poomoo.parttimejob.ui.custom.ErrorLayout;
 import com.trello.rxlifecycle.components.support.RxAppCompatActivity;
+import com.umeng.analytics.MobclickAgent;
 
 import java.util.Iterator;
 import java.util.List;
@@ -176,5 +177,16 @@ public abstract class BaseActivity extends RxAppCompatActivity {
         }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
+    }
 
 }

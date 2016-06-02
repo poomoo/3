@@ -124,7 +124,7 @@ public class MainFragment extends BaseFragment implements SwipeRefreshLayout.OnR
         mainPresenter.loadAd();
         mainPresenter.loadCate();
         application.setCurrCityId((Integer) SPUtils.get(getActivity().getApplicationContext(), getString(R.string.sp_currCityId), 1));
-        application.setCurrCity((String) SPUtils.get(getActivity().getApplicationContext(), getString(R.string.sp_currCity), "贵阳"));
+        application.setCurrCity((String) SPUtils.get(getActivity().getApplicationContext(), getString(R.string.sp_currCity), "贵阳市"));
         mainPresenter.queryRecommendJobs(application.getUserId(), application.getCurrCityId(), currPage);
         mainPresenter.getType();
 

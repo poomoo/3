@@ -3,7 +3,7 @@ package com.poomoo.parttimejob.application;
 import android.app.Activity;
 
 import com.baidu.mapapi.SDKInitializer;
-import com.poomoo.commlib.CrashHandler;
+import com.poomoo.parttimejob.crashhandler.CrashHandler;
 
 import org.litepal.LitePalApplication;
 
@@ -56,30 +56,10 @@ public class MyApplication extends LitePalApplication {
     public void onCreate() {
         super.onCreate();
 
-//        initImageLoader();
-        // 在使用 SDK 各组间之前初始化 context 信息，传入 ApplicationContext
         SDKInitializer.initialize(this);
         CrashHandler crashHandler = CrashHandler.getInstance();
         // 注册crashHandler
-        crashHandler.init(getApplicationContext());
-//        SQLiteDatabase db = Connector.getDatabase();//新建表
-    }
-
-
-    private void initImageLoader() {
-//        DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder() //
-//                .showImageForEmptyUri(R.mipmap.ic_launcher) //
-//                .showImageOnFail(R.mipmap.ic_launcher) //
-//                .cacheInMemory(true) //
-//                .cacheOnDisk(true) //
-//                .bitmapConfig(Bitmap.Config.RGB_565)// 设置最低配置
-//                .build();//
-//        ImageLoaderConfiguration config = new ImageLoaderConfiguration//
-//                .Builder(getApplicationContext())//
-//                .defaultDisplayImageOptions(defaultOptions)//
-//                .writeDebugLogs()//
-//                .build();//
-//        ImageLoader.getInstance().init(config);
+        crashHandler.init(this);
     }
 
     public List<Activity> getActivityList() {
@@ -220,7 +200,7 @@ public class MyApplication extends LitePalApplication {
     }
 
     public String getLocateCity() {
-        return locateCity.length() > 0 ? locateCity.replace("市", "") : "";
+        return locateCity;
     }
 
     public void setLocateCity(String locateCity) {
@@ -228,7 +208,7 @@ public class MyApplication extends LitePalApplication {
     }
 
     public String getCurrCity() {
-        return currCity.length() > 0 ? currCity.replace("市", "") : "";
+        return currCity;
     }
 
     public void setCurrCity(String currCity) {

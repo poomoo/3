@@ -17,7 +17,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:clickable="true"
-            android:gravity="center"
+            android:gravity="bottom"
             android:orientation="horizontal">
 
             <TextView
@@ -29,7 +29,7 @@
                 android:singleLine="true"
                 android:text="贵阳"
                 android:textColor="@color/white"
-                android:textSize="18sp" />
+                android:textSize="16sp" />
 
             <ImageView
                 android:layout_width="wrap_content"

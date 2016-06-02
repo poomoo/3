@@ -64,9 +64,12 @@ public class LocaleService extends Service {
         public void onReceiveLocation(BDLocation location) {
 //            LogUtils.d(TAG, "location.getLongitude():" + location.getLongitude() + "location.getLatitude():"
 //                    + location.getLatitude() + "location.getCity():" + location.getCity());
-            application.setLat(location.getLatitude());
-            application.setLng(location.getLongitude());
-            application.setCurrCity(location.getCity());
+            if (location.getLatitude() != 4.9E-324)
+                application.setLat(location.getLatitude());
+            if (location.getLongitude() != 4.9E-324)
+                application.setLng(location.getLongitude());
+            if (location.getCity() != null)
+                application.setLocateCity(location.getCity());
         }
     }
 

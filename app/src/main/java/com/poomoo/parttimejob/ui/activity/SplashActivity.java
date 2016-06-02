@@ -16,6 +16,7 @@ import com.poomoo.commlib.StatusBarUtil;
 import com.poomoo.parttimejob.R;
 import com.poomoo.parttimejob.service.LocaleService;
 import com.poomoo.parttimejob.ui.base.BaseActivity;
+import com.umeng.analytics.MobclickAgent;
 
 import org.litepal.tablemanager.Connector;
 
@@ -41,9 +42,15 @@ public class SplashActivity extends BaseActivity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         super.onCreate(savedInstanceState);
         StatusBarUtil.setTransparent(this);
+
         //不显示日志
-//        LogUtils.isDebug = false;
-//        Network.level = HttpLoggingInterceptor.Level.NONE;
+        LogUtils.isDebug = false;
+        Network.level = HttpLoggingInterceptor.Level.NONE;
+
+        //统计错误日志到友盟平台
+        MobclickAgent.setDebugMode(false);
+        MobclickAgent.setCatchUncaughtExceptions(true);
+
 
         importDB();
         Connector.getDatabase();

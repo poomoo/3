@@ -189,7 +189,7 @@ public class CityListActivity extends BaseActivity implements OnScrollListener {
             }
         });
         locateProcess = 1;
-        personList.setAdapter(adapter);
+//        personList.setAdapter(adapter);
         personList.setOnScrollListener(this);
         resultListAdapter = new ResultListAdapter(this, city_result);
         resultList.setAdapter(resultListAdapter);
@@ -405,14 +405,15 @@ public class CityListActivity extends BaseActivity implements OnScrollListener {
 
             if (location.getCity() == null) {
                 locateProcess = 3; // 定位失败
-                personList.setAdapter(adapter);
+                mLocationClient.stop();
+//                personList.setAdapter(adapter);
                 adapter.notifyDataSetChanged();
                 return;
             }
             locateCity = location.getCity();
             application.setLocateCity(locateCity);
             locateProcess = 2; // 定位成功
-            personList.setAdapter(adapter);
+//            personList.setAdapter(adapter);
             adapter.notifyDataSetChanged();
             mLocationClient.unRegisterLocationListener(mMyLocationListener);
         }
@@ -770,7 +771,7 @@ public class CityListActivity extends BaseActivity implements OnScrollListener {
             String name = allCity_lists.get(firstVisibleItem).cityName;
             String pinyin = allCity_lists.get(firstVisibleItem).pinyin;
 
-            if (firstVisibleItem < 4) {
+            if (firstVisibleItem < 2) {
                 text = name;
             } else {
                 text = PingYinUtil.converterToFirstSpell(pinyin)
