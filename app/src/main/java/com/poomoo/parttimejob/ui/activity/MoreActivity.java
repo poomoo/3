@@ -10,9 +10,12 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.poomoo.commlib.LogUtils;
 import com.poomoo.commlib.SPUtils;
 import com.poomoo.parttimejob.R;
 import com.poomoo.parttimejob.ui.base.BaseActivity;
+
+import org.litepal.util.LogUtil;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -77,9 +80,10 @@ public class MoreActivity extends BaseActivity {
         Dialog dialog = new AlertDialog.Builder(this).setMessage("确认退出?").setNegativeButton("取消", (dialog1, which) -> {
         }).setPositiveButton("确定", (dialog1, which) -> {
             MainActivity.instance.finish();
-            openActivity(LoginActivity.class);
             SPUtils.put(getApplicationContext(), getString(R.string.sp_isLogin), false);
             finish();
+            openActivity(LoginActivity.class);
+            System.exit(0);//正常退出App
         }).create();
         dialog.show();
     }
