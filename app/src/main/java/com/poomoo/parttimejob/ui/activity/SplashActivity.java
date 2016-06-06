@@ -48,7 +48,7 @@ public class SplashActivity extends BaseActivity {
         Network.level = HttpLoggingInterceptor.Level.NONE;
 
         //统计错误日志到友盟平台
-        MobclickAgent.setDebugMode(false);
+        MobclickAgent.setDebugMode(true);
         MobclickAgent.setCatchUncaughtExceptions(true);
 
 
