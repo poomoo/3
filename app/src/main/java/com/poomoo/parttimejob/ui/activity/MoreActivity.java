@@ -5,17 +5,13 @@ package com.poomoo.parttimejob.ui.activity;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-import com.poomoo.commlib.LogUtils;
 import com.poomoo.commlib.SPUtils;
 import com.poomoo.parttimejob.R;
 import com.poomoo.parttimejob.ui.base.BaseActivity;
-
-import org.litepal.util.LogUtil;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -63,7 +59,7 @@ public class MoreActivity extends BaseActivity {
     }
 
     /**
-     * 2关于
+     * 关于
      *
      * @param view
      */
