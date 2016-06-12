@@ -8,6 +8,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
+import com.poomoo.commlib.LogUtils;
 import com.poomoo.commlib.MyUtils;
 import com.poomoo.model.Page;
 import com.poomoo.parttimejob.R;
@@ -246,6 +247,7 @@ public abstract class BaseListActivity<T> extends BaseActivity implements SwipeR
      */
     @Override
     public void onLoading() {
+        LogUtils.d(TAG,"onLoading:"+mState);
         if (mState == STATE_REFRESHING) {
             mAdapter.setState(BaseListAdapter.STATE_REFRESHING);
             return;

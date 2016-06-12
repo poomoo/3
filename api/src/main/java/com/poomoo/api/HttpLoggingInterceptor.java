@@ -166,18 +166,19 @@ public final class HttpLoggingInterceptor implements Interceptor {
             requestStartMessage += " (" + requestBody.contentLength() + "-byte body)";
         }
         logger.log(requestStartMessage);
-        Buffer buffer = new Buffer();
-        requestBody.writeTo(buffer);
+        if (hasRequestBody) {
+            Buffer buffer = new Buffer();
+            logger.log("测试-->" + "chain:" + chain + "request:" + request + "buffer" + buffer + ":" + requestBody);
+            requestBody.writeTo(buffer);
+            Charset charset = UTF8;
+            MediaType contentType = requestBody.contentType();
+            if (contentType != null) {
+                charset = contentType.charset(UTF8);
+            }
 
-        Charset charset = UTF8;
-        MediaType contentType = requestBody.contentType();
-        if (contentType != null) {
-            charset = contentType.charset(UTF8);
+            logger.log("");
+            logger.log("请求的数据->" + buffer.readString(charset));
         }
-
-        logger.log("");
-        logger.log("请求的数据->" + buffer.readString(charset));
-
 //        if (logHeaders) {
 //            if (hasRequestBody) {
 //                // Request body headers are only present when installed as a network interceptor. Force

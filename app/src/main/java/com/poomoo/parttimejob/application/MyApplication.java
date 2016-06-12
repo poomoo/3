@@ -3,7 +3,10 @@ package com.poomoo.parttimejob.application;
 import android.app.Activity;
 
 import com.baidu.mapapi.SDKInitializer;
+import com.poomoo.commlib.MyConfig;
 import com.poomoo.parttimejob.crashhandler.CrashHandler;
+import com.tencent.mm.sdk.openapi.IWXAPI;
+import com.tencent.mm.sdk.openapi.WXAPIFactory;
 
 import org.litepal.LitePalApplication;
 
@@ -51,10 +54,15 @@ public class MyApplication extends LitePalApplication {
 
     private static MyApplication instance;//当前对象
     private List<Activity> activityList;//activity栈
+    public static IWXAPI api;
 
     @Override
     public void onCreate() {
         super.onCreate();
+
+        //微信api注册
+        api = WXAPIFactory.createWXAPI(this, MyConfig.weixinAppId, true);
+        api.registerApp(MyConfig.weixinAppId);
 
         SDKInitializer.initialize(this);
         CrashHandler crashHandler = CrashHandler.getInstance();

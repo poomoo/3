@@ -54,6 +54,7 @@
     <string name="title_interesting">可能感兴趣的</string>
     <string name="title_jobLine">兼职路线</string>
     <string name="title_protocol">兼职GO注册协议</string>
+    <string name="title_bond">微信绑定</string>
     <!--title-->
 
     <!--标签-->
@@ -106,6 +107,7 @@
     <string name="btn_submit">提交</string>
     <string name="btn_reply">回复</string>
     <string name="btn_loginFirst">请先登录</string>
+    <string name="btn_bond">绑定</string>
     <!--btn-->
 
     <!--intent-->
@@ -115,6 +117,9 @@
     <string name="intent_cateId">cateId</string>
     <string name="intent_lat">lat</string>
     <string name="intent_lng">lng</string>
+    <string name="intent_wxNum">wxNum</string>
+    <string name="intent_wxNickName">wxNickName</string>
+    <string name="intent_wxHeadPic">wxHeadPic</string>
     <!--intent-->
 
     <!--城市列表-->

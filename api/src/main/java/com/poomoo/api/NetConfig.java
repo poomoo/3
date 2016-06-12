@@ -8,10 +8,11 @@ package com.poomoo.api;
  * 日期: 2016/4/5 16:41.
  */
 public class NetConfig {
-    public static String RemoteUrl = "http://lzrb.91jiaoyou.cn/";
-    public static String LocalUrl = "http://192.168.0.104:8088/";
+    public static String RemoteUrl = "http://www.jianzhigo.cn/";
+    public static String LocalUrl = "http://192.168.0.112:8088/";
     public static String url = RemoteUrl;
     public static String imageUrl = url + "lzrb/app/common/uploadPic.ajax";
+    public static String wxUrl = "https://api.weixin.qq.com";
 
 
     /*action 10000*/
@@ -26,6 +27,9 @@ public class NetConfig {
     public final static String INTENTIONDOWN = "10011";//求职意向
     public final static String INTENTIONUP = "10012";//求职意向
     public final static String AUTH = "10013";//实名认证
+    public final static String ISBOND = "10014";//微信绑定
+    public final static String BOND = "10015";//微信绑定
+    public final static String LOGINBYWX = "10016";//微信登录
 
     /*action 20000*/
     public final static String JOBACTION = "20000";//职位相关统一业务编号

@@ -157,21 +157,15 @@ public abstract class BaseListAdapter<T> extends RecyclerView.Adapter {
             default:
                 final RecyclerView.ViewHolder holder = onCreateDefaultViewHolder(parent, type);
                 if (holder != null) {
-                    holder.itemView.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            if (onItemClickListener != null)
-                                onItemClickListener.onItemClick(holder.getAdapterPosition(), holder.getItemId(), v);
-                        }
+                    holder.itemView.setOnClickListener(v -> {
+                        if (onItemClickListener != null)
+                            onItemClickListener.onItemClick(holder.getAdapterPosition(), holder.getItemId(), v);
                     });
-                    holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
-                        @Override
-                        public boolean onLongClick(View v) {
-                            if (onItemLongClickListener == null)
-                                return false;
-                            onItemLongClickListener.onLongClick(holder.getAdapterPosition(), holder.getItemId(), v);
-                            return true;
-                        }
+                    holder.itemView.setOnLongClickListener(v -> {
+                        if (onItemLongClickListener == null)
+                            return false;
+                        onItemLongClickListener.onLongClick(holder.getAdapterPosition(), holder.getItemId(), v);
+                        return true;
                     });
                 }
                 return holder;
@@ -187,6 +181,7 @@ public abstract class BaseListAdapter<T> extends RecyclerView.Adapter {
                 break;
 
             case VIEW_TYPE_FOOTER:
+                LogUtils.d("BaseListAdapter", "VIEW_TYPE_FOOTER:" + mState+":"+onLoadingListener);
                 if (mState == STATE_LOAD_MORE && onLoadingListener != null) {
                     LogUtils.d("thanatos", "loading...");
                     onLoadingListener.onLoading();

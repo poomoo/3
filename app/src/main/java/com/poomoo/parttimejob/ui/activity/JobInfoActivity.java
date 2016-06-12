@@ -326,14 +326,14 @@ public class JobInfoActivity extends BaseActivity implements JobInfoView {
 //        String appId = "wx55e834ca0a0327a6";
 //        String appSecret = "5bb696d9ccd75a38c8a0bfe0675559b3";
 
-        String appId = "wx49a72bd8d7b71519";
-        String appSecret = "584a22fe3611fe843f8486827f8a68ba";
+//        String appId = "wx49a72bd8d7b71519";
+//        String appSecret = "584a22fe3611fe843f8486827f8a68ba";
         // 添加微信平台
-        UMWXHandler wxHandler = new UMWXHandler(this, appId, appSecret);
+        UMWXHandler wxHandler = new UMWXHandler(this, MyConfig.weixinAppId, MyConfig.weixinAppSecret);
         wxHandler.addToSocialSDK();
 
         // 支持微信朋友圈
-        UMWXHandler wxCircleHandler = new UMWXHandler(this, appId, appSecret);
+        UMWXHandler wxCircleHandler = new UMWXHandler(this, MyConfig.weixinAppId, MyConfig.weixinAppSecret);
         wxCircleHandler.setToCircle(true);
         wxCircleHandler.addToSocialSDK();
     }

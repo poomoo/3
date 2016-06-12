@@ -32,7 +32,7 @@ public abstract class BaseListFragment<T> extends BaseFragment
     protected RecyclerView mListView;
     protected ErrorLayout mErrorLayout;
 
-    protected int mCurrentPage = 0;
+    protected int mCurrentPage = 1;
     protected BaseListAdapter<T> mAdapter;
 
     public static final int STATE_NONE = 0;
@@ -90,12 +90,7 @@ public abstract class BaseListFragment<T> extends BaseFragment
         if (savedInstanceState != null) {
             if (mState == STATE_REFRESHING && getRefreshable()
                     && savedInstanceState.getInt(BUNDLE_STATE_REFRESH, STATE_NONE) == STATE_REFRESHING) {
-                mSwipeRefreshLayout.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        mSwipeRefreshLayout.setRefreshing(true);
-                    }
-                });
+                mSwipeRefreshLayout.post(() -> mSwipeRefreshLayout.setRefreshing(true));
             }
 
             if (mState == STATE_CACHE_LOADING && getRefreshable()
@@ -134,7 +129,7 @@ public abstract class BaseListFragment<T> extends BaseFragment
     public void onLoadResultData(List<T> result) {
         if (result == null) return;
 
-        if (mCurrentPage == 0)
+        if (mCurrentPage == 1)
             mAdapter.clear();
 
         if (mAdapter.getDataSize() + result.size() == 0) {
@@ -148,10 +143,11 @@ public abstract class BaseListFragment<T> extends BaseFragment
         } else {
             mAdapter.setState(BaseListAdapter.STATE_LOAD_MORE);
         }
-        if (mCurrentPage == 0)
+        if (mCurrentPage == 1)
             mAdapter.addItems(0, result);
         else
             mAdapter.addItems(result);
+        mCurrentPage++;
     }
 
 
@@ -275,14 +271,12 @@ public abstract class BaseListFragment<T> extends BaseFragment
      */
     @Override
     public void onLoading() {
+        LogUtils.d(TAG, "onLoading:" + mState);
         if (mState == STATE_REFRESHING) {
             mAdapter.setState(BaseListAdapter.STATE_REFRESHING);
             return;
         }
-        mCurrentPage++;
         mAdapter.setState(BaseListAdapter.STATE_LOADING);
-        LogUtils.d("thanatos", "change adapter state");
-//        getPresenter().requestData(LOAD_MODE_UP_DRAG, mCurrentPage);
     }
 
     /**

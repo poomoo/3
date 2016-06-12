@@ -34,6 +34,8 @@ class GsonResponseBodyConverter<T> implements Converter<ResponseBody, T> {
     @Override
     public T convert(ResponseBody value) throws IOException {
         final String response = value.string();
+        LogUtils.d("convert","convert");
+        LogUtils.d("convert", "返回的数据:" + response);
         ResponseBO responseBO = gson.fromJson(response, ResponseBO.class);
         LogUtils.d("convert", "返回的数据:" + responseBO + "type:" + type);
         if (responseBO.rsCode == 1) {

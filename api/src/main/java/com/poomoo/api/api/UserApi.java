@@ -4,10 +4,13 @@ package com.poomoo.api.api;
 
 
 import com.poomoo.model.request.QAuthBO;
+import com.poomoo.model.request.QBondBO;
 import com.poomoo.model.request.QCheckBO;
 import com.poomoo.model.request.QCodeBO;
+import com.poomoo.model.request.QIsBondBO;
 import com.poomoo.model.request.QJobIntentionBO;
 import com.poomoo.model.request.QLoginBO;
+import com.poomoo.model.request.QLoginByWXBO;
 import com.poomoo.model.request.QRegisterBO;
 import com.poomoo.model.request.QResetPDBO;
 import com.poomoo.model.request.QResumeBO;
@@ -51,4 +54,14 @@ public interface UserApi {
 
     @POST("lzrb/app/call.htm")
     Observable<RIntentionBO> jobIntentionDown(@Body QUserIdBO data);
+
+    //微信登录相关
+    @POST("lzrb/app/call.htm")
+    Observable<ResponseBO> isBond(@Body QIsBondBO data);
+
+    @POST("lzrb/app/call.htm")
+    Observable<RUserBO> bond(@Body QBondBO data);
+
+    @POST("lzrb/app/call.htm")
+    Observable<RUserBO> loginByWx(@Body QLoginByWXBO data);
 }

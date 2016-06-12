@@ -3,6 +3,7 @@ package com.poomoo.parttimejob.ui.fragment;
 import android.os.Bundle;
 import android.view.View;
 
+import com.poomoo.commlib.LogUtils;
 import com.poomoo.commlib.MyUtils;
 import com.poomoo.model.base.BaseJobBO;
 import com.poomoo.model.response.RApplyJobBO;
@@ -27,6 +28,7 @@ public class MyApplyFragment extends BaseListFragment<BaseJobBO> implements Base
 
     private JobsAdapter adapter;
     private AllJobListPresenter allJobListPresenter;
+    private int currPage = 1;
 
     @Override
     public void onCreate(Bundle bundle) {
@@ -51,7 +53,7 @@ public class MyApplyFragment extends BaseListFragment<BaseJobBO> implements Base
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         allJobListPresenter = new AllJobListPresenter(this);
-        allJobListPresenter.getApplyList(application.getUserId(), mCatalog);
+        allJobListPresenter.getApplyList(application.getUserId(), mCatalog, currPage);
     }
 
     @Override
@@ -63,6 +65,7 @@ public class MyApplyFragment extends BaseListFragment<BaseJobBO> implements Base
 
     @Override
     public void succeed(List<BaseJobBO> list) {
+        LogUtils.d(TAG, "succeed:" + list + "action:" + action);
         onLoadFinishState(action);
         onLoadResultData(list);
     }
@@ -81,9 +84,17 @@ public class MyApplyFragment extends BaseListFragment<BaseJobBO> implements Base
     @Override
     public void onRefresh() {
         super.onRefresh();
-        allJobListPresenter.getApplyList(application.getUserId(), mCatalog);
+        currPage = 1;
+        allJobListPresenter.getApplyList(application.getUserId(), mCatalog, currPage);
     }
 
+
+    @Override
+    public void onLoading() {
+        super.onLoading();
+        LogUtils.d(TAG, "onLoading");
+        allJobListPresenter.getApplyList(application.getUserId(), mCatalog, currPage);
+    }
 
     /**
      * 再错误页面点击重新加载
@@ -91,7 +102,8 @@ public class MyApplyFragment extends BaseListFragment<BaseJobBO> implements Base
     @Override
     public void onLoadActiveClick() {
         super.onLoadActiveClick();
-        allJobListPresenter.getApplyList(application.getUserId(), mCatalog);
+        currPage = 1;
+        allJobListPresenter.getApplyList(application.getUserId(), mCatalog, currPage);
     }
 
 }

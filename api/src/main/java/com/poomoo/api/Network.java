@@ -7,6 +7,7 @@ import com.poomoo.api.api.CommApi;
 import com.poomoo.api.api.JobApi;
 import com.poomoo.api.api.UploadApi;
 import com.poomoo.api.api.UserApi;
+import com.poomoo.api.api.WxApi;
 
 import java.util.concurrent.TimeUnit;
 
@@ -26,6 +27,7 @@ public class Network {
     private static CommApi commApi;
     private static JobApi jobApi;
     private static UploadApi uploadApi;
+    private static WxApi wxApi;
     //    private static OkHttpClient okHttpClient = new OkHttpClient();
     private static Converter.Factory gsonConverterFactory = GsonConverterFactory.create();
     private static CallAdapter.Factory rxJavaCallAdapterFactory = RxJavaCallAdapterFactory.create();
@@ -99,6 +101,23 @@ public class Network {
             uploadApi = retrofit.create(UploadApi.class);
         }
         return uploadApi;
+    }
+
+    public static WxApi getWxApi() {
+        if (wxApi == null) {
+            HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
+            loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+            OkHttpClient.Builder clientBuilder = new OkHttpClient.Builder().addInterceptor(loggingInterceptor);
+            clientBuilder.connectTimeout(1, TimeUnit.MINUTES);
+            Retrofit retrofit = new Retrofit.Builder()
+                    .client(clientBuilder.build())
+                    .baseUrl(NetConfig.wxUrl)
+                    .addConverterFactory(retrofit2.GsonConverterFactory.create())
+                    .addCallAdapterFactory(rxJavaCallAdapterFactory)
+                    .build();
+            wxApi = retrofit.create(WxApi.class);
+        }
+        return wxApi;
     }
 
 }

@@ -12,11 +12,15 @@ import com.poomoo.commlib.MyConfig;
 import com.poomoo.commlib.MyUtils;
 import com.poomoo.commlib.SPUtils;
 import com.poomoo.model.response.RUserBO;
+import com.poomoo.model.response.RWxInfoBO;
+import com.poomoo.model.response.RWxTokenBO;
 import com.poomoo.parttimejob.R;
+import com.poomoo.parttimejob.application.MyApplication;
 import com.poomoo.parttimejob.presentation.LoginPresenter;
 import com.poomoo.parttimejob.ui.base.BaseActivity;
 import com.poomoo.parttimejob.ui.custom.RoundImageView2;
 import com.poomoo.parttimejob.view.LoginView;
+import com.tencent.mm.sdk.modelmsg.SendAuth;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -34,10 +38,11 @@ public class LoginActivity extends BaseActivity implements LoginView {
     @Bind(R.id.edt_passWord)
     EditText passWordEdt;
 
-    private LoginPresenter loginPresenter;
+    public static LoginPresenter loginPresenter;
     private String tel = "";
     private String passWord = "";
     public static LoginActivity instance = null;
+    private RWxInfoBO rWxInfoBO;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -201,4 +206,63 @@ public class LoginActivity extends BaseActivity implements LoginView {
         rememberImg.setImageResource(R.drawable.ic_remember_password_no);
     }
 
+    @Override
+    public void getToken(RWxTokenBO rWxTokenBO) {
+        loginPresenter.getInfo(rWxTokenBO.access_token, rWxTokenBO.openid);
+    }
+
+    @Override
+    public void getInfo(RWxInfoBO rWxInfoBO) {
+//        closeProgressDialog();
+//        LogUtils.d(TAG, "微信个人信息:" + rWxInfoBO.toString());
+        loginPresenter.isBond(rWxInfoBO.openid);
+        this.rWxInfoBO = rWxInfoBO;
+    }
+
+    @Override
+    public void isBond(String msg) {
+        closeProgressDialog();
+        showProgressDialog("正在登录...");
+        loginPresenter.loginByWX(MyUtils.getDeviceId(getApplicationContext()), rWxInfoBO.openid);
+    }
+
+    @Override
+    public void notBond(String msg) {
+        closeProgressDialog();
+        MyUtils.showToast(getApplicationContext(), msg);
+        Bundle bundle = new Bundle();
+        bundle.putString(getString(R.string.intent_wxNum), rWxInfoBO.openid);
+        bundle.putString(getString(R.string.intent_wxNickName), rWxInfoBO.nickname);
+        bundle.putString(getString(R.string.intent_wxHeadPic), rWxInfoBO.headimgurl);
+        openActivity(BondActivity.class, bundle);
+    }
+
+    /**
+     * 微信登录
+     *
+     * @param view
+     */
+    public void wxLogin(View view) {
+        SendAuth.Req req = new SendAuth.Req();
+
+        //授权读取用户信息
+        req.scope = "snsapi_userinfo";
+
+        //自定义信息
+        req.state = "兼职GO测试";
+
+        //向微信发送请求
+        MyApplication.api.sendReq(req);
+        showProgressDialog(getString(R.string.dialog_msg));
+        LogUtils.d(TAG, "微信登录调用");
+//        // 构造一个Resp
+//        GetMessageFromWX.Resp resp = new GetMessageFromWX.Resp();
+//        LogUtils.d(TAG, "GetMessageFromWX:" + resp.getType() + ":" + "");
+    }
+
+    @Override
+    public void failed(String msg) {
+        closeProgressDialog();
+        MyUtils.showToast(getApplicationContext(), msg);
+    }
 }

@@ -55,6 +55,7 @@
         <activity android:name=".ui.activity.MoreJobsActivity" />
         <activity android:name=".ui.activity.MapActivity" />
         <activity android:name=".ui.activity.ProtocolActivity" />
+        <activity android:name=".ui.activity.BondActivity" />
 
         <service
             android:name="com.baidu.location.f"
@@ -104,6 +105,10 @@
             android:noHistory="true"
             android:theme="@style/Theme.UMDialog"
             android:windowSoftInputMode="stateVisible|adjustResize" />
+
+        <activity
+            android:name=".wxapi.WXEntryActivity"
+            android:exported="true" />
     </application>
 
 </manifest>
