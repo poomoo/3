@@ -216,6 +216,5 @@ public class BondActivity extends BaseActivity implements BondView {
 
     @Override
     public void failed(String msg) {
-
     }
 }
