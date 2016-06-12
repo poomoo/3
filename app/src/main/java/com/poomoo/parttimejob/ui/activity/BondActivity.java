@@ -3,9 +3,11 @@
  */
 package com.poomoo.parttimejob.ui.activity;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -20,7 +22,6 @@ import com.poomoo.parttimejob.R;
 import com.poomoo.parttimejob.presentation.BondPresenter;
 import com.poomoo.parttimejob.ui.base.BaseActivity;
 import com.poomoo.parttimejob.view.BondView;
-import com.poomoo.parttimejob.view.RegisterView;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -101,6 +102,9 @@ public class BondActivity extends BaseActivity implements BondView {
         showProgressDialog(getString(R.string.dialog_msg));
         getCode();
         bondPresenter.checkPhone(tel);
+        codeEdt.setFocusable(true);
+        codeEdt.requestFocus();
+        closeKeyBoard(view);
     }
 
     public void toConfirm(View view) {
@@ -133,7 +137,12 @@ public class BondActivity extends BaseActivity implements BondView {
         }
         showProgressDialog(getString(R.string.dialog_msg));
         bondPresenter.bond(wxNum, wxNickName, wxHeadPic, tel, passWord, code);
-//        bondPresenter.register(tel, code, passWord, inviteCode, MyUtils.getDeviceId(this));
+        closeKeyBoard(view);
+    }
+
+    private void closeKeyBoard(View view) {
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
     @Override
@@ -141,7 +150,6 @@ public class BondActivity extends BaseActivity implements BondView {
         closeProgressDialog();
         isRegister = false;//没有注册过
         passWordLlayout.setVisibility(View.VISIBLE);
-//        getCode();
     }
 
     private void getCode() {
@@ -154,7 +162,6 @@ public class BondActivity extends BaseActivity implements BondView {
     public void checkFailed(String msg) {
         closeProgressDialog();
         isRegister = true;//注册过
-//        getCode();
     }
 
     @Override
@@ -166,7 +173,6 @@ public class BondActivity extends BaseActivity implements BondView {
     public void loginFailed(String msg) {
         closeProgressDialog();
         MyUtils.showToast(getApplicationContext(), msg);
-        finish();
     }
 
     @Override
@@ -207,16 +213,6 @@ public class BondActivity extends BaseActivity implements BondView {
         finish();
         LoginActivity.instance.finish();
     }
-
-//    @Override
-//    public void isBond() {
-//
-//    }
-//
-//    @Override
-//    public void notBond() {
-//
-//    }
 
     @Override
     public void failed(String msg) {
