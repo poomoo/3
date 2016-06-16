@@ -6,6 +6,7 @@ package com.poomoo.parttimejob.ui.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -20,7 +21,6 @@ import com.poomoo.parttimejob.ui.fragment.JobFragment;
 import com.poomoo.parttimejob.ui.fragment.MainFragment;
 import com.poomoo.parttimejob.ui.fragment.PersonalFragment;
 import com.poomoo.parttimejob.ui.fragment.ServiceFragment;
-import com.trello.rxlifecycle.components.RxFragment;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -50,6 +50,25 @@ public class MainActivity extends BaseActivity {
         instance = this;
         StatusBarUtil.setTransparent(this);
         getWindow().setBackgroundDrawable(null);
+
+        String bundle = getIntent().getStringExtra(getString(R.string.intent_bundle));
+        if (!TextUtils.isEmpty(bundle))
+            toJob();
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        LogUtils.d(TAG, "onNewIntent");
+        toJob();
+    }
+
+    private void toJob() {
+        if (jobFragment == null)
+            jobFragment = Fragment.instantiate(this, JobFragment.class.getName());
+        switchFragment(jobFragment);
+        curFragment = jobFragment;
+        ((RadioButton) findViewById(R.id.rbtn_job)).setChecked(true);
     }
 
     @Override

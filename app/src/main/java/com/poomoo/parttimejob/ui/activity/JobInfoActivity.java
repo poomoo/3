@@ -106,7 +106,7 @@ public class JobInfoActivity extends BaseActivity implements JobInfoView {
     // 首先在您的Activity中添加如下成员变量
     public static final UMSocialService mController = UMServiceFactory.getUMSocialService("com.umeng.share");
     private String content = "边玩边赚钱,就是这么任性!";
-    private String website = "http://lzrb.91jiaoyou.cn/lzrb/download/wap.html";
+    private String website = "http://www.jianzhigo.cn/lzrb/download/wap.html";
     private String title = "点击下载兼职GO APP";
 
     @Override

@@ -120,6 +120,7 @@
     <string name="intent_wxNum">wxNum</string>
     <string name="intent_wxNickName">wxNickName</string>
     <string name="intent_wxHeadPic">wxHeadPic</string>
+    <string name="intent_bundle">bundle</string>
     <!--intent-->
 
     <!--城市列表-->
@@ -145,6 +146,8 @@
     <string name="sp_isIndex">isIndex</string>
     <string name="sp_resumeId">resumeId</string>
     <string name="sp_isAuth">isAuth</string>
+    <string name="sp_isPushBind">isPushBind</string>
+    <string name="sp_channelId">channelId</string>
     <!--SharedPreference-->
 
     <!--dialog-->

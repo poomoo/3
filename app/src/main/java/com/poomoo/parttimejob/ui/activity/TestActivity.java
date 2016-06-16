@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
+import com.poomoo.commlib.LogUtils;
 import com.poomoo.model.base.BaseJobBO;
 import com.poomoo.model.response.RApplyJobBO;
 import com.poomoo.parttimejob.R;
@@ -66,4 +67,11 @@ public class TestActivity extends BaseActivity {
         adapter.addItems(rApplyJobBOs);
     }
 
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        LogUtils.d(TAG,"onResume");
+//        finish();
+    }
 }

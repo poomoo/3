@@ -3,24 +3,18 @@
  */
 package com.poomoo.commlib;
 
+import android.app.ActivityManager;
 import android.content.Context;
-import android.database.Cursor;
-import android.graphics.Color;
 import android.net.ConnectivityManager;
-import android.telephony.TelephonyManager;
-import android.text.SpannableString;
-import android.text.Spanned;
-import android.text.style.AbsoluteSizeSpan;
-import android.text.style.ForegroundColorSpan;
-import android.text.style.RelativeSizeSpan;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.WindowManager;
 import android.widget.Toast;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.TreeSet;
+import java.util.List;
 
 /**
  * 作者: 李苜菲
@@ -59,14 +53,15 @@ public class MyUtils {
     }
 
     /**
-     * 获取设备的IMEI
+     * 获取绑定的百度云推送ChannelId
      *
      * @param context
      * @return
      */
-    public static String getDeviceId(Context context) {
-        TelephonyManager tm = (TelephonyManager) context.getSystemService(context.TELEPHONY_SERVICE);
-        return tm.getDeviceId();
+    public static String getChannelId(Context context) {
+//        TelephonyManager tm = (TelephonyManager) context.getSystemService(context.TELEPHONY_SERVICE);
+//        return tm.getChannelId();
+        return (String) SPUtils.get(context, "sp_channelId", "");
     }
 
 
@@ -145,5 +140,23 @@ public class MyUtils {
         return outMetrics.widthPixels;
     }
 
-
+    /**
+     * 判断应用是否已经启动
+     *
+     * @param context     一个context
+     * @param packageName 要判断应用的包名
+     * @return boolean
+     */
+    public static boolean isAppAlive(Context context, String packageName) {
+        ActivityManager activityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        List<ActivityManager.RunningAppProcessInfo> processInfos = activityManager.getRunningAppProcesses();
+        for (int i = 0; i < processInfos.size(); i++) {
+            if (processInfos.get(i).processName.equals(packageName)) {
+                Log.i("NotificationLaunch", String.format("the %s is running, isAppAlive return true", packageName));
+                return true;
+            }
+        }
+        Log.i("NotificationLaunch", String.format("the %s is not running, isAppAlive return false", packageName));
+        return false;
+    }
 }

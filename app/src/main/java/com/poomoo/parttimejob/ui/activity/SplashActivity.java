@@ -4,13 +4,19 @@
 package com.poomoo.parttimejob.ui.activity;
 
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.TextUtils;
 import android.view.WindowManager;
 
+import com.baidu.android.pushservice.BasicPushNotificationBuilder;
+import com.baidu.android.pushservice.PushConstants;
+import com.baidu.android.pushservice.PushManager;
 import com.poomoo.api.HttpLoggingInterceptor;
 import com.poomoo.api.Network;
 import com.poomoo.commlib.LogUtils;
+import com.poomoo.commlib.MyConfig;
 import com.poomoo.commlib.SPUtils;
 import com.poomoo.commlib.StatusBarUtil;
 import com.poomoo.parttimejob.R;
@@ -34,6 +40,7 @@ public class SplashActivity extends BaseActivity {
     private static String DB_NAME = "partTimeJob.db";
     private final static int SPLASH_DISPLAY_LENGTH = 3000;
     private boolean isIndex = false;//是否需要引导
+    private Bundle bundle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,13 +51,26 @@ public class SplashActivity extends BaseActivity {
         StatusBarUtil.setTransparent(this);
 
         //不显示日志
-//        LogUtils.isDebug = false;
-//        Network.level = HttpLoggingInterceptor.Level.NONE;
+        LogUtils.isDebug = false;
+        Network.level = HttpLoggingInterceptor.Level.NONE;
 
         //统计错误日志到友盟平台
         MobclickAgent.setDebugMode(true);
         MobclickAgent.setCatchUncaughtExceptions(true);
 
+        MyConfig.isRun = true;
+
+        if (!(boolean) SPUtils.get(getApplicationContext(), getString(R.string.sp_isPushBind), false)) {
+            PushManager.startWork(getApplicationContext(), PushConstants.LOGIN_TYPE_API_KEY, MyConfig.pushKey);
+        }
+
+        Resources resource = this.getResources();
+        String pkgName = this.getPackageName();
+        BasicPushNotificationBuilder basicPushNotificationBuilder = new BasicPushNotificationBuilder();
+        basicPushNotificationBuilder.setStatusbarIcon(R.drawable.ic_stat_notify);
+        basicPushNotificationBuilder.setStatusbarIcon(resource.getIdentifier("ic_logo", "drawable", pkgName));
+        // 推送高级设置，通知栏样式设置为下面的ID
+        PushManager.setNotificationBuilder(this, 1, basicPushNotificationBuilder);
 
         importDB();
         Connector.getDatabase();
@@ -76,6 +96,7 @@ public class SplashActivity extends BaseActivity {
 
     public void start() {
         new Handler().postDelayed(() -> {
+            LogUtils.d(TAG, "IsLogin-->" + (boolean) SPUtils.get(getApplicationContext(), getString(R.string.sp_isLogin), false));
             if (!(boolean) SPUtils.get(getApplicationContext(), getString(R.string.sp_isLogin), false)) {
                 openActivity(LoginActivity.class);
                 finish();
@@ -87,7 +108,12 @@ public class SplashActivity extends BaseActivity {
                 application.setIdCardNum((String) SPUtils.get(getApplicationContext(), getString(R.string.sp_idCardNum), ""));
                 application.setHeadPic((String) SPUtils.get(getApplicationContext(), getString(R.string.sp_headPic), ""));
                 application.setLogin(true);
-                openActivity(MainActivity.class);
+                LogUtils.d(TAG, "bundle:" + getIntent().getStringExtra(getString(R.string.intent_bundle)));
+                if (!TextUtils.isEmpty(getIntent().getStringExtra(getString(R.string.intent_bundle)))) {
+                    bundle=new Bundle();
+                    bundle.putString(getString(R.string.intent_bundle), getIntent().getStringExtra(getString(R.string.intent_bundle)));
+                }
+                openActivity(MainActivity.class, bundle);
                 finish();
             }
         }, SPLASH_DISPLAY_LENGTH);
@@ -124,6 +150,4 @@ public class SplashActivity extends BaseActivity {
             LogUtils.d(TAG, "EXCEPTION:" + e.getMessage());
         }
     }
-
-
 }

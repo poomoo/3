@@ -117,7 +117,7 @@ public class LoginActivity extends BaseActivity implements LoginView {
             return;
         }
         showProgressDialog(getString(R.string.dialog_msg));
-        loginPresenter.login(tel, passWord, MyUtils.getDeviceId(getApplicationContext()));
+        loginPresenter.login(tel, passWord, MyUtils.getChannelId(getApplicationContext()));
     }
 
     /**
@@ -223,7 +223,7 @@ public class LoginActivity extends BaseActivity implements LoginView {
     public void isBond(String msg) {
         closeProgressDialog();
         showProgressDialog("正在登录...");
-        loginPresenter.loginByWX(MyUtils.getDeviceId(getApplicationContext()), rWxInfoBO.openid);
+        loginPresenter.loginByWX(MyUtils.getChannelId(getApplicationContext()), rWxInfoBO.openid);
     }
 
     @Override

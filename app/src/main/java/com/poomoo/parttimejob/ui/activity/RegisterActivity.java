@@ -127,7 +127,7 @@ public class RegisterActivity extends BaseActivity implements RegisterView {
             MyUtils.showToast(getApplicationContext(), "请阅读并同意用户协议");
         inviteCode = inviteCodedEdt.getText().toString().trim();
         showProgressDialog(getString(R.string.dialog_msg));
-        registerPresenter.register(tel, code, passWord, inviteCode, MyUtils.getDeviceId(this));
+        registerPresenter.register(tel, code, passWord, inviteCode, MyUtils.getChannelId(this));
     }
 
     @Override
@@ -152,7 +152,7 @@ public class RegisterActivity extends BaseActivity implements RegisterView {
     @Override
     public void registerSucceed(String msg) {
         MyUtils.showToast(getApplicationContext(), msg);
-        registerPresenter.login(tel, passWord, MyUtils.getDeviceId(getApplicationContext()));
+        registerPresenter.login(tel, passWord, MyUtils.getChannelId(getApplicationContext()));
     }
 
     @Override
