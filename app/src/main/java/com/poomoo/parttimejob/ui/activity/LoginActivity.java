@@ -2,6 +2,7 @@ package com.poomoo.parttimejob.ui.activity;
 
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -264,5 +265,16 @@ public class LoginActivity extends BaseActivity implements LoginView {
     public void failed(String msg) {
         closeProgressDialog();
         MyUtils.showToast(getApplicationContext(), msg);
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        // TODO 自动生成的方法存根
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            MyConfig.isRun = false;
+            finish();
+            System.exit(0);//正常退出App
+        }
+        return true;
     }
 }

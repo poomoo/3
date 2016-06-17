@@ -52,8 +52,15 @@ public class MainActivity extends BaseActivity {
         getWindow().setBackgroundDrawable(null);
 
         String bundle = getIntent().getStringExtra(getString(R.string.intent_bundle));
-        if (!TextUtils.isEmpty(bundle))
+        if (!TextUtils.isEmpty(bundle)) {
             toJob();
+//            Bundle bundle1 = new Bundle();
+//            bundle1.putInt(getString(R.string.intent_msgId), 1);
+//            bundle1.putString(getString(R.string.intent_value), "安卓");
+//            bundle1.putString(getString(R.string.intent_msg), "测试");
+//            openActivity(MessageActivity.class, bundle1);
+        }
+
     }
 
     @Override
@@ -159,6 +166,7 @@ public class MainActivity extends BaseActivity {
             MyUtils.showToast(getApplicationContext(), MyConfig.exitApp);
             exitTime = System.currentTimeMillis();
         } else {
+            MyConfig.isRun = false;
             finish();
             System.exit(0);//正常退出App
         }
@@ -178,5 +186,4 @@ public class MainActivity extends BaseActivity {
         /*然后在碎片中调用重写的onActivityResult方法*/
         curFragment.onActivityResult(requestCode, resultCode, data);
     }
-
 }

@@ -60,9 +60,8 @@ public class SplashActivity extends BaseActivity {
 
         MyConfig.isRun = true;
 
-        if (!(boolean) SPUtils.get(getApplicationContext(), getString(R.string.sp_isPushBind), false)) {
+        if (!(boolean) SPUtils.get(getApplicationContext(), getString(R.string.sp_isPushBind), false))
             PushManager.startWork(getApplicationContext(), PushConstants.LOGIN_TYPE_API_KEY, MyConfig.pushKey);
-        }
 
         Resources resource = this.getResources();
         String pkgName = this.getPackageName();
@@ -110,7 +109,7 @@ public class SplashActivity extends BaseActivity {
                 application.setLogin(true);
                 LogUtils.d(TAG, "bundle:" + getIntent().getStringExtra(getString(R.string.intent_bundle)));
                 if (!TextUtils.isEmpty(getIntent().getStringExtra(getString(R.string.intent_bundle)))) {
-                    bundle=new Bundle();
+                    bundle = new Bundle();
                     bundle.putString(getString(R.string.intent_bundle), getIntent().getStringExtra(getString(R.string.intent_bundle)));
                 }
                 openActivity(MainActivity.class, bundle);
