@@ -38,6 +38,7 @@ import com.poomoo.parttimejob.presentation.MainPresenter;
 import com.poomoo.parttimejob.ui.activity.CityListActivity;
 import com.poomoo.parttimejob.ui.activity.JobInfoActivity;
 import com.poomoo.parttimejob.ui.activity.JobListByCateActivity;
+import com.poomoo.parttimejob.ui.activity.MainActivity;
 import com.poomoo.parttimejob.ui.activity.MoreJobsActivity;
 import com.poomoo.parttimejob.ui.activity.SearchJobActivity;
 import com.poomoo.parttimejob.ui.base.BaseFragment;
@@ -291,7 +292,7 @@ public class MainFragment extends BaseFragment implements SwipeRefreshLayout.OnR
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
-//        if (!hidden)
-//            MainActivity.instance.setBackGround2();
+        if (!hidden)
+            MainActivity.instance.setBackGround3();
     }
 }

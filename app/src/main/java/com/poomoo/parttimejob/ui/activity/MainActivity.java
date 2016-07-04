@@ -179,6 +179,10 @@ public class MainActivity extends BaseActivity {
         mainLlayout.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
     }
 
+    public void setBackGround3() {
+        mainLlayout.setBackgroundColor(getResources().getColor(R.color.transparent));
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
