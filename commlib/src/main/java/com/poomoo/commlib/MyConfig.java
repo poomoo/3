@@ -48,6 +48,8 @@ public class MyConfig {
 
     public static final String[] jobType = {"不限", "调研", "送餐员", "促销", "礼仪", "安保", "销售", "服务员", "零时工", "校内", "设计", "文员", "派单", "模特", "实习", "家教", "演出", "客服", "翻译", "其他"};
     public static final String[] sortType = {"综合排序", "最新发布", "离我最近"};
+    public static final String[] classify = {"贵州味道", "贵酒贵茶", "黔匠艺品", "食品酒水", "全球优品", "母婴用品", "美妆个护", "家居生活"};
+
 
     public static final String weixinAppId = "wxdc670b01335d85ed";
     public static final String weixinAppSecret = "0b59c03c63c5966278f0fabd1493dae8";

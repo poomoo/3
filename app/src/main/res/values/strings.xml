@@ -174,4 +174,6 @@
         <item>最少换乘</item>
         <item>最少步行距离</item>
     </string-array>
+
+    <string name="base_url">http://www.jiayou9.com</string>
 </resources>

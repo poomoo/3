@@ -45,13 +45,12 @@ public class SplashActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         //去掉Activity上面的状态栏
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         super.onCreate(savedInstanceState);
         StatusBarUtil.setTransparent(this);
 
         //不显示日志
-        LogUtils.isDebug = false;
+//        LogUtils.isDebug = false;
         Network.level = HttpLoggingInterceptor.Level.NONE;
 
         //统计错误日志到友盟平台

@@ -4,74 +4,24 @@
 package com.poomoo.parttimejob.ui.activity;
 
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.support.v7.app.AppCompatActivity;
+import android.view.Window;
 
-import com.poomoo.commlib.LogUtils;
-import com.poomoo.model.base.BaseJobBO;
-import com.poomoo.model.response.RApplyJobBO;
+import com.poomoo.commlib.StatusBarUtil;
 import com.poomoo.parttimejob.R;
-import com.poomoo.parttimejob.adapter.BaseListAdapter;
-import com.poomoo.parttimejob.adapter.JobsAdapter;
-import com.poomoo.parttimejob.ui.base.BaseActivity;
-import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import butterknife.Bind;
-import butterknife.ButterKnife;
 
 /**
  * 作者: 李苜菲
- * 日期: 2015/11/26 10:22.
+ * 日期: 2016/6/30 14:29.
  */
-public class TestActivity extends BaseActivity {
-    @Bind(R.id.recycler_view)
-    RecyclerView listView;
-
-    private JobsAdapter adapter;
-    private List<BaseJobBO> rApplyJobBOs = new ArrayList<>();
-    private RApplyJobBO rApplyJobBO;
+public class TestActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ButterKnife.bind(this);
-        initView();
-    }
+        requestWindowFeature(Window.FEATURE_NO_TITLE); //设置无标题栏
+        setContentView(R.layout.app_bar_main);
+        StatusBarUtil.setTransparent(this);
 
-    @Override
-    protected String onSetTitle() {
-        return "首页测试";
-    }
-
-    @Override
-    protected int onBindLayout() {
-        return R.layout.fragment_main;
-    }
-
-    private void initView() {
-        listView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-        listView.addItemDecoration(new HorizontalDividerItemDecoration.Builder(this)
-                .color(getResources().getColor(R.color.transparent))
-                .size((int) getResources().getDimension(R.dimen.divider_height2))
-                .build());
-
-        adapter = new JobsAdapter(this, BaseListAdapter.ONLY_FOOTER, false);
-        listView.setAdapter(adapter);
-        for (int i = 0; i < 10; i++) {
-            rApplyJobBO = new RApplyJobBO("金阳" + i, i, i, 100 * (i + 1) + "￥/天", "第" + i + "份工作", i + "分钟前");
-            rApplyJobBOs.add(rApplyJobBO);
-        }
-        adapter.addItems(rApplyJobBOs);
-    }
-
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        LogUtils.d(TAG,"onResume");
-//        finish();
     }
 }

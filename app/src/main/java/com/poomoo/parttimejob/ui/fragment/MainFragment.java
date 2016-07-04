@@ -5,19 +5,23 @@ package com.poomoo.parttimejob.ui.fragment;
 
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.poomoo.commlib.LogUtils;
 import com.poomoo.commlib.MyUtils;
 import com.poomoo.commlib.SPUtils;
+import com.poomoo.commlib.StatusBarUtil;
 import com.poomoo.model.Page;
 import com.poomoo.model.base.BaseJobBO;
 import com.poomoo.model.response.RAdBO;
@@ -34,7 +38,6 @@ import com.poomoo.parttimejob.presentation.MainPresenter;
 import com.poomoo.parttimejob.ui.activity.CityListActivity;
 import com.poomoo.parttimejob.ui.activity.JobInfoActivity;
 import com.poomoo.parttimejob.ui.activity.JobListByCateActivity;
-import com.poomoo.parttimejob.ui.activity.MainActivity;
 import com.poomoo.parttimejob.ui.activity.MoreJobsActivity;
 import com.poomoo.parttimejob.ui.activity.SearchJobActivity;
 import com.poomoo.parttimejob.ui.base.BaseFragment;
@@ -55,6 +58,12 @@ import butterknife.OnClick;
  * 日期: 2016/3/22 16:23.
  */
 public class MainFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener, BaseListAdapter.OnLoadingListener, BaseListAdapter.OnItemClickListener, MainView, AdapterView.OnItemClickListener {
+    @Bind(R.id.bar_main)
+    RelativeLayout bar;
+    @Bind(R.id.toolbar)
+    Toolbar toolbar;
+    @Bind(R.id.rlayout_interesting)
+    RelativeLayout interestingRlayout;
     @Bind(R.id.swipe_refresh)
     SwipeRefreshLayout swipeRefreshLayout;
     @Bind(R.id.recycler_main)
@@ -92,7 +101,9 @@ public class MainFragment extends BaseFragment implements SwipeRefreshLayout.OnR
     }
 
     private void initView() {
-        slideShowView.setLayoutParams(new AppBarLayout.LayoutParams(AppBarLayout.LayoutParams.MATCH_PARENT, MyUtils.getScreenWidth(getActivity()) / 3));//设置广告栏的宽高比为3:1
+        toolbar.getBackground().setAlpha(0);
+
+        slideShowView.setLayoutParams(new CollapsingToolbarLayout.LayoutParams(CollapsingToolbarLayout.LayoutParams.MATCH_PARENT, MyUtils.getScreenWidth(getActivity()) / 3));//设置广告栏的宽高比为3:1
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         recyclerView.addItemDecoration(new HorizontalDividerItemDecoration.Builder(getActivity())
                 .color(getResources().getColor(R.color.transparent))
@@ -108,17 +119,28 @@ public class MainFragment extends BaseFragment implements SwipeRefreshLayout.OnR
         recyclerView.setAdapter(adapter);
         adapter.setOnLoadingListener(this);
         adapter.setOnItemClickListener(this);
+
         appBarLayout.addOnOffsetChangedListener((appBarLayout1, verticalOffset) -> {
-            if (verticalOffset >= 0) {
-                swipeRefreshLayout.setEnabled(true);
-            } else {
-                swipeRefreshLayout.setEnabled(false);
-            }
-        });
+                    LogUtils.d(TAG, "addOnOffsetChangedListener:" + verticalOffset);
+                    if (verticalOffset >= 0)
+                        swipeRefreshLayout.setEnabled(true);
+                    else
+                        swipeRefreshLayout.setEnabled(false);
+                    StatusBarUtil.setTranslucent(getActivity(), (255 * Math.abs(verticalOffset) / appBarLayout.getTotalScrollRange()));
+//                    StatusBarUtil.setColor(getActivity(), R.color.colorPrimaryDark, 255 * verticalOffset / appBarLayout1.getTotalScrollRange());
+                    toolbar.getBackground().setAlpha(255 * Math.abs(verticalOffset) / appBarLayout.getTotalScrollRange());
+                }
+
+        );
         swipeRefreshLayout.post(() -> swipeRefreshLayout.setRefreshing(true));
+
+        CollapsingToolbarLayout.LayoutParams layoutParams = new CollapsingToolbarLayout.LayoutParams(CollapsingToolbarLayout.LayoutParams.MATCH_PARENT, CollapsingToolbarLayout.LayoutParams.WRAP_CONTENT);
+        layoutParams.setMargins(0, MyUtils.getScreenWidth(getActivity()) * 1 / 3, 0, 10);
+        gridView.setLayoutParams(layoutParams);
         gridAdapter = new MainGridAdapter(getActivity());
         gridView.setAdapter(gridAdapter);
         gridView.setOnItemClickListener(this);
+
         LogUtils.d(TAG, "userId;" + application.getUserId());
         mainPresenter = new MainPresenter(this);
         mainPresenter.loadAd();
@@ -269,7 +291,7 @@ public class MainFragment extends BaseFragment implements SwipeRefreshLayout.OnR
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
-        if (!hidden)
-            MainActivity.instance.setBackGround2();
+//        if (!hidden)
+//            MainActivity.instance.setBackGround2();
     }
 }

@@ -13,6 +13,10 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
     </style>
 
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
 
     <style name="myButton" parent="Widget.AppCompat.Button">
         <item name="android:background">@drawable/selector_btn_common</item>
@@ -37,4 +41,8 @@
         <item name="android:windowExitAnimation">@anim/pophidden_anim
         </item>       <!-- 指定消失的动画xml  -->
     </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>

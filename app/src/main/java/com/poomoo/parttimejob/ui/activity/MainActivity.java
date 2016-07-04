@@ -14,7 +14,6 @@ import android.widget.RadioButton;
 import com.poomoo.commlib.LogUtils;
 import com.poomoo.commlib.MyConfig;
 import com.poomoo.commlib.MyUtils;
-import com.poomoo.commlib.StatusBarUtil;
 import com.poomoo.parttimejob.R;
 import com.poomoo.parttimejob.ui.base.BaseActivity;
 import com.poomoo.parttimejob.ui.fragment.JobFragment;
@@ -48,8 +47,8 @@ public class MainActivity extends BaseActivity {
         setDefaultFragment();
         ButterKnife.bind(this);
         instance = this;
-        StatusBarUtil.setTransparent(this);
-        getWindow().setBackgroundDrawable(null);
+//        StatusBarUtil.setTransparent(this);
+//        getWindow().setBackgroundDrawable(null);
 
         String bundle = getIntent().getStringExtra(getString(R.string.intent_bundle));
         if (!TextUtils.isEmpty(bundle)) {
