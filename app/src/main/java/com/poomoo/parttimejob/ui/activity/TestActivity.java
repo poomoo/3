@@ -19,9 +19,9 @@ public class TestActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE); //设置无标题栏
-        setContentView(R.layout.app_bar_main);
-        StatusBarUtil.setTransparent(this);
+//        requestWindowFeature(Window.FEATURE_NO_TITLE); //设置无标题栏
+//        setContentView(R.layout.app_bar_main);
+//        StatusBarUtil.setTransparent(this);
 
     }
 }
