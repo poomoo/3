@@ -22,33 +22,34 @@
                 <android.support.design.widget.AppBarLayout
                     android:id="@+id/appBarLayout"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:theme="@style/AppTheme.AppBarOverlay">
 
                     <android.support.design.widget.CollapsingToolbarLayout
+                        android:id="@+id/collapsingToolbarLayout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@color/colorBg"
-                        app:contentScrim="@color/transparent"
+                        android:fitsSystemWindows="true"
                         app:layout_scrollFlags="scroll|exitUntilCollapsed"
-                        app:statusBarScrim="@color/colorPrimaryDark">
+                        app:statusBarScrim="@color/transparent">
 
                         <com.poomoo.parttimejob.ui.custom.SlideShowView
                             android:id="@+id/flipper_ad"
                             android:layout_width="match_parent"
                             android:layout_height="150dp"
-                            android:layout_alignParentTop="false"
                             android:fitsSystemWindows="true"
                             android:visibility="visible"
                             app:layout_collapseMode="parallax"
-                            app:layout_collapseParallaxMultiplier="0.5" />
+                            app:layout_collapseParallaxMultiplier="1" />
 
                         <GridView
                             android:id="@+id/grid_main"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:background="@color/white"
+                            android:fitsSystemWindows="false"
                             android:focusable="true"
-                            android:focusableInTouchMode="true"
                             android:numColumns="4"
                             android:paddingBottom="8dp"
                             android:paddingTop="8dp"
@@ -63,19 +64,20 @@
                         <android.support.v7.widget.Toolbar
                             android:id="@+id/toolbar"
                             android:layout_width="match_parent"
-                            android:layout_height="50dp"
+                            android:layout_height="@dimen/toolbar_height"
                             android:background="@color/colorPrimary"
+                            android:fitsSystemWindows="false"
                             app:contentInsetStart="0dp"
                             app:layout_collapseMode="pin">
 
                             <RelativeLayout
                                 android:id="@+id/bar_main"
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
+                                android:layout_height="match_parent"
+                                android:gravity="bottom"
                                 android:paddingBottom="8dp"
                                 android:paddingLeft="8dp"
-                                android:paddingRight="8dp"
-                                android:paddingTop="8dp">
+                                android:paddingRight="8dp">
                                 <!--左边-->
                                 <LinearLayout
                                     android:id="@+id/llayout_citys"
