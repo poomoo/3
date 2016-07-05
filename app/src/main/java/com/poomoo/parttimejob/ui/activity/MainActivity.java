@@ -171,17 +171,17 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-    public void setBackGround1() {
-        mainLlayout.setBackgroundResource(R.drawable.bg_personal);
-    }
-
-    public void setBackGround2() {
-        mainLlayout.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
-    }
-
-    public void setBackGround3() {
-        mainLlayout.setBackgroundColor(getResources().getColor(R.color.transparent));
-    }
+//    public void setBackGround1() {
+//        mainLlayout.setBackgroundResource(R.drawable.bg_personal);
+//    }
+//
+//    public void setBackGround2() {
+//        mainLlayout.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+//    }
+//
+//    public void setBackGround3() {
+//        mainLlayout.setBackgroundColor(getResources().getColor(R.color.transparent));
+//    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

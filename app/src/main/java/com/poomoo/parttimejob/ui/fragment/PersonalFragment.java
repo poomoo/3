@@ -57,7 +57,7 @@ public class PersonalFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_personal, container, false);
         ButterKnife.bind(this, view);
-        MainActivity.instance.setBackGround1();
+//        MainActivity.instance.setBackGround1();
         return view;
     }
 
@@ -164,11 +164,11 @@ public class PersonalFragment extends BaseFragment {
         }
     }
 
-    @Override
-    public void onHiddenChanged(boolean hidden) {
-        super.onHiddenChanged(hidden);
-        if (!hidden)
-            MainActivity.instance.setBackGround1();
-    }
+//    @Override
+//    public void onHiddenChanged(boolean hidden) {
+//        super.onHiddenChanged(hidden);
+//        if (!hidden)
+//            MainActivity.instance.setBackGround1();
+//    }
 
 }

@@ -3,6 +3,8 @@
  */
 package com.poomoo.parttimejob.ui.fragment;
 
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -59,12 +61,12 @@ import butterknife.OnClick;
  * 日期: 2016/3/22 16:23.
  */
 public class MainFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener, BaseListAdapter.OnLoadingListener, BaseListAdapter.OnItemClickListener, MainView, AdapterView.OnItemClickListener {
-    @Bind(R.id.bar_main)
-    RelativeLayout bar;
-    @Bind(R.id.toolbar)
-    Toolbar toolbar;
-    @Bind(R.id.rlayout_interesting)
-    RelativeLayout interestingRlayout;
+    //    @Bind(R.id.bar_main)
+//    RelativeLayout bar;
+//    @Bind(R.id.toolbar)
+//    Toolbar toolbar;
+//    @Bind(R.id.rlayout_interesting)
+//    RelativeLayout interestingRlayout;
     @Bind(R.id.swipe_refresh)
     SwipeRefreshLayout swipeRefreshLayout;
     @Bind(R.id.recycler_main)
@@ -77,6 +79,8 @@ public class MainFragment extends BaseFragment implements SwipeRefreshLayout.OnR
     TextView cityTxt;
     @Bind(R.id.grid_main)
     GridView gridView;
+    @Bind(R.id.collapsingToolbarLayout)
+    CollapsingToolbarLayout collapsingToolbarLayout;
 
     private JobsAdapter adapter;
     private MainGridAdapter gridAdapter;
@@ -87,6 +91,7 @@ public class MainFragment extends BaseFragment implements SwipeRefreshLayout.OnR
     private MainPresenter mainPresenter;
     private boolean isLoadAd = false;
     private boolean isLoadType = false;
+    private int alpha = 0;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -101,8 +106,9 @@ public class MainFragment extends BaseFragment implements SwipeRefreshLayout.OnR
         initView();
     }
 
+
     private void initView() {
-        toolbar.getBackground().setAlpha(0);
+        StatusBarUtil.setTransparent(getActivity());
 
         slideShowView.setLayoutParams(new CollapsingToolbarLayout.LayoutParams(CollapsingToolbarLayout.LayoutParams.MATCH_PARENT, MyUtils.getScreenWidth(getActivity()) / 3));//设置广告栏的宽高比为3:1
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
@@ -122,22 +128,22 @@ public class MainFragment extends BaseFragment implements SwipeRefreshLayout.OnR
         adapter.setOnItemClickListener(this);
 
         appBarLayout.addOnOffsetChangedListener((appBarLayout1, verticalOffset) -> {
-                    LogUtils.d(TAG, "addOnOffsetChangedListener:" + verticalOffset);
                     if (verticalOffset >= 0)
                         swipeRefreshLayout.setEnabled(true);
                     else
                         swipeRefreshLayout.setEnabled(false);
-                    StatusBarUtil.setTranslucent(getActivity(), (255 * Math.abs(verticalOffset) / appBarLayout.getTotalScrollRange()));
-//                    StatusBarUtil.setColor(getActivity(), R.color.colorPrimaryDark, 255 * verticalOffset / appBarLayout1.getTotalScrollRange());
-                    toolbar.getBackground().setAlpha(255 * Math.abs(verticalOffset) / appBarLayout.getTotalScrollRange());
+                    alpha = 255 * Math.abs(verticalOffset) / appBarLayout.getTotalScrollRange();
+                    collapsingToolbarLayout.setContentScrimColor(Color.argb(alpha, 13, 176, 155));
+                    LogUtils.d(TAG, "addOnOffsetChangedListener:" + verticalOffset + "alpha" + alpha + "appBarLayout.getTotalScrollRange()" + appBarLayout.getTotalScrollRange());
                 }
-
         );
+
         swipeRefreshLayout.post(() -> swipeRefreshLayout.setRefreshing(true));
 
-        CollapsingToolbarLayout.LayoutParams layoutParams = new CollapsingToolbarLayout.LayoutParams(CollapsingToolbarLayout.LayoutParams.MATCH_PARENT, CollapsingToolbarLayout.LayoutParams.WRAP_CONTENT);
-        layoutParams.setMargins(0, MyUtils.getScreenWidth(getActivity()) * 1 / 3, 0, 10);
-        gridView.setLayoutParams(layoutParams);
+        CollapsingToolbarLayout.LayoutParams layoutParams1 = new CollapsingToolbarLayout.LayoutParams(CollapsingToolbarLayout.LayoutParams.MATCH_PARENT, CollapsingToolbarLayout.LayoutParams.WRAP_CONTENT);
+        layoutParams1.setMargins(0, MyUtils.getScreenWidth(getActivity()) * 1 / 3, 0, 10);//(int) getActivity().getResources().getDimension(R.dimen.dp_31)
+        gridView.setLayoutParams(layoutParams1);
+
         gridAdapter = new MainGridAdapter(getActivity());
         gridView.setAdapter(gridAdapter);
         gridView.setOnItemClickListener(this);
@@ -289,10 +295,12 @@ public class MainFragment extends BaseFragment implements SwipeRefreshLayout.OnR
         openActivity(JobListByCateActivity.class, bundle);
     }
 
-    @Override
-    public void onHiddenChanged(boolean hidden) {
-        super.onHiddenChanged(hidden);
-        if (!hidden)
-            MainActivity.instance.setBackGround3();
-    }
+//    @Override
+//    public void onHiddenChanged(boolean hidden) {
+//        super.onHiddenChanged(hidden);
+//        if (!hidden)
+//            MainActivity.instance.setBackGround3();
+//    }
+
+
 }

@@ -4,16 +4,19 @@
 package com.poomoo.parttimejob.ui.fragment;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckedTextView;
 import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.poomoo.commlib.LogUtils;
@@ -56,6 +59,8 @@ import butterknife.OnClick;
  * 日期: 2016/4/9 15:57.
  */
 public class JobFragment extends BaseFragment implements JobView, BaseListAdapter.OnLoadingListener, BaseListAdapter.OnItemClickListener, SwipeRefreshLayout.OnRefreshListener {
+    @Bind(R.id.rlayout_job)
+    RelativeLayout titleRlayout;
     @Bind(R.id.recycler_view)
     RecyclerView recyclerView;
     @Bind(R.id.swipe_refresh)
@@ -86,7 +91,7 @@ public class JobFragment extends BaseFragment implements JobView, BaseListAdapte
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_job, container, false);
         ButterKnife.bind(this, view);
-        MainActivity.instance.setBackGround2();
+//        MainActivity.instance.setBackGround2();
         return view;
     }
 
@@ -98,6 +103,11 @@ public class JobFragment extends BaseFragment implements JobView, BaseListAdapte
 
     private void initView() {
         instance = this;
+        if (!(Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT)) {
+            titleRlayout.setPadding( (int) getActivity().getResources().getDimension(R.dimen.dp_8), (int) getActivity().getResources().getDimension(R.dimen.toolbar_marginTop), (int) getActivity().getResources().getDimension(R.dimen.dp_8), (int) getActivity().getResources().getDimension(R.dimen.dp_8));
+            titleRlayout.setGravity(Gravity.BOTTOM);
+        }
+
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         recyclerView.addItemDecoration(new HorizontalDividerItemDecoration.Builder(getActivity())
                 .color(getResources().getColor(R.color.transparent))
@@ -326,12 +336,12 @@ public class JobFragment extends BaseFragment implements JobView, BaseListAdapte
         openActivity(JobInfoActivity.class, bundle);
     }
 
-    @Override
-    public void onHiddenChanged(boolean hidden) {
-        super.onHiddenChanged(hidden);
-        if (!hidden)
-        MainActivity.instance.setBackGround2();
-    }
+//    @Override
+//    public void onHiddenChanged(boolean hidden) {
+//        super.onHiddenChanged(hidden);
+//        if (!hidden)
+//        MainActivity.instance.setBackGround2();
+//    }
 
 
     @Override

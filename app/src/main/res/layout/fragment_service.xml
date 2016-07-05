@@ -3,12 +3,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorBg"
-    android:layout_marginTop="24dp"
     android:orientation="vertical">
 
     <RelativeLayout
+        android:id="@+id/rlayout_service"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/toolbar_height"
         android:background="@color/colorPrimary"
         android:padding="8dp">
         <!--显示标题-->

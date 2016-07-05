@@ -3,14 +3,17 @@
  */
 package com.poomoo.parttimejob.ui.fragment;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import com.poomoo.model.Page;
 import com.poomoo.model.response.RServiceBO;
@@ -37,6 +40,8 @@ import butterknife.OnClick;
  * 日期: 2016/4/27 09:45.
  */
 public class ServiceFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener, BaseListAdapter.OnLoadingListener, BaseListAdapter.OnItemClickListener, ErrorLayout.OnActiveClickListener, ServiceView {
+    @Bind(R.id.rlayout_service)
+    RelativeLayout titleRlayout;
     @Bind(R.id.swipe_refresh)
     SwipeRefreshLayout swipeRefreshLayout;
     @Bind(R.id.recycler_view)
@@ -60,7 +65,7 @@ public class ServiceFragment extends BaseFragment implements SwipeRefreshLayout.
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_service, container, false);
         ButterKnife.bind(this, view);
-        MainActivity.instance.setBackGround2();
+//        MainActivity.instance.setBackGround2();
         return view;
     }
 
@@ -71,6 +76,11 @@ public class ServiceFragment extends BaseFragment implements SwipeRefreshLayout.
     }
 
     private void initView() {
+        if (!(Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT)) {
+            titleRlayout.setPadding( (int) getActivity().getResources().getDimension(R.dimen.dp_8), (int) getActivity().getResources().getDimension(R.dimen.toolbar_marginTop), (int) getActivity().getResources().getDimension(R.dimen.dp_8), (int) getActivity().getResources().getDimension(R.dimen.dp_8));
+            titleRlayout.setGravity(Gravity.BOTTOM);
+        }
+
         if (application.isLogin()) {
             serviceLlayout.setVisibility(View.VISIBLE);
             loginLlayout.setVisibility(View.GONE);
@@ -199,10 +209,10 @@ public class ServiceFragment extends BaseFragment implements SwipeRefreshLayout.
     }
 
 
-    @Override
-    public void onHiddenChanged(boolean hidden) {
-        super.onHiddenChanged(hidden);
-        if (!hidden)
-            MainActivity.instance.setBackGround2();
-    }
+//    @Override
+//    public void onHiddenChanged(boolean hidden) {
+//        super.onHiddenChanged(hidden);
+//        if (!hidden)
+//            MainActivity.instance.setBackGround2();
+//    }
 }

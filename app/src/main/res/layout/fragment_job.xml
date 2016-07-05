@@ -1,25 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorBg"
     android:orientation="vertical">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:fitsSystemWindows="true"
-        android:background="@color/colorPrimary"
-        app:contentInsetStart="0dp"
-        app:layout_collapseMode="pin">
+    <!--<android.support.v7.widget.Toolbar-->
+    <!--android:id="@+id/toolbar"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="50dp"-->
+
+    <!--android:background="@color/colorPrimary"-->
+    <!--app:contentInsetStart="0dp"-->
+    <!--app:layout_collapseMode="pin">-->
 
         <RelativeLayout
+            android:id="@+id/rlayout_job"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/toolbar_height"
             android:background="@color/colorPrimary"
-            android:fitsSystemWindows="false"
             android:padding="8dp">
             <!--左边-->
             <LinearLayout
@@ -71,7 +70,8 @@
                 android:visibility="gone" />
 
         </RelativeLayout>
-    </android.support.v7.widget.Toolbar>
+
+    <!--</android.support.v7.widget.Toolbar>-->
 
     <LinearLayout
         android:layout_width="match_parent"
