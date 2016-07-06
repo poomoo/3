@@ -4,20 +4,17 @@
 package com.poomoo.parttimejob.ui.fragment;
 
 import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.poomoo.commlib.LogUtils;
@@ -38,9 +35,9 @@ import com.poomoo.parttimejob.event.Events;
 import com.poomoo.parttimejob.event.RxBus;
 import com.poomoo.parttimejob.presentation.MainPresenter;
 import com.poomoo.parttimejob.ui.activity.CityListActivity;
+import com.poomoo.parttimejob.ui.activity.CommodityListActivity;
 import com.poomoo.parttimejob.ui.activity.JobInfoActivity;
 import com.poomoo.parttimejob.ui.activity.JobListByCateActivity;
-import com.poomoo.parttimejob.ui.activity.MainActivity;
 import com.poomoo.parttimejob.ui.activity.MoreJobsActivity;
 import com.poomoo.parttimejob.ui.activity.SearchJobActivity;
 import com.poomoo.parttimejob.ui.base.BaseFragment;
@@ -234,6 +231,10 @@ public class MainFragment extends BaseFragment implements SwipeRefreshLayout.OnR
     @Override
     public void loadTypeSucceed(List<RTypeBO> rTypeBOs) {
         isLoadType = true;
+        RTypeBO rTypeBO = new RTypeBO();
+        rTypeBO.name = "兼职换购";
+//        rTypeBOs.remove(rTypeBOs.size()-1);
+        rTypeBOs.add(rTypeBO);
         gridAdapter.setItems(rTypeBOs);
     }
 
@@ -288,19 +289,15 @@ public class MainFragment extends BaseFragment implements SwipeRefreshLayout.OnR
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        RTypeBO rTypeBO = (RTypeBO) gridAdapter.getItem(position);
-        Bundle bundle = new Bundle();
-        bundle.putString(getString(R.string.intent_value), rTypeBO.name);
-        bundle.putInt(getString(R.string.intent_cateId), rTypeBO.cateId);
-        openActivity(JobListByCateActivity.class, bundle);
+        LogUtils.d(TAG, "position:" + position + "count:" + gridAdapter.getCount());
+        if (position == gridAdapter.getCount() - 1) {
+            openActivity(CommodityListActivity.class);
+        } else {
+            RTypeBO rTypeBO = (RTypeBO) gridAdapter.getItem(position);
+            Bundle bundle = new Bundle();
+            bundle.putString(getString(R.string.intent_value), rTypeBO.name);
+            bundle.putInt(getString(R.string.intent_cateId), rTypeBO.cateId);
+            openActivity(JobListByCateActivity.class, bundle);
+        }
     }
-
-//    @Override
-//    public void onHiddenChanged(boolean hidden) {
-//        super.onHiddenChanged(hidden);
-//        if (!hidden)
-//            MainActivity.instance.setBackGround3();
-//    }
-
-
 }

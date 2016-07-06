@@ -244,7 +244,7 @@ public final class HttpLoggingInterceptor implements Interceptor {
 //        }
 //        is.close();
 //        baos.close();
-        logger.log("<-- 请求的结果:" + response.code() + ' ' + response.message());
+        logger.log("<-- 请求的结果:" + response.code() + ' ' + response.message().toString() + ' ' + response.toString());
 //        logger.log("<-- 返回的数据:" + new String(baos.toByteArray()));
 //        logger.log("<-- " + response.code() + ' ' + response.message() + ' '
 //                + response.request().url() + " (" + tookMs + "ms" + (!logHeaders ? ", "

@@ -25,6 +25,8 @@
     <string name="tab_apply_hired">已录用</string>
     <string name="tab_apply_toPost">已到岗</string>
     <string name="tab_apply_settlement">已结算</string>
+    <string name="tab_collection_job">职位</string>
+    <string name="tab_collection_buy">换购</string>
     <!--tab-->
 
     <!--menu-->
@@ -55,6 +57,7 @@
     <string name="title_jobLine">兼职路线</string>
     <string name="title_protocol">兼职GO注册协议</string>
     <string name="title_bond">微信绑定</string>
+    <string name="title_buy">兼职换购</string>
     <!--title-->
 
     <!--标签-->
@@ -176,4 +179,6 @@
     </string-array>
 
     <string name="base_url">http://www.jiayou9.com</string>
+    <string name="btn_unCollect">取消收藏</string>
+    <string name="btn_collect">收藏</string>
 </resources>

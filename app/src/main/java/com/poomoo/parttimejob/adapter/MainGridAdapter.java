@@ -37,7 +37,11 @@ public class MainGridAdapter extends MyBaseAdapter<RTypeBO> {
         convertView = inflater.inflate(R.layout.item_grid_main, null);
         viewHolder.image = (ImageView) convertView.findViewById(R.id.img_main);
         viewHolder.txt = (TextView) convertView.findViewById(R.id.txt_main);
-        Glide.with(context).load(item.icon).into(viewHolder.image);
+        if (position < getCount() - 1)
+            Glide.with(context).load(item.icon).into(viewHolder.image);
+        else
+//            viewHolder.image.setImageResource(R.drawable.ic_buy);
+            Glide.with(context).load(R.drawable.ic_buy).into(viewHolder.image);
         viewHolder.txt.setText(item.name);
         return convertView;
     }

@@ -4,7 +4,12 @@
     <dimen name="divider_height1">1dp</dimen>
     <dimen name="toolbar_marginTop">24dp</dimen>
     <dimen name="toolbar_height">40dp</dimen>
+    <dimen name="toolbar_height2">48dp</dimen>
     <dimen name="dp_31">31dp</dimen>
     <dimen name="dp_8">8dp</dimen>
     <dimen name="dp_224">200dp</dimen>
+
+    <dimen name="sp_10">10sp</dimen>
+    <dimen name="sp_12">12sp</dimen>
+    <dimen name="sp_14">14sp</dimen>
 </resources>

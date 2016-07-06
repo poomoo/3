@@ -55,4 +55,12 @@ public class NetConfig {
     public final static String MESSAGEUP = "30007";//发送聊天
     public final static String ABOUT = "30008";//关于
 
+    /*action 40000*/
+    public final static String BUYACTION = "40000";//兼职换购统一业务编号
+    public final static String BUYLIST = "40001";//查询兑换商品列表接口
+    public final static String COMMODITYINFO = "40002";//查询商品详情接口
+    public final static String COLLECTCOMMODITY = "40003";//添加商品收藏接口
+    public final static String CANCELCOLLECTCOMMODITY = "40004";//取消商品收藏接口
+    public final static String COLLECTCOMMODITYLIST = "40005";//查询商品收藏列表接口
+
 }

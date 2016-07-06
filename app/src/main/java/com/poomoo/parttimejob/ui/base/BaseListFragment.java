@@ -34,6 +34,7 @@ public abstract class BaseListFragment<T> extends BaseFragment
 
     protected int mCurrentPage = 1;
     protected BaseListAdapter<T> mAdapter;
+    protected int EMPTY_DATA = ErrorLayout.EMPTY_DATA;
 
     public static final int STATE_NONE = 0;
     public static final int STATE_REFRESHING = 1;
@@ -133,7 +134,7 @@ public abstract class BaseListFragment<T> extends BaseFragment
             mAdapter.clear();
 
         if (mAdapter.getDataSize() + result.size() == 0) {
-            mErrorLayout.setState(ErrorLayout.EMPTY_DATA);
+            mErrorLayout.setState(EMPTY_DATA);
             mSwipeRefreshLayout.setRefreshing(false);
             mSwipeRefreshLayout.setEnabled(false);
             mAdapter.setState(BaseListAdapter.STATE_HIDE);

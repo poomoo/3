@@ -51,7 +51,7 @@ public class SplashActivity extends BaseActivity {
 
         //不显示日志
 //        LogUtils.isDebug = false;
-        Network.level = HttpLoggingInterceptor.Level.NONE;
+//        Network.level = HttpLoggingInterceptor.Level.NONE;
 
         //统计错误日志到友盟平台
         MobclickAgent.setDebugMode(true);

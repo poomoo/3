@@ -21,6 +21,7 @@ public class ErrorLayout extends FrameLayout {
     public static final int NOT_NETWORK = 3;
     public static final int EMPTY_DATA = 4;
     public static final int NO_COLLECTED = 5;
+    public static final int NO_APPLY = 6;
 
     private ProgressBar probar;
     private TextView vText;
@@ -97,6 +98,14 @@ public class ErrorLayout extends FrameLayout {
                 setVisibility(VISIBLE);
                 vLoadFailure.setVisibility(VISIBLE);
                 vLoadFailure.setText("没有收藏记录");
+                vText.setVisibility(GONE);
+                probar.setVisibility(GONE);
+                break;
+
+            case NO_APPLY:
+                setVisibility(VISIBLE);
+                vLoadFailure.setVisibility(VISIBLE);
+                vLoadFailure.setText("没有申请记录");
                 vText.setVisibility(GONE);
                 probar.setVisibility(GONE);
                 break;

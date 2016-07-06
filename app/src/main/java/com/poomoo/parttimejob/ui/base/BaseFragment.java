@@ -3,8 +3,10 @@
  */
 package com.poomoo.parttimejob.ui.base;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.KeyEvent;
 
 import com.poomoo.parttimejob.R;
 import com.poomoo.parttimejob.application.MyApplication;
@@ -17,6 +19,8 @@ import com.trello.rxlifecycle.components.support.RxFragment;
 public abstract class BaseFragment extends RxFragment {
     public String TAG = getClass().getSimpleName();
     public MyApplication application;
+    //进度对话框
+    public ProgressDialog progressDialog = null;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -69,5 +73,38 @@ public abstract class BaseFragment extends RxFragment {
     protected void getActivityOutToRight() {
         getActivity().overridePendingTransition(R.anim.activity_center,
                 R.anim.activity_out_to_right);
+    }
+
+    /**
+     * 显示进度对话框
+     *
+     * @param msg
+     */
+    protected void showProgressDialog(String msg) {
+        if (progressDialog == null) {
+            progressDialog = new ProgressDialog(getActivity());
+            progressDialog.setMessage(msg);
+            progressDialog.setCanceledOnTouchOutside(false);
+        }
+        progressDialog.show();
+        progressDialog.setOnKeyListener((dialog, keyCode, event) -> {
+            // TODO Auto-generated method stub
+            if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
+                progressDialog.dismiss();
+                progressDialog = null;
+                getActivity().finish();
+            }
+            return false;
+        });
+    }
+
+    /**
+     * 关闭对话框
+     */
+    protected void closeProgressDialog() {
+        if (progressDialog != null) {
+            progressDialog.dismiss();
+            progressDialog = null;
+        }
     }
 }

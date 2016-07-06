@@ -11,9 +11,8 @@ import com.poomoo.model.Page;
 import com.poomoo.model.base.BaseJobBO;
 import com.poomoo.model.request.QCancelCollectBO;
 import com.poomoo.model.request.QMyCollectionBO;
-import com.poomoo.model.request.QUserIdBO;
 import com.poomoo.model.response.ResponseBO;
-import com.poomoo.parttimejob.view.MyCollectionView;
+import com.poomoo.parttimejob.view.MyJobCollectionView;
 
 import java.util.List;
 
@@ -24,11 +23,11 @@ import rx.schedulers.Schedulers;
  * 作者: 李苜菲
  * 日期: 2016/5/24 10:28.
  */
-public class MyCollectionPresenter extends BasePresenter {
-    private MyCollectionView myCollectionView;
+public class MyJobCollectionPresenter extends BasePresenter {
+    private MyJobCollectionView myJobCollectionView;
 
-    public MyCollectionPresenter(MyCollectionView myCollectionView) {
-        this.myCollectionView = myCollectionView;
+    public MyJobCollectionPresenter(MyJobCollectionView myJobCollectionView) {
+        this.myJobCollectionView = myJobCollectionView;
     }
 
     /**
@@ -44,12 +43,12 @@ public class MyCollectionPresenter extends BasePresenter {
                 .subscribe(new AbsAPICallback<List<BaseJobBO>>() {
                     @Override
                     protected void onError(ApiException e) {
-                        myCollectionView.failed(e.getMessage());
+                        myJobCollectionView.failed(e.getMessage());
                     }
 
                     @Override
                     public void onNext(List<BaseJobBO> list) {
-                        myCollectionView.succeed(list);
+                        myJobCollectionView.succeed(list);
                     }
                 }));
     }
@@ -68,12 +67,12 @@ public class MyCollectionPresenter extends BasePresenter {
                 .subscribe(new AbsAPICallback<ResponseBO>() {
                     @Override
                     protected void onError(ApiException e) {
-                        myCollectionView.cancelFailed(e.getMessage());
+                        myJobCollectionView.cancelFailed(e.getMessage());
                     }
 
                     @Override
                     public void onNext(ResponseBO responseBO) {
-                        myCollectionView.cancelSucceed(responseBO.msg);
+                        myJobCollectionView.cancelSucceed(responseBO.msg);
                     }
                 }));
     }

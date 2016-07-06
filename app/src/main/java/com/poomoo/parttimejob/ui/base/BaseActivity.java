@@ -65,12 +65,9 @@ public abstract class BaseActivity extends RxAppCompatActivity {
         headerViewHolder.rightImg = (ImageView) findViewById(R.id.img_titleBar_right);
         headerViewHolder.rightTxt = (TextView) findViewById(R.id.txt_titleBar_right);
         headerViewHolder.titleTxt.setText(onSetTitle());
-        headerViewHolder.backImg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-                getActivityOutToRight();
-            }
+        headerViewHolder.backImg.setOnClickListener(v -> {
+            finish();
+            getActivityOutToRight();
         });
         return headerViewHolder;
     }

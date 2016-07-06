@@ -131,7 +131,6 @@ public class SlideShowView extends FrameLayout {
         for (int i = 0; i < imageUrls.length; i++) {
             ImageView view = new ImageView(context);
             view.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
-            view.setFitsSystemWindows(false);
             view.setScaleType(ImageView.ScaleType.CENTER_CROP);
             imageViewsList.add(view);
 

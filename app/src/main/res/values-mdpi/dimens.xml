@@ -2,4 +2,8 @@
     <dimen name="toolbar_height">64dp</dimen>
     <dimen name="toolbar_height2">72dp</dimen>
     <dimen name="dp_224">224dp</dimen>
+
+    <dimen name="sp_10">8sp</dimen>
+    <dimen name="sp_12">10sp</dimen>
+    <dimen name="sp_14">12sp</dimen>
 </resources>

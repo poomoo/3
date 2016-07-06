@@ -15,6 +15,7 @@ import com.poomoo.parttimejob.presentation.AllJobListPresenter;
 import com.poomoo.parttimejob.ui.activity.JobInfoActivity;
 import com.poomoo.parttimejob.ui.activity.JobListByCateActivity;
 import com.poomoo.parttimejob.ui.base.BaseListFragment;
+import com.poomoo.parttimejob.ui.custom.ErrorLayout;
 import com.poomoo.parttimejob.view.JobListView;
 
 import java.util.List;
@@ -47,6 +48,8 @@ public class MyApplyFragment extends BaseListFragment<BaseJobBO> implements Base
         super.onViewCreated(view, savedInstanceState);
         mListView.setPadding(0, setDividerSize(), 0, 0);
         mAdapter.setOnItemClickListener(this);
+
+        EMPTY_DATA = ErrorLayout.NO_APPLY;
     }
 
     @Override

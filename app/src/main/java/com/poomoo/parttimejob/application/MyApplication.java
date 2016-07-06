@@ -20,7 +20,7 @@ import java.util.List;
  */
 public class MyApplication extends LitePalApplication {
     // 用户信息
-    private int userId;//用户编号
+    private int userId=-1;//用户编号
     private String nickName = "";//用户昵称
     private String realName = "";//用户实名
     private String headPic = "";//用户头像

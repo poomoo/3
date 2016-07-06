@@ -3,6 +3,7 @@
 package com.poomoo.api;
 
 
+import com.poomoo.api.api.BuyApi;
 import com.poomoo.api.api.CommApi;
 import com.poomoo.api.api.JobApi;
 import com.poomoo.api.api.UploadApi;
@@ -28,6 +29,7 @@ public class Network {
     private static JobApi jobApi;
     private static UploadApi uploadApi;
     private static WxApi wxApi;
+    private static BuyApi buyApi;
     //    private static OkHttpClient okHttpClient = new OkHttpClient();
     private static Converter.Factory gsonConverterFactory = GsonConverterFactory.create();
     private static CallAdapter.Factory rxJavaCallAdapterFactory = RxJavaCallAdapterFactory.create();
@@ -118,6 +120,23 @@ public class Network {
             wxApi = retrofit.create(WxApi.class);
         }
         return wxApi;
+    }
+
+    public static BuyApi getBuyApi() {
+        if (buyApi == null) {
+            HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
+            loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+            OkHttpClient.Builder clientBuilder = new OkHttpClient.Builder().addInterceptor(loggingInterceptor);
+            clientBuilder.connectTimeout(1, TimeUnit.MINUTES);
+            Retrofit retrofit = new Retrofit.Builder()
+                    .client(clientBuilder.build())
+                    .baseUrl(NetConfig.url)
+                    .addConverterFactory(gsonConverterFactory)
+                    .addCallAdapterFactory(rxJavaCallAdapterFactory)
+                    .build();
+            buyApi = retrofit.create(BuyApi.class);
+        }
+        return buyApi;
     }
 
 }

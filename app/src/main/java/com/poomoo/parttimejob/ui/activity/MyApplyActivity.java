@@ -5,7 +5,6 @@ package com.poomoo.parttimejob.ui.activity;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 
 import com.poomoo.commlib.LogUtils;
 import com.poomoo.model.response.RApplyJobBO;
@@ -38,7 +37,7 @@ public class MyApplyActivity extends BaseActivity {
 
     @Override
     protected int onBindLayout() {
-        return R.layout.activity_my_apply;
+        return R.layout.activity_my_tab;
     }
 
     /**

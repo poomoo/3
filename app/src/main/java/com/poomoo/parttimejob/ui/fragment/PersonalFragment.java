@@ -5,14 +5,11 @@ package com.poomoo.parttimejob.ui.fragment;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
-import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -31,10 +28,10 @@ import com.poomoo.parttimejob.ui.activity.MainActivity;
 import com.poomoo.parttimejob.ui.activity.MoreActivity;
 import com.poomoo.parttimejob.ui.activity.MyApplyActivity;
 import com.poomoo.parttimejob.ui.activity.MyCollectionActivity;
+import com.poomoo.parttimejob.ui.activity.MyJobCollectionActivity;
 import com.poomoo.parttimejob.ui.activity.ResumeActivity;
 import com.poomoo.parttimejob.ui.base.BaseFragment;
 import com.poomoo.parttimejob.ui.custom.RoundImageView2;
-import com.trello.rxlifecycle.ActivityEvent;
 import com.trello.rxlifecycle.FragmentEvent;
 
 import butterknife.Bind;
