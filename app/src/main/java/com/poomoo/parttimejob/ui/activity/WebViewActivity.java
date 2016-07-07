@@ -47,8 +47,8 @@ public class WebViewActivity extends BaseActivity {
 
     private void init() {
         webView.setVisibility(View.INVISIBLE);
-        webView.loadUrl("http://image.baidu.com/search/index?tn=baiduimage&ct=201326592&lm=-1&cl=2&ie=gbk&word=%CD%BC%C6%AC&fr=ala&ala=1&alatpl=others&pos=0");
-//        webView.loadUrl(getIntent().getStringExtra(getString(R.string.intent_value)));//
+//        webView.loadUrl("http://image.baidu.com/search/index?tn=baiduimage&ct=201326592&lm=-1&cl=2&ie=gbk&word=%CD%BC%C6%AC&fr=ala&ala=1&alatpl=others&pos=0");
+        webView.loadUrl(getIntent().getStringExtra(getString(R.string.intent_value)));//
         webView.setWebChromeClient(new MyWebChromeClient());
         webView.setWebViewClient(new webViewClient());
     }

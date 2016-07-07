@@ -11,9 +11,6 @@ import com.baidu.mapapi.map.MapStatus;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
 import com.baidu.mapapi.model.LatLng;
-import com.baidu.mapapi.overlayutil.DrivingRouteOverlay;
-import com.baidu.mapapi.overlayutil.TransitRouteOverlay;
-import com.baidu.mapapi.overlayutil.WalkingRouteOverlay;
 import com.baidu.mapapi.search.core.SearchResult;
 import com.baidu.mapapi.search.route.DrivingRouteResult;
 import com.baidu.mapapi.search.route.OnGetRoutePlanResultListener;
@@ -25,9 +22,13 @@ import com.baidu.mapapi.search.route.WalkingRouteResult;
 import com.poomoo.commlib.LogUtils;
 import com.poomoo.commlib.MyUtils;
 import com.poomoo.parttimejob.R;
+import com.poomoo.parttimejob.baidu.DrivingRouteOverlay;
+import com.poomoo.parttimejob.baidu.TransitRouteOverlay;
+import com.poomoo.parttimejob.baidu.WalkingRouteOverlay;
 import com.poomoo.parttimejob.ui.base.BaseActivity;
 
 import butterknife.Bind;
+
 
 /**
  * 作者: 李苜菲
@@ -81,7 +82,7 @@ public class MapActivity extends BaseActivity {
         WalkingRoutePlanOption walkOption = new WalkingRoutePlanOption();
 //        walkOption.from(PlanNode.withCityNameAndPlaceName("北京", startPlace));
 //        walkOption.to(PlanNode.withCityNameAndPlaceName("北京", endPlace));
-        LogUtils.d(TAG,"MYLOCATION:"+application.getLat()+":"+application.getLng());
+        LogUtils.d(TAG, "MYLOCATION:" + application.getLat() + ":" + application.getLng());
         walkOption.from(PlanNode.withLocation(new LatLng(application.getLat(), application.getLng())));
         walkOption.to(PlanNode.withLocation(new LatLng(lat, lng)));
         routePlanSearch.walkingSearch(walkOption);
