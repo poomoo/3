@@ -28,8 +28,4 @@
     <color name="swipe_refresh_second">#ffffbb33</color>
     <color name="swipe_refresh_third">#ffff4444</color>
     <color name="swipe_refresh_four">#ffaa66cc</color>
-
-
-    <color name="special">#0db09c</color>
-
 </resources>

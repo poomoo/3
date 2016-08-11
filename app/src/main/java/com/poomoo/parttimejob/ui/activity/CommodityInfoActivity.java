@@ -92,7 +92,7 @@ public class CommodityInfoActivity extends BaseActivity implements CommodityInfo
 
     private void init() {
         StatusBarUtil.setTransparent(this);
-        titleBar.getBackground().setAlpha(0);
+        titleBar.getBackground().mutate().setAlpha(0);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             titleBar.setGravity(Gravity.BOTTOM);
             titleBar.setPadding(0, (int) getResources().getDimension(R.dimen.toolbar_marginTop), 0, (int) getResources().getDimension(R.dimen.dp_8));
@@ -139,9 +139,10 @@ public class CommodityInfoActivity extends BaseActivity implements CommodityInfo
 
     @Override
     public void succeed(RCommodityInfoBO rCommodityInfoBO) {
+        closeProgressDialog();
         String[] urls = rCommodityInfoBO.picList.toArray(new String[rCommodityInfoBO.picList.size()]);
 //        String[] urls = new String[]{"http://img11.360buyimg.com/cms/jfs/t568/258/1055840219/709214/704836ad/54aaa17aN6a93104f.jpg", "http://www.gg888.com.cn/pictures/banner/banner-1.jpg", "http://easyread.ph.126.net/BxgFDAoYxb1R67r8N-Ujeg==/7916515605825262015.jpg"};
-        LogUtils.d(TAG, "urls:" + urls.length + ":" + urls[0] + ":" + urls[1] + ";" + urls[2]);
+//        LogUtils.d(TAG, "urls:" + urls.length + ":" + urls[0] + ":" + urls[1] + ";" + urls[2]);
         slideShowView.setPics(urls, position -> {
 
         });
@@ -197,8 +198,8 @@ public class CommodityInfoActivity extends BaseActivity implements CommodityInfo
     @Override
     public void onScrollChanged(MyScrollView scrollView, int x, int y, int oldx, int oldy) {
         if (scrollView.getScrollY() < MyUtils.getScreenWidth(this))
-            titleBar.getBackground().setAlpha(255 * scrollView.getScrollY() / MyUtils.getScreenWidth(this));
+            titleBar.getBackground().mutate().setAlpha(255 * scrollView.getScrollY() / MyUtils.getScreenWidth(this));
         else
-            titleBar.getBackground().setAlpha(255);
+            titleBar.getBackground().mutate().setAlpha(255);
     }
 }

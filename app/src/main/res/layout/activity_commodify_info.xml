@@ -161,7 +161,7 @@
             android:id="@+id/titleBar"
             android:layout_width="match_parent"
             android:layout_height="@dimen/toolbar_height2"
-            android:background="@color/special">
+            android:background="@color/colorPrimary">
 
             <!--显示标题-->
             <TextView

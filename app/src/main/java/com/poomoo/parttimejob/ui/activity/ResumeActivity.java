@@ -3,20 +3,31 @@
  */
 package com.poomoo.parttimejob.ui.activity;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.PopupWindow;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
@@ -30,6 +41,7 @@ import com.poomoo.commlib.picUtils.FileUtils;
 import com.poomoo.model.response.RResumeBO;
 import com.poomoo.model.response.RUrl;
 import com.poomoo.parttimejob.R;
+import com.poomoo.parttimejob.adapter.ZoneAdapter;
 import com.poomoo.parttimejob.database.DataBaseHelper;
 import com.poomoo.parttimejob.event.Events;
 import com.poomoo.parttimejob.event.RxBus;
@@ -101,19 +113,22 @@ public class ResumeActivity extends BaseActivity implements ResumeView {
     private final static String image_capture_path = Environment.getExternalStorageDirectory() + "/" + "partTimeJob.png";
 
     private HeightPopUpWindow heightPopUpWindow = null;
-    private ProvincePopUpWindow provincePopUpWindow = null;
-    private ProvincePopUpWindow cityPopUpWindow = null;
-    private ProvincePopUpWindow areaPopUpWindow = null;
+    //    private ProvincePopUpWindow provincePopUpWindow = null;
+//    private ProvincePopUpWindow cityPopUpWindow = null;
+//    private ProvincePopUpWindow areaPopUpWindow = null;
+    private ZoneAdapter adapter;
+    private AddressPopUpWindow addressPopUpWindow;
 
     private List<String> provinceList = new ArrayList<>();
     private List<String> cityList = new ArrayList<>();
     private List<String> areaList = new ArrayList<>();
-    private String province;
-    private String city;
-    private String area;
+    private String provinceName;
+    private String cityName;
+    private String areaName;
     private int provinceId;
     private int cityId;
     private int areaId;
+    public int selectedPosition;
     private ResumePresenter resumePresenter;
 
     private String headPic;
@@ -151,6 +166,10 @@ public class ResumeActivity extends BaseActivity implements ResumeView {
         userAvatarImg.setOnClickListener(v -> select_pics());
         showProgressDialog(getString(R.string.dialog_msg));
         telTxt.setText(application.getTel());
+
+        adapter = new ZoneAdapter(this);
+        addressPopUpWindow = new AddressPopUpWindow(this);
+
         resumePresenter.downResume(application.getUserId());
     }
 
@@ -302,96 +321,233 @@ public class ResumeActivity extends BaseActivity implements ResumeView {
         dp.setMaxDate(cal.getTime().getTime());
     }
 
-    public void selectProvince(View view) {
-        if (provincePopUpWindow == null) {
-            provinceList = DataBaseHelper.getProvince();
-            provincePopUpWindow = new ProvincePopUpWindow(this, provinceList, provinceCategory);
-        }
-        provincePopUpWindow.showAtLocation(this.findViewById(R.id.llayout_resume), Gravity.CENTER, 0, 0);
+    private void initZone() {
+//        adapter.setCurrAddress(ZoneAdapter.PROVINCE);
+//        provinceList = DataBaseHelper.getProvince();
+//        if (!TextUtils.isEmpty(provinceName))
+//            adapter.setSelectedPosition(provinceList.indexOf(provinceName + "#" + provinceId));
+//
+//        adapter.setCurrAddress(ZoneAdapter.CITY);
+//        cityList = DataBaseHelper.getCity(provinceId);
+//        if (!TextUtils.isEmpty(cityName))
+//            adapter.setSelectedPosition(cityList.indexOf(cityName + "#" + cityId));
+//
+//        adapter.setCurrAddress(ZoneAdapter.AREA);
+//        areaList = DataBaseHelper.getArea(cityId);
+//        if (!TextUtils.isEmpty(areaName))
+//            adapter.setSelectedPosition(areaList.indexOf(areaName + "#" + areaId));
     }
 
-    ProvincePopUpWindow.SelectCategory provinceCategory = new ProvincePopUpWindow.SelectCategory() {
-        @Override
-        public void selectCategory(String province) {
-            LogUtils.d(TAG, "province:" + province);
-            String temp[] = province.split("#");
-            province = temp[0];
-            provinceTxt.setText(province);
-            provinceId = Integer.parseInt(temp[1]);
-            cityList = DataBaseHelper.getCity(provinceId);
-            if (cityList.size() > 0) {
-                city = cityList.get(0).split("#")[0];
-                cityTxt.setText(city);
-                cityId = Integer.parseInt(cityList.get(0).split("#")[1]);
-                areaList = DataBaseHelper.getArea(cityId);
-                if (areaList.size() > 0) {
-                    area = areaList.get(0).split("#")[0];
-                    areaTxt.setText(area);
-                    areaId = Integer.parseInt(areaList.get(0).split("#")[1]);
-                } else {
-                    areaTxt.setText("选择区域");
-                    areaId = 0;
-                }
-            } else {
-                areaList.clear();
-                cityTxt.setText("选择城市");
-                cityId = 0;
-            }
-
+    public void selectProvince(View view) {
+        adapter.setCurrAddress(ZoneAdapter.PROVINCE);
+        provinceList = DataBaseHelper.getProvince();
+        if (!TextUtils.isEmpty(provinceName)) {
+            selectedPosition = provinceList.indexOf(provinceName + "#" + provinceId);
+            adapter.setSelectedPosition(selectedPosition);
         }
-    };
+        adapter.setItems(provinceList);
+
+        addressPopUpWindow.showAtLocation(this.findViewById(R.id.llayout_resume), Gravity.CENTER, 0, 0);
+    }
 
     public void selectCity(View view) {
-        if (cityPopUpWindow == null && cityList.size() > 0) {
-            cityPopUpWindow = new ProvincePopUpWindow(this, cityList, cityCategory);
-        }
-        if (cityList.size() > 0) {
-            cityPopUpWindow.adapter.notifyDataSetChanged();
-            cityPopUpWindow.showAtLocation(this.findViewById(R.id.llayout_resume), Gravity.CENTER, 0, 0);
-        }
-    }
+        if (provinceId == 0)
+            return;
 
-    ProvincePopUpWindow.SelectCategory cityCategory = new ProvincePopUpWindow.SelectCategory() {
-        @Override
-        public void selectCategory(String province) {
-            LogUtils.d(TAG, "province:" + province);
-            String temp[] = province.split("#");
-            city = temp[0];
-            cityTxt.setText(city);
-            cityId = Integer.parseInt(temp[1]);
-            areaList = DataBaseHelper.getArea(cityId);
-            if (areaList.size() > 0) {
-                area = areaList.get(0).split("#")[0];
-                areaTxt.setText(area);
-                areaId = Integer.parseInt(areaList.get(0).split("#")[1]);
-            } else {
-                areaTxt.setText("选择区域");
-                areaId = 0;
-            }
-            LogUtils.d(TAG, "cityId:" + cityId + "areaList:" + areaList.toString());
+        adapter.setCurrAddress(ZoneAdapter.CITY);
+        cityList = DataBaseHelper.getCity(provinceId);
+        if (cityList.size() == 0)
+            return;
+        if (!TextUtils.isEmpty(cityName)) {
+            selectedPosition = cityList.indexOf(cityName + "#" + cityId);
+            adapter.setSelectedPosition(selectedPosition);
         }
-    };
+        adapter.setItems(cityList);
+
+        addressPopUpWindow.showAtLocation(this.findViewById(R.id.llayout_resume), Gravity.CENTER, 0, 0);
+    }
 
     public void selectArea(View view) {
-        if (areaPopUpWindow == null && areaList.size() > 0) {
-            areaPopUpWindow = new ProvincePopUpWindow(this, areaList, areaCategory);
+        if (cityId == 0)
+            return;
+
+        adapter.setCurrAddress(ZoneAdapter.AREA);
+        areaList = DataBaseHelper.getArea(cityId);
+        if (areaList.size() == 0)
+            return;
+        if (!TextUtils.isEmpty(areaName)) {
+            selectedPosition = areaList.indexOf(areaName + "#" + areaId);
+            adapter.setSelectedPosition(selectedPosition);
         }
-        if (areaList.size() > 0) {
-            areaPopUpWindow.adapter.notifyDataSetChanged();
-            areaPopUpWindow.showAtLocation(this.findViewById(R.id.llayout_resume), Gravity.CENTER, 0, 0);
+        adapter.setItems(areaList);
+
+        addressPopUpWindow.showAtLocation(this.findViewById(R.id.llayout_resume), Gravity.CENTER, 0, 0);
+    }
+
+    public class AddressPopUpWindow extends PopupWindow {
+        private View mMenuView;
+        private ListView list_address;
+        private Button confirmBtn;
+
+        public AddressPopUpWindow(Activity context) {
+            super(context);
+            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            mMenuView = inflater.inflate(R.layout.popup_resume, null);
+            list_address = (ListView) mMenuView.findViewById(R.id.list_address);
+            confirmBtn = (Button) mMenuView.findViewById(R.id.btn_resumeConfirm);
+
+            list_address.setAdapter(adapter);
+            list_address.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MyUtils.getScreenHeight(ResumeActivity.this) / 2));
+
+            this.setContentView(mMenuView);
+            this.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
+            this.setHeight(ViewGroup.LayoutParams.MATCH_PARENT);
+            this.setFocusable(true);
+            ColorDrawable dw = new ColorDrawable(0xb0000000);
+            this.setBackgroundDrawable(dw);
+
+            list_address.setOnItemClickListener((parent, view, position, id) -> {
+                selectedPosition = position;
+                adapter.setSelectedPosition(position);
+            });
+
+            confirmBtn.setOnClickListener(v -> {
+                dismiss();
+                String temp[];
+                switch (adapter.getCurrAddress()) {
+                    case ZoneAdapter.PROVINCE:
+                        temp = provinceList.get(selectedPosition).split("#");
+                        provinceName = temp[0];
+                        provinceTxt.setText(provinceName);
+                        provinceId = Integer.parseInt(temp[1]);
+                        cityId = 0;
+                        cityTxt.setText("选择城市");
+                        areaTxt.setText("选择城区");
+                        break;
+                    case ZoneAdapter.CITY:
+                        temp = cityList.get(selectedPosition).split("#");
+                        cityName = temp[0];
+                        cityTxt.setText(cityName);
+                        cityId = Integer.parseInt(temp[1]);
+                        areaTxt.setText("选择城区");
+                        break;
+                    case ZoneAdapter.AREA:
+                        temp = areaList.get(selectedPosition).split("#");
+                        areaName = temp[0];
+                        areaTxt.setText(areaName);
+                        areaId = Integer.parseInt(temp[1]);
+                        break;
+                }
+            });
+
+            mMenuView.setOnTouchListener((v, event) -> {
+                int height_top = mMenuView.findViewById(R.id.llayout_resume).getTop();
+                int height_bottom = mMenuView.findViewById(R.id.llayout_resume).getBottom();
+                int y = (int) event.getY();
+                if (event.getAction() == MotionEvent.ACTION_UP) {
+                    if (y < height_top || y > height_bottom) {
+                        dismiss();
+                    }
+                }
+                return true;
+            });
         }
     }
 
-    ProvincePopUpWindow.SelectCategory areaCategory = new ProvincePopUpWindow.SelectCategory() {
-        @Override
-        public void selectCategory(String province) {
-            LogUtils.d(TAG, "province:" + province);
-            String temp[] = province.split("#");
-            area = temp[0];
-            areaTxt.setText(area);
-            areaId = Integer.parseInt(temp[1]);
-        }
-    };
+//    public void selectProvince(View view) {
+//        if (provincePopUpWindow == null) {
+//            provinceList = DataBaseHelper.getProvince();
+//            provincePopUpWindow = new ProvincePopUpWindow(this, provinceList, provinceCategory);
+//        }
+//        provincePopUpWindow.showAtLocation(this.findViewById(R.id.llayout_resume), Gravity.CENTER, 0, 0);
+//    }
+//
+//    ProvincePopUpWindow.SelectCategory provinceCategory = new ProvincePopUpWindow.SelectCategory() {
+//        @Override
+//        public void selectCategory(String province) {
+//            LogUtils.d(TAG, "province:" + province);
+//            String temp[] = province.split("#");
+//            province = temp[0];
+//            provinceTxt.setText(province);
+//            provinceId = Integer.parseInt(temp[1]);
+//            LogUtils.d(TAG, "provinceId:" + provinceId);
+//
+//            cityList = DataBaseHelper.getCity(provinceId);
+//            if (cityList.size() > 0) {
+//                city = cityList.get(0).split("#")[0];
+//                cityTxt.setText(city);
+//                cityId = Integer.parseInt(cityList.get(0).split("#")[1]);
+//                areaList = DataBaseHelper.getArea(cityId);
+//                if (areaList.size() > 0) {
+//                    area = areaList.get(0).split("#")[0];
+//                    areaTxt.setText(area);
+//                    areaId = Integer.parseInt(areaList.get(0).split("#")[1]);
+//                } else {
+//                    areaTxt.setText("选择区域");
+//                    areaId = 0;
+//                }
+//            } else {
+//                areaList.clear();
+//                cityTxt.setText("选择城市");
+//                cityId = 0;
+//            }
+//
+//        }
+//    };
+//
+//    public void selectCity(View view) {
+//        LogUtils.d(TAG, "selectCity:" + cityList.size());
+//        if (cityPopUpWindow == null && cityList.size() > 0) {
+//            cityPopUpWindow = new ProvincePopUpWindow(this, cityList, cityCategory);
+//        }
+//        if (cityList.size() > 0) {
+////            cityPopUpWindow.adapter.notifyDataSetChanged();
+//            cityPopUpWindow.adapter.setItems(cityList);
+//            cityPopUpWindow.showAtLocation(this.findViewById(R.id.llayout_resume), Gravity.CENTER, 0, 0);
+//        }
+//    }
+//
+//    ProvincePopUpWindow.SelectCategory cityCategory = new ProvincePopUpWindow.SelectCategory() {
+//        @Override
+//        public void selectCategory(String province) {
+//            LogUtils.d(TAG, "province:" + province);
+//            String temp[] = province.split("#");
+//            city = temp[0];
+//            cityTxt.setText(city);
+//            cityId = Integer.parseInt(temp[1]);
+//            areaList = DataBaseHelper.getArea(cityId);
+//            if (areaList.size() > 0) {
+//                area = areaList.get(0).split("#")[0];
+//                areaTxt.setText(area);
+//                areaId = Integer.parseInt(areaList.get(0).split("#")[1]);
+//            } else {
+//                areaTxt.setText("选择区域");
+//                areaId = 0;
+//            }
+//            LogUtils.d(TAG, "cityId:" + cityId + "areaList:" + areaList.toString());
+//        }
+//    };
+//
+//    public void selectArea(View view) {
+//        if (areaPopUpWindow == null && areaList.size() > 0) {
+//            areaPopUpWindow = new ProvincePopUpWindow(this, areaList, areaCategory);
+//        }
+//        if (areaList.size() > 0) {
+//            areaPopUpWindow.adapter.notifyDataSetChanged();
+//            areaPopUpWindow.showAtLocation(this.findViewById(R.id.llayout_resume), Gravity.CENTER, 0, 0);
+//        }
+//    }
+//
+//    ProvincePopUpWindow.SelectCategory areaCategory = new ProvincePopUpWindow.SelectCategory() {
+//        @Override
+//        public void selectCategory(String province) {
+//            LogUtils.d(TAG, "province:" + province);
+//            String temp[] = province.split("#");
+//            area = temp[0];
+//            areaTxt.setText(area);
+//            areaId = Integer.parseInt(temp[1]);
+//        }
+//    };
 
     public void toSubmit(View view) {
         realName = nameEdt.getText().toString().trim();
@@ -466,12 +622,12 @@ public class ResumeActivity extends BaseActivity implements ResumeView {
         workResume = rResumeBO.workResume;
         workExp = rResumeBO.workExp;
         String temp[] = DataBaseHelper.getProvinceCityArea(provinceId, cityId, areaId);
-        province = temp[0];
-        city = temp[1];
-        area = temp[2];
-        provinceTxt.setText(province);
-        cityTxt.setText(city);
-        areaTxt.setText(area);
+        provinceName = temp[0];
+        cityName = temp[1];
+        areaName = temp[2];
+        provinceTxt.setText(provinceName);
+        cityTxt.setText(cityName);
+        areaTxt.setText(areaName);
 
         Glide.with(this).load(headPic).placeholder(R.drawable.ic_defalut_avatar).into(userAvatarImg);
         nameEdt.setText(realName);

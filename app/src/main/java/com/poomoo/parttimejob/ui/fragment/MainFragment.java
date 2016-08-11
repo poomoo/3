@@ -138,7 +138,7 @@ public class MainFragment extends BaseFragment implements SwipeRefreshLayout.OnR
         swipeRefreshLayout.post(() -> swipeRefreshLayout.setRefreshing(true));
 
         CollapsingToolbarLayout.LayoutParams layoutParams1 = new CollapsingToolbarLayout.LayoutParams(CollapsingToolbarLayout.LayoutParams.MATCH_PARENT, CollapsingToolbarLayout.LayoutParams.WRAP_CONTENT);
-        layoutParams1.setMargins(0, MyUtils.getScreenWidth(getActivity()) * 1 / 3, 0, 10);//(int) getActivity().getResources().getDimension(R.dimen.dp_31)
+        layoutParams1.setMargins(0, MyUtils.getScreenWidth(getActivity()) * 1 / 2, 0, 10);//(int) getActivity().getResources().getDimension(R.dimen.dp_31)
         gridView.setLayoutParams(layoutParams1);
 
         gridAdapter = new MainGridAdapter(getActivity());
