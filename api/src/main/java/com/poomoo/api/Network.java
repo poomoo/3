@@ -91,7 +91,7 @@ public class Network {
     public static UploadApi getUploadApi() {
         if (uploadApi == null) {
             HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
-            loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+            loggingInterceptor.setLevel(level);
             OkHttpClient.Builder clientBuilder = new OkHttpClient.Builder().addInterceptor(loggingInterceptor);
             clientBuilder.connectTimeout(1, TimeUnit.MINUTES);
             Retrofit retrofit = new Retrofit.Builder()
@@ -108,7 +108,7 @@ public class Network {
     public static WxApi getWxApi() {
         if (wxApi == null) {
             HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
-            loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+            loggingInterceptor.setLevel(level);
             OkHttpClient.Builder clientBuilder = new OkHttpClient.Builder().addInterceptor(loggingInterceptor);
             clientBuilder.connectTimeout(1, TimeUnit.MINUTES);
             Retrofit retrofit = new Retrofit.Builder()
@@ -125,7 +125,7 @@ public class Network {
     public static BuyApi getBuyApi() {
         if (buyApi == null) {
             HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
-            loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+            loggingInterceptor.setLevel(level);
             OkHttpClient.Builder clientBuilder = new OkHttpClient.Builder().addInterceptor(loggingInterceptor);
             clientBuilder.connectTimeout(1, TimeUnit.MINUTES);
             Retrofit retrofit = new Retrofit.Builder()

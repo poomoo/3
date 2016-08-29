@@ -84,7 +84,7 @@ public class RegisterPresenter extends BasePresenter {
 
                     @Override
                     public void onNext(ResponseBO responseBO) {
-                        registerView.registerFailed(responseBO.msg);
+                        registerView.registerSucceed(responseBO.msg);
                     }
                 }));
     }

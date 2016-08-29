@@ -3,7 +3,10 @@
  */
 package com.poomoo.parttimejob.ui.activity;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
@@ -30,7 +33,6 @@ public class WebViewActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setBack();
         ButterKnife.bind(this);
         init();
     }
@@ -47,16 +49,42 @@ public class WebViewActivity extends BaseActivity {
 
     private void init() {
         webView.setVisibility(View.INVISIBLE);
-//        webView.loadUrl("http://image.baidu.com/search/index?tn=baiduimage&ct=201326592&lm=-1&cl=2&ie=gbk&word=%CD%BC%C6%AC&fr=ala&ala=1&alatpl=others&pos=0");
-        webView.loadUrl(getIntent().getStringExtra(getString(R.string.intent_value)));//
+        String url = getIntent().getStringExtra(getString(R.string.intent_value));
+        webView.loadUrl(url);
+        webView.getSettings().setJavaScriptEnabled(true);//是否允许执行js，默认为false。设置true时，会提醒可能造成XSS漏洞
+        webView.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);//设置js可以直接打开窗口，如window.open()，默认为false
         webView.setWebChromeClient(new MyWebChromeClient());
         webView.setWebViewClient(new webViewClient());
+
+        HeaderViewHolder headerViewHolder = getHeaderView();
+        headerViewHolder.rightImg.setImageResource(R.drawable.ic_close);
+        headerViewHolder.rightImg.setVisibility(View.VISIBLE);
+        headerViewHolder.rightImg.setOnClickListener(v -> {
+                    finish();
+                    getActivityOutToRight();
+                }
+        );
+        headerViewHolder.backImg.setOnClickListener(v -> {
+                    if (webView.canGoBack())
+                        webView.goBack();
+                    else {
+                        finish();
+                        getActivityOutToRight();
+                    }
+                }
+        );
     }
 
     class webViewClient extends WebViewClient {
         //重写shouldOverrideUrlLoading方法，使点击链接后不使用其他的浏览器打开。
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
+            LogUtils.d(TAG, "shouldOverrideUrlLoading:" + url);
+            if (url.startsWith("tel:") || url.startsWith("mqqwpa:")) {
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                startActivity(intent);
+                return true;
+            }
             view.loadUrl(url);
             //如果不需要其他对点击链接事件的处理返回true，否则返回false
             return true;
@@ -66,12 +94,23 @@ public class WebViewActivity extends BaseActivity {
     class MyWebChromeClient extends WebChromeClient {
 
         public void onProgressChanged(WebView view, int progress) {
-            LogUtils.i(TAG, "onProgressChanged:" + progress);
+            LogUtils.d(TAG, "onProgressChanged:" + progress);
             progressBar.setProgress(progress);
-            if (progress == 100) {
-                progressBar.setVisibility(View.GONE);
+            progressBar.setVisibility(View.VISIBLE);
+            if (progress > 50)
                 webView.setVisibility(View.VISIBLE);
-            }
+            if (progress == 100)
+                progressBar.setVisibility(View.GONE);
         }
+
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && webView.canGoBack()) {
+            webView.goBack();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }

@@ -141,8 +141,6 @@ public class CommodityInfoActivity extends BaseActivity implements CommodityInfo
     public void succeed(RCommodityInfoBO rCommodityInfoBO) {
         closeProgressDialog();
         String[] urls = rCommodityInfoBO.picList.toArray(new String[rCommodityInfoBO.picList.size()]);
-//        String[] urls = new String[]{"http://img11.360buyimg.com/cms/jfs/t568/258/1055840219/709214/704836ad/54aaa17aN6a93104f.jpg", "http://www.gg888.com.cn/pictures/banner/banner-1.jpg", "http://easyread.ph.126.net/BxgFDAoYxb1R67r8N-Ujeg==/7916515605825262015.jpg"};
-//        LogUtils.d(TAG, "urls:" + urls.length + ":" + urls[0] + ":" + urls[1] + ";" + urls[2]);
         slideShowView.setPics(urls, position -> {
 
         });

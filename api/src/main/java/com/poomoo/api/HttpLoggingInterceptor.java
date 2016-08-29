@@ -15,6 +15,8 @@
  */
 package com.poomoo.api;
 
+import com.poomoo.commlib.LogUtils;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -148,6 +150,7 @@ public final class HttpLoggingInterceptor implements Interceptor {
         Level level = this.level;
 
         Request request = chain.request();
+        logger.log("intercept level:" + level);
         if (level == Level.NONE) {
             return chain.proceed(request);
         }

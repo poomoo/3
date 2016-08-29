@@ -285,11 +285,9 @@ public class CityListActivity extends BaseActivity implements OnScrollListener {
                         closeProgressDialog();
                         city_lists = new ArrayList<>();
                         provinceInfos = new ArrayList<>();
-                        int index = 0;
                         for (RAreaBO rAreaBO : rAreaBOs) {
-                            ProvinceInfo provinceInfo = new ProvinceInfo(rAreaBOs.get(index).provinceId, rAreaBOs.get(index++).provinceName);
+                            ProvinceInfo provinceInfo = new ProvinceInfo(rAreaBO.provinceId, rAreaBO.provinceName);
                             int len = rAreaBO.cityList.size();
-                            LogUtils.d(TAG, rAreaBO + ":" + len + "index:" + index + "rAreaBOs:" + rAreaBOs.size());
                             cityInfos = new ArrayList<>();
                             for (int i = 0; i < len; i++) {
                                 CityInfo cityInfo = new CityInfo(rAreaBO.cityList.get(i).cityId, rAreaBO.cityList.get(i).cityName, rAreaBO.cityList.get(i).isHot, provinceInfo.getProvinceId());

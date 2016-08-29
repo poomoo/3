@@ -89,6 +89,7 @@ public class MainFragment extends BaseFragment implements SwipeRefreshLayout.OnR
     private boolean isLoadAd = false;
     private boolean isLoadType = false;
     private int alpha = 0;
+    private int height = 0;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -106,8 +107,8 @@ public class MainFragment extends BaseFragment implements SwipeRefreshLayout.OnR
 
     private void initView() {
         StatusBarUtil.setTransparent(getActivity());
-
-        slideShowView.setLayoutParams(new CollapsingToolbarLayout.LayoutParams(CollapsingToolbarLayout.LayoutParams.MATCH_PARENT, MyUtils.getScreenWidth(getActivity()) / 3));//设置广告栏的宽高比为3:1
+        height = MyUtils.getScreenWidth(getActivity()) / 2;//设置广告栏的宽高比为3:1
+        slideShowView.setLayoutParams(new CollapsingToolbarLayout.LayoutParams(CollapsingToolbarLayout.LayoutParams.MATCH_PARENT,height ));
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         recyclerView.addItemDecoration(new HorizontalDividerItemDecoration.Builder(getActivity())
                 .color(getResources().getColor(R.color.transparent))
@@ -138,7 +139,7 @@ public class MainFragment extends BaseFragment implements SwipeRefreshLayout.OnR
         swipeRefreshLayout.post(() -> swipeRefreshLayout.setRefreshing(true));
 
         CollapsingToolbarLayout.LayoutParams layoutParams1 = new CollapsingToolbarLayout.LayoutParams(CollapsingToolbarLayout.LayoutParams.MATCH_PARENT, CollapsingToolbarLayout.LayoutParams.WRAP_CONTENT);
-        layoutParams1.setMargins(0, MyUtils.getScreenWidth(getActivity()) * 1 / 2, 0, 10);//(int) getActivity().getResources().getDimension(R.dimen.dp_31)
+        layoutParams1.setMargins(0, height, 0, 10);//(int) getActivity().getResources().getDimension(R.dimen.dp_31)
         gridView.setLayoutParams(layoutParams1);
 
         gridAdapter = new MainGridAdapter(getActivity());

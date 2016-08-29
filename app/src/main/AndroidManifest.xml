@@ -71,9 +71,9 @@
         <activity android:name=".ui.activity.CommodityInfoActivity" />
         <activity android:name=".ui.activity.WebViewActivity" />
         <activity android:name=".ui.activity.MyCollectionActivity" />
-        <activity
-            android:name=".ui.activity.TestActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+        <!--<activity-->
+            <!--android:name=".ui.activity.TestActivity"-->
+            <!--android:theme="@style/AppTheme.NoActionBar" />-->
 
         <service
             android:name="com.baidu.location.f"
