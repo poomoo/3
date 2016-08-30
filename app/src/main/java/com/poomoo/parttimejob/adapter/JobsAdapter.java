@@ -1,19 +1,26 @@
 package com.poomoo.parttimejob.adapter;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.hp.hpl.sparta.xpath.PositionEqualsExpr;
+import com.poomoo.commlib.LogUtils;
 import com.poomoo.commlib.MyDateFormat;
 import com.poomoo.commlib.MyUtils;
 import com.poomoo.model.base.BaseJobBO;
 import com.poomoo.parttimejob.R;
 
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -22,11 +29,14 @@ import butterknife.ButterKnife;
  * Created by thanatos on 15/12/22.
  */
 public class JobsAdapter extends BaseListAdapter<BaseJobBO> {
+    private final String TAG = getClass().getSimpleName();
     private boolean hasType = false;
+    private List<Integer> selectedList;
 
     public JobsAdapter(Context context, int mode, boolean hasType) {
         super(context, mode);
         this.hasType = hasType;
+        this.selectedList = new ArrayList<>();
     }
 
     @Override
@@ -69,6 +79,19 @@ public class JobsAdapter extends BaseListAdapter<BaseJobBO> {
             }
         } else
             holder.typeImg.setVisibility(View.GONE);
+        LogUtils.d(TAG, "selectedList:" + selectedList + " size:" + selectedList.size() + " position:" + position);
+        if (this.selectedList.contains(position)) {
+            holder.jobNameTxt.setTextColor(ContextCompat.getColor(mContext, R.color.colorGray));
+            holder.payNumTxt.setTextColor(ContextCompat.getColor(mContext, R.color.colorGray));
+        } else {
+            holder.jobNameTxt.setTextColor(ContextCompat.getColor(mContext, R.color.black));
+            holder.payNumTxt.setTextColor(ContextCompat.getColor(mContext, R.color.colorBlue));
+        }
+    }
+
+    @Override
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position, List payloads) {
+        super.onBindViewHolder(holder, position, payloads);
     }
 
     public static final class JobsViewHolder extends RecyclerView.ViewHolder {
@@ -91,5 +114,10 @@ public class JobsAdapter extends BaseListAdapter<BaseJobBO> {
             super(view);
             ButterKnife.bind(this, view);
         }
+    }
+
+    public void addSelectedList(Integer position) {
+        if (!this.selectedList.contains(position))
+            this.selectedList.add(position);
     }
 }

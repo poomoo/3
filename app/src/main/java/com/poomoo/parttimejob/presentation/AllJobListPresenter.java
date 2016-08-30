@@ -61,8 +61,8 @@ public class AllJobListPresenter extends BasePresenter {
     /**
      * 按类型查询
      */
-    public void getJobListByCate(int cateId, int currPage) {
-        QCateBO qCateBO = new QCateBO(NetConfig.JOBACTION, NetConfig.CATEJOBLIST, cateId, currPage, Page.PAGE_SIZE);
+    public void getJobListByCate(int cateId, int cityId, int currPage) {
+        QCateBO qCateBO = new QCateBO(NetConfig.JOBACTION, NetConfig.CATEJOBLIST, cateId, cityId, currPage, Page.PAGE_SIZE);
         mSubscriptions.add(Network.getJobApi().getJobByCate(qCateBO)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

@@ -35,7 +35,7 @@ public class JobListByCateActivity extends BaseListActivity<BaseJobBO> implement
         mListView.setPadding(0, setDividerSize(), 0, 0);
         mAdapter.setOnItemClickListener(this);
         allJobListPresenter = new AllJobListPresenter(this);
-        allJobListPresenter.getJobListByCate(cateId,mCurrentPage);
+        allJobListPresenter.getJobListByCate(cateId, application.getCurrCityId(), mCurrentPage);
     }
 
     @Override
@@ -52,20 +52,20 @@ public class JobListByCateActivity extends BaseListActivity<BaseJobBO> implement
     public void onRefresh() {
         super.onRefresh();
         mCurrentPage = 1;
-        allJobListPresenter.getJobListByCate(cateId, mCurrentPage);
+        allJobListPresenter.getJobListByCate(cateId, application.getCurrCityId(), mCurrentPage);
     }
 
     @Override
     public void onLoading() {
         super.onLoading();
-        allJobListPresenter.getJobListByCate(cateId, mCurrentPage);
+        allJobListPresenter.getJobListByCate(cateId, application.getCurrCityId(), mCurrentPage);
     }
 
     @Override
     public void onLoadActiveClick() {
         super.onLoadActiveClick();
         mCurrentPage = 1;
-        allJobListPresenter.getJobListByCate(cateId, mCurrentPage);
+        allJobListPresenter.getJobListByCate(cateId, application.getCurrCityId(), mCurrentPage);
     }
 
     @Override
