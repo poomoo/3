@@ -238,7 +238,7 @@ public class CityListActivity extends BaseActivity implements OnScrollListener {
 //            city_AllHot.clear();
         city_NewHot = new ArrayList<>();
         for (int i = 0; i < len; i++) {
-            LogUtils.d(TAG, "热门城市 isHot:" + city_lists.get(i).cityName + city_lists.get(i).isHot);
+//            LogUtils.d(TAG, "热门城市 isHot:" + city_lists.get(i).cityName + city_lists.get(i).isHot);
             if (city_lists.get(i).isHot != null && city_lists.get(i).isHot.equals("1")) {
                 city = rAreaBO.new city(city_lists.get(i).cityName, "2");
                 city.cityId = city_lists.get(i).cityId;
@@ -250,6 +250,8 @@ public class CityListActivity extends BaseActivity implements OnScrollListener {
             city_AllHot.removeAll(city_NewHot);
             city_AllHot.addAll(city_NewHot);
         }
+        LogUtils.d(TAG, "city_NewHot:" + city_NewHot.toString());
+        LogUtils.d(TAG, "city_AllHot:" + city_AllHot.toString());
     }
 
     private void initCityList() {

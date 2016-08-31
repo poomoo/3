@@ -10,6 +10,8 @@ import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,6 +42,7 @@ import com.poomoo.parttimejob.ui.activity.JobInfoActivity;
 import com.poomoo.parttimejob.ui.activity.JobListByCateActivity;
 import com.poomoo.parttimejob.ui.activity.MoreJobsActivity;
 import com.poomoo.parttimejob.ui.activity.SearchJobActivity;
+import com.poomoo.parttimejob.ui.activity.WebViewActivity;
 import com.poomoo.parttimejob.ui.base.BaseFragment;
 import com.poomoo.parttimejob.ui.custom.SlideShowView;
 import com.poomoo.parttimejob.view.MainView;
@@ -90,6 +93,8 @@ public class MainFragment extends BaseFragment implements SwipeRefreshLayout.OnR
     private boolean isLoadType = false;
     private int alpha = 0;
     private int height = 0;
+    private Bundle bundle;
+    private String url;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -213,6 +218,7 @@ public class MainFragment extends BaseFragment implements SwipeRefreshLayout.OnR
 
     @Override
     public void loadAdSucceed(List<RAdBO> rAdBOs) {
+        LogUtils.d(TAG, "loadAdSucceed:" + rAdBOs.toString());
         isLoadAd = true;
         int len = rAdBOs.size();
         urls = new String[len];
@@ -225,7 +231,21 @@ public class MainFragment extends BaseFragment implements SwipeRefreshLayout.OnR
 //        urls[len+1] = "http://img5.imgtn.bdimg.com/it/u=1831523257,4273085642&fm=21&gp=0.jpg";
 //        urls[len+2] = "http://img0.imgtn.bdimg.com/it/u=2724261082,1059352100&fm=21&gp=0.jpg";
         slideShowView.setPics(urls, position -> {
-
+            url = rAdBOs.get(position).url;
+            if (!TextUtils.isEmpty(url)) {
+                LogUtils.d(TAG, "url:" + url);
+                if (url.startsWith("http://")) {
+                    LogUtils.d(TAG, "网页");
+                    bundle = new Bundle();
+                    bundle.putString(getString(R.string.intent_value), url);
+                    openActivity(WebViewActivity.class, bundle);
+                } else if (url.startsWith("jobId")) {
+                    String[] temp = url.split("=");
+                    bundle = new Bundle();
+                    bundle.putInt(getString(R.string.intent_value), Integer.parseInt(temp[1]));
+                    openActivity(JobInfoActivity.class, bundle);
+                }
+            }
         });
     }
 

@@ -9,7 +9,7 @@ package com.poomoo.api;
  */
 public class NetConfig {
     public static String RemoteUrl = "http://www.jianzhigo.cn/";
-    public static String LocalUrl = "http://192.168.0.112:8088/";
+    public static String LocalUrl = "http://192.168.0.149:8088/";
     public static String url = RemoteUrl;
     public static String imageUrl = url + "lzrb/app/common/uploadPic.ajax";
     public static String wxUrl = "https://api.weixin.qq.com";

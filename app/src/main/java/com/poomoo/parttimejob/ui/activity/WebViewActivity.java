@@ -39,7 +39,7 @@ public class WebViewActivity extends BaseActivity {
 
     @Override
     protected String onSetTitle() {
-        return getString(R.string.title_buy);
+        return getString(R.string.app_name);
     }
 
     @Override

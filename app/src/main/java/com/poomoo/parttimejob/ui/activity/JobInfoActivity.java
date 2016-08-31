@@ -17,6 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.poomoo.commlib.LogUtils;
 import com.poomoo.commlib.MyConfig;
 import com.poomoo.commlib.MyUtils;
 import com.poomoo.model.base.BaseJobBO;
@@ -108,6 +109,9 @@ public class JobInfoActivity extends BaseActivity implements JobInfoView {
     private String content = "边玩边赚钱,就是这么任性!";
     private String website = "http://www.jianzhigo.cn/lzrb/download/wap.html";
     private String title = "点击下载兼职GO APP";
+    private boolean isEnd = false;//报名是否截止
+    private Dialog dialog_sign;
+    private Dialog dialog_dial;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -168,13 +172,14 @@ public class JobInfoActivity extends BaseActivity implements JobInfoView {
             MyUtils.showToast(getApplicationContext(), MyConfig.pleaseLogin);
             return;
         }
-        Dialog dialog = new AlertDialog.Builder(this).setMessage("拨打电话" + telTxt.getText()).setNegativeButton("取消", (dialog1, which) -> {
-        }).setPositiveButton("确定", (dialog1, which) -> {
-            Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + telTxt.getText().toString()));
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
-        }).create();
-        dialog.show();
+        if (dialog_dial == null)
+            dialog_dial = new AlertDialog.Builder(this).setMessage("拨打电话" + telTxt.getText()).setNegativeButton("取消", (dialog1, which) -> {
+            }).setPositiveButton("确定", (dialog1, which) -> {
+                Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + telTxt.getText().toString()));
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+            }).create();
+        dialog_dial.show();
     }
 
     /**
@@ -357,9 +362,17 @@ public class JobInfoActivity extends BaseActivity implements JobInfoView {
             MyUtils.showToast(getApplicationContext(), MyConfig.pleaseLogin);
             return;
         }
-        Bundle bundle = new Bundle();
-        bundle.putInt(getString(R.string.intent_value), jobId);
-        openActivity(SignUpActivity.class, bundle);
+        if (!isEnd) {
+            Bundle bundle = new Bundle();
+            bundle.putInt(getString(R.string.intent_value), jobId);
+            openActivity(SignUpActivity.class, bundle);
+        } else {
+            if (dialog_sign == null)
+                dialog_sign = new AlertDialog.Builder(this).setMessage("报名已截止").setPositiveButton("确定", (dialog, which) -> {
+                }).create();
+            dialog_sign.show();
+        }
+
     }
 
     /**
@@ -380,6 +393,7 @@ public class JobInfoActivity extends BaseActivity implements JobInfoView {
     @Override
     public void succeed(RJobInfoBO rJobInfoBO) {
         closeProgressDialog();
+        LogUtils.d(TAG, "rJobInfoBO:" + rJobInfoBO.toString());
         infoView.setVisibility(View.VISIBLE);
         this.rJobInfoBO = rJobInfoBO;
         payNumTxt.setText(MyUtils.formatPay(rJobInfoBO.pay)[0]);
@@ -401,6 +415,8 @@ public class JobInfoActivity extends BaseActivity implements JobInfoView {
         gridView.setAdapter(adapter);
         rApplicantBOs = rJobInfoBO.applyList;
         adapter.addItems(rApplicantBOs);
+        if (rJobInfoBO.jobNumber != 0 && rJobInfoBO.jobAdmissionNumber == rJobInfoBO.jobNumber)
+            isEnd = true;
     }
 
     @Override

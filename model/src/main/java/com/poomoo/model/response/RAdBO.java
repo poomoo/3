@@ -12,4 +12,13 @@ public class RAdBO {
     public int advId;
     public String picture;
     public String url;
+
+    @Override
+    public String toString() {
+        return "RAdBO{" +
+                "advId=" + advId +
+                ", picture='" + picture + '\'' +
+                ", url='" + url + '\'' +
+                '}';
+    }
 }

@@ -16,6 +16,18 @@ public class RJobInfoBO extends BaseJobBO {
     public String cateName;
     public boolean isCollect;
     public List<RApplicantBO> applyList;//--职位申请报名列表
+    public int jobNumber;//岗位人数
+    public int jobAdmissionNumber;//职位已经录取人数
 
-
+    @Override
+    public String toString() {
+        return "RJobInfoBO{" +
+                "browseNum=" + browseNum +
+                ", cateName='" + cateName + '\'' +
+                ", isCollect=" + isCollect +
+                ", applyList=" + applyList +
+                ", jobNumber=" + jobNumber +
+                ", jobAdmissionNumber=" + jobAdmissionNumber +
+                '}';
+    }
 }
