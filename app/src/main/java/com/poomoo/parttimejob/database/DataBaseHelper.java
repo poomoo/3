@@ -19,6 +19,14 @@ import java.util.List;
 public class DataBaseHelper {
     private static final String TAG = "DateBaseHelper";
 
+    /**
+     * 删除所有的记录
+     */
+    public static void deleteAll() {
+        DataSupport.deleteAll(ProvinceInfo.class);
+        DataSupport.deleteAll(CityInfo.class);
+        DataSupport.deleteAll(AreaInfo.class);
+    }
 
     /**
      * 保存省份到本地

@@ -29,6 +29,7 @@ public class WebViewActivity extends BaseActivity {
     WebView webView;
     @Bind(R.id.progressBar)
     ProgressBar progressBar;
+    private HeaderViewHolder headerViewHolder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +57,7 @@ public class WebViewActivity extends BaseActivity {
         webView.setWebChromeClient(new MyWebChromeClient());
         webView.setWebViewClient(new webViewClient());
 
-        HeaderViewHolder headerViewHolder = getHeaderView();
+        headerViewHolder = getHeaderView();
         headerViewHolder.rightImg.setImageResource(R.drawable.ic_close);
         headerViewHolder.rightImg.setVisibility(View.VISIBLE);
         headerViewHolder.rightImg.setOnClickListener(v -> {
@@ -89,6 +90,7 @@ public class WebViewActivity extends BaseActivity {
             //如果不需要其他对点击链接事件的处理返回true，否则返回false
             return true;
         }
+
     }
 
     class MyWebChromeClient extends WebChromeClient {
@@ -103,6 +105,10 @@ public class WebViewActivity extends BaseActivity {
                 progressBar.setVisibility(View.GONE);
         }
 
+        @Override
+        public void onReceivedTitle(WebView view, String title) {
+            headerViewHolder.titleTxt.setText(title);
+        }
     }
 
     @Override

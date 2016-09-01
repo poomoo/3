@@ -246,10 +246,12 @@ public class CityListActivity extends BaseActivity implements OnScrollListener {
                 LogUtils.d(TAG, "add");
             }
         }
-        if (city_NewHot.size() > city_AllHot.size()) {
-            city_AllHot.removeAll(city_NewHot);
-            city_AllHot.addAll(city_NewHot);
-        }
+        city_AllHot.clear();
+        city_AllHot.addAll(city_NewHot);
+//        if (city_NewHot.size() > city_AllHot.size()) {
+//            city_AllHot.removeAll(city_NewHot);
+//            city_AllHot.addAll(city_NewHot);
+//        }
         LogUtils.d(TAG, "city_NewHot:" + city_NewHot.toString());
         LogUtils.d(TAG, "city_AllHot:" + city_AllHot.toString());
     }
@@ -285,10 +287,10 @@ public class CityListActivity extends BaseActivity implements OnScrollListener {
                     @Override
                     public void onNext(List<RAreaBO> rAreaBOs) {
                         closeProgressDialog();
+                        DataBaseHelper.deleteAll();
                         city_lists = new ArrayList<>();
                         provinceInfos = new ArrayList<>();
                         for (RAreaBO rAreaBO : rAreaBOs) {
-                            LogUtils.d(TAG, "开始");
                             ProvinceInfo provinceInfo = new ProvinceInfo(rAreaBO.provinceId, rAreaBO.provinceName);
                             cityInfos = new ArrayList<>();
                             for (RAreaBO.city city : rAreaBO.cityList) {
@@ -299,22 +301,8 @@ public class CityListActivity extends BaseActivity implements OnScrollListener {
                                 DataBaseHelper.saveArea(areaInfos);
                                 cityInfos.add(cityInfo);
                             }
-//                            int len = rAreaBO.cityList.size();
-//                            for (int i = 0; i < len; i++) {
-//                                LogUtils.d(TAG, "len:" + len + " i:" + i);
-//                                CityInfo cityInfo = new CityInfo(rAreaBO.cityList.get(i).cityId, rAreaBO.cityList.get(i).cityName, rAreaBO.cityList.get(i).isHot, provinceInfo.getProvinceId());
-//                                city_lists.add(rAreaBO.cityList.get(i));
-//                                int len2 = rAreaBO.cityList.get(i).areaList.size();
-//                                areaInfos = new ArrayList<>();
-//                                for (int j = 0; j < len2; j++)
-//                                    areaInfos.add(new AreaInfo(rAreaBO.cityList.get(i).areaList.get(j).areaId, rAreaBO.cityList.get(i).areaList.get(j).areaName, cityInfo.getCityId()));
-//
-//                                DataBaseHelper.saveArea(areaInfos);
-//                                cityInfos.add(cityInfo);
-//                            }
                             DataBaseHelper.saveCity(cityInfos);
                             provinceInfos.add(provinceInfo);
-                            LogUtils.d(TAG, "结束");
                         }
                         DataBaseHelper.saveProvince(provinceInfos);
                         runOnUiThread(() -> initCity());
