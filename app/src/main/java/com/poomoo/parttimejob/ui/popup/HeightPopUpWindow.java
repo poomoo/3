@@ -45,14 +45,10 @@ public class HeightPopUpWindow extends PopupWindow {
         super(context);
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mMenuView = inflater.inflate(R.layout.popup_resume, null);
-        list_type = (ListView) mMenuView.findViewById(R.id.list_type);
+        list_type = (ListView) mMenuView.findViewById(R.id.list_address);
         confirmBtn = (Button) mMenuView.findViewById(R.id.btn_resumeConfirm);
         for (int i = 0; i < 100; i++)
-            stringList.add((100 + i) + "cm");
-
-//        DisplayMetrics dm = new DisplayMetrics();
-//        context.getWindowManager().getDefaultDisplay().getMetrics(dm); // 获取手机屏幕的大小
-//        list_type.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, dm.heightPixels * 6 / 10));
+            stringList.add((100 + i) + "厘米");
 
         adapter = new JobTypeAdapter(context, stringList.size());
         list_type.setAdapter(adapter);

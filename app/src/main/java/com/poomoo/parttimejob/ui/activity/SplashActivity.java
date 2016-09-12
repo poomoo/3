@@ -3,8 +3,10 @@
  */
 package com.poomoo.parttimejob.ui.activity;
 
+import android.app.Notification;
 import android.content.Intent;
-import android.content.res.Resources;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
@@ -62,11 +64,14 @@ public class SplashActivity extends BaseActivity {
         if (!(boolean) SPUtils.get(getApplicationContext(), getString(R.string.sp_isPushBind), false))
             PushManager.startWork(getApplicationContext(), PushConstants.LOGIN_TYPE_API_KEY, MyConfig.pushKey);
 
-        Resources resource = this.getResources();
-        String pkgName = this.getPackageName();
+        // Push: 设置自定义的通知样式，具体API介绍见用户手册，如果想使用系统默认的可以不加这段代码
+        // 请在通知推送界面中，高级设置->通知栏样式->自定义样式，选中并且填写值：1，
+        // 与下方代码中 PushManager.setNotificationBuilder(this, 1, cBuilder)中的第二个参数对应
         BasicPushNotificationBuilder basicPushNotificationBuilder = new BasicPushNotificationBuilder();
         basicPushNotificationBuilder.setStatusbarIcon(R.drawable.ic_stat_notify);
-        basicPushNotificationBuilder.setStatusbarIcon(resource.getIdentifier("ic_logo", "drawable", pkgName));
+        Uri uri = RingtoneManager.getActualDefaultRingtoneUri(this, RingtoneManager.TYPE_NOTIFICATION);
+        basicPushNotificationBuilder.setNotificationSound(uri.toString());
+        basicPushNotificationBuilder.setNotificationFlags(Notification.FLAG_AUTO_CANCEL);
         // 推送高级设置，通知栏样式设置为下面的ID
         PushManager.setNotificationBuilder(this, 1, basicPushNotificationBuilder);
 

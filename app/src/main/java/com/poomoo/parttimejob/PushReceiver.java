@@ -72,6 +72,17 @@ public class PushReceiver extends PushMessageReceiver {
 
     @Override
     public void onNotificationClicked(Context context, String s, String s1, String s2) {
+        LogUtils.d(TAG, "onNotificationClicked");
+        jump(context);
+//        if (MyConfig.isRun) {
+//            LogUtils.i(TAG, "the app process is alive");
+//            Intent resultIntent = new Intent(context, MainActivity.class);
+//            resultIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//        } else {
+//            LogUtils.i(TAG, "the app process is dead" + context.getPackageName());
+//            Intent resultIntent = context.getPackageManager().getLaunchIntentForPackage(context.getPackageName());
+//            resultIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
+//        }
     }
 
     @Override
@@ -80,8 +91,8 @@ public class PushReceiver extends PushMessageReceiver {
                 + "\" description=\"" + description + "\" customContent="
                 + customContentString;
         LogUtils.d(TAG, notifyString);
-        initNotify(context, title, description);
-        showIntentActivityNotify(context);
+//        initNotify(context, title, description);
+//        showIntentActivityNotify(context);
     }
 
 
@@ -138,5 +149,18 @@ public class PushReceiver extends PushMessageReceiver {
         }
         mBuilder.setContentIntent(pendingIntent);
         mNotificationManager.notify(notifyId, mBuilder.build());
+    }
+
+    private void jump(Context context) {
+        Intent intent = new Intent();
+        if (MyConfig.isRun)
+            intent.setClass(context.getApplicationContext(), MainActivity.class);
+        else
+            intent = context.getPackageManager().getLaunchIntentForPackage(context.getPackageName());
+        Bundle args = new Bundle();
+        args.putString(context.getString(R.string.intent_bundle), "launcher");
+        intent.putExtras(args);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.getApplicationContext().startActivity(intent);
     }
 }
