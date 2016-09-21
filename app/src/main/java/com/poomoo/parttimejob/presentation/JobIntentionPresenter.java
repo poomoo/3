@@ -6,7 +6,6 @@ import com.poomoo.api.AbsAPICallback;
 import com.poomoo.api.ApiException;
 import com.poomoo.api.NetConfig;
 import com.poomoo.api.Network;
-import com.poomoo.commlib.LogUtils;
 import com.poomoo.model.request.QJobIntentionBO;
 import com.poomoo.model.request.QUserIdBO;
 import com.poomoo.model.response.RIntentionBO;
@@ -16,8 +15,6 @@ import com.poomoo.parttimejob.view.JobIntentionView;
 import java.util.List;
 
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
-import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 /**
@@ -31,8 +28,8 @@ public class JobIntentionPresenter extends BasePresenter {
     }
 
 
-    public void JobIntentionUp(int userId,String type, String cateId, String workday, String workAreaId, String otherInfo) {
-        QJobIntentionBO qJobIntentionBO = new QJobIntentionBO(NetConfig.USERACTION, NetConfig.INTENTIONUP,type, userId, cateId, workday, workAreaId, otherInfo);
+    public void JobIntentionUp(int userId, String type, String cateId, String workday, String workAreaId, String otherInfo) {
+        QJobIntentionBO qJobIntentionBO = new QJobIntentionBO(NetConfig.USERACTION, NetConfig.INTENTIONUP, type, userId, cateId, workday, workAreaId, otherInfo);
         mSubscriptions.add(Network.getUserApi().jobIntentionUp(qJobIntentionBO)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -50,7 +47,7 @@ public class JobIntentionPresenter extends BasePresenter {
                 }));
     }
 
-    public void JobIntentionDown(int userId, List<String> typeInfos) {
+    public void JobIntentionDown(int userId, List<String> typeInfos, List<Integer> areaIds) {
         QUserIdBO qUserIdBO = new QUserIdBO(NetConfig.USERACTION, NetConfig.INTENTIONDOWN, userId);
         mSubscriptions.add(Network.getUserApi().jobIntentionDown(qUserIdBO)
                 .subscribeOn(Schedulers.io())
@@ -65,7 +62,11 @@ public class JobIntentionPresenter extends BasePresenter {
                         String[] areaStr = rIntentionBO.workAreaId.split(",");
                         len = areaStr.length;
                         for (int i = 0; i < len; i++)
-                            rIntentionBO.area.add(Integer.parseInt(areaStr[i]));
+                            rIntentionBO.area.add(areaIds.indexOf(Integer.parseInt(areaStr[i])));
+                        if (rIntentionBO.area.contains(-1)) {
+                            rIntentionBO.area.clear();
+                            rIntentionBO.area.add(0);
+                        }
                     }
                     if (!TextUtils.isEmpty(rIntentionBO.workDay)) {
                         String[] workStr = rIntentionBO.workDay.split(",");

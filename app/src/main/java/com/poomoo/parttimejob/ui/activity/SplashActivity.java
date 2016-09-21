@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
 import android.view.WindowManager;
+import android.widget.TextView;
 
 import com.baidu.android.pushservice.BasicPushNotificationBuilder;
 import com.baidu.android.pushservice.PushConstants;
@@ -19,6 +20,7 @@ import com.poomoo.api.HttpLoggingInterceptor;
 import com.poomoo.api.Network;
 import com.poomoo.commlib.LogUtils;
 import com.poomoo.commlib.MyConfig;
+import com.poomoo.commlib.MyUtils;
 import com.poomoo.commlib.SPUtils;
 import com.poomoo.commlib.StatusBarUtil;
 import com.poomoo.parttimejob.R;
@@ -32,12 +34,18 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
 /**
  * 启动界面
  * 作者: 李苜菲
  * 日期: 2016/4/20 13:54.
  */
 public class SplashActivity extends BaseActivity {
+    @Bind(R.id.txt_version)
+    TextView versionTxt;
+
     private static String DB_PATH = "/data/data/com.poomoo.parttimejob/databases/";
     private static String DB_NAME = "partTimeJob.db";
     private final static int SPLASH_DISPLAY_LENGTH = 3000;
@@ -51,6 +59,8 @@ public class SplashActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         StatusBarUtil.setTransparent(this);
 
+        ButterKnife.bind(this);
+        versionTxt.setText(MyUtils.getVersion(this));
         //不显示日志
         LogUtils.isDebug = false;
         Network.level = HttpLoggingInterceptor.Level.NONE;
@@ -61,8 +71,8 @@ public class SplashActivity extends BaseActivity {
 
         MyConfig.isRun = true;
 
-        if (!(boolean) SPUtils.get(getApplicationContext(), getString(R.string.sp_isPushBind), false))
-            PushManager.startWork(getApplicationContext(), PushConstants.LOGIN_TYPE_API_KEY, MyConfig.pushKey);
+//        if (!(boolean) SPUtils.get(getApplicationContext(), getString(R.string.sp_isPushBind), false))
+        PushManager.startWork(getApplicationContext(), PushConstants.LOGIN_TYPE_API_KEY, MyConfig.pushKey);
 
         // Push: 设置自定义的通知样式，具体API介绍见用户手册，如果想使用系统默认的可以不加这段代码
         // 请在通知推送界面中，高级设置->通知栏样式->自定义样式，选中并且填写值：1，

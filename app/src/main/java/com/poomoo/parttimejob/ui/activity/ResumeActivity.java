@@ -21,7 +21,6 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -50,7 +49,6 @@ import com.poomoo.parttimejob.ui.base.BaseActivity;
 import com.poomoo.parttimejob.ui.custom.CustomerDatePickerDialog;
 import com.poomoo.parttimejob.ui.custom.RoundImageView2;
 import com.poomoo.parttimejob.ui.popup.HeightPopUpWindow;
-import com.poomoo.parttimejob.ui.popup.ProvincePopUpWindow;
 import com.poomoo.parttimejob.ui.popup.SelectPicsPopupWindow;
 import com.poomoo.parttimejob.view.ResumeView;
 
@@ -101,7 +99,6 @@ public class ResumeActivity extends BaseActivity implements ResumeView {
     @Bind(R.id.edt_workExp)
     EditText workExpEdt;
 
-
     private Bitmap bitmap;
     private File file;
     private SelectPicsPopupWindow popupWindow;
@@ -113,9 +110,6 @@ public class ResumeActivity extends BaseActivity implements ResumeView {
     private final static String image_capture_path = Environment.getExternalStorageDirectory() + "/" + "partTimeJob.png";
 
     private HeightPopUpWindow heightPopUpWindow = null;
-    //    private ProvincePopUpWindow provincePopUpWindow = null;
-//    private ProvincePopUpWindow cityPopUpWindow = null;
-//    private ProvincePopUpWindow areaPopUpWindow = null;
     private ZoneAdapter adapter;
     private AddressPopUpWindow addressPopUpWindow;
 
@@ -167,7 +161,6 @@ public class ResumeActivity extends BaseActivity implements ResumeView {
         showProgressDialog(getString(R.string.dialog_msg));
         telTxt.setText(application.getTel());
 
-        LogUtils.d(TAG, "tel:" + application.getTel());
         adapter = new ZoneAdapter(this);
         addressPopUpWindow = new AddressPopUpWindow(this);
 
@@ -660,5 +653,11 @@ public class ResumeActivity extends BaseActivity implements ResumeView {
             MyUtils.showToast(getApplicationContext(), msg);
             finish();
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        resumePresenter.onDestroy();
     }
 }

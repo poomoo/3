@@ -4,26 +4,17 @@
 package com.poomoo.parttimejob.ui.base;
 
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.poomoo.model.Page;
 import com.poomoo.parttimejob.R;
-import com.poomoo.parttimejob.adapter.BaseListAdapter;
 import com.poomoo.parttimejob.application.MyApplication;
-import com.poomoo.parttimejob.ui.custom.ErrorLayout;
 import com.trello.rxlifecycle.components.support.RxAppCompatActivity;
 import com.umeng.analytics.MobclickAgent;
-
-import java.util.Iterator;
-import java.util.List;
 
 /**
  * 作者: 李苜菲
@@ -42,7 +33,6 @@ public abstract class BaseActivity extends RxAppCompatActivity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(onBindLayout());
         application = (MyApplication) this.getApplication();
-//        getWindow().setBackgroundDrawable(null);
     }
 
     protected abstract String onSetTitle();
@@ -187,5 +177,4 @@ public abstract class BaseActivity extends RxAppCompatActivity {
         super.onPause();
         MobclickAgent.onPause(this);
     }
-
 }

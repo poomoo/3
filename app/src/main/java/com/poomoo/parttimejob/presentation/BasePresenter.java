@@ -28,7 +28,7 @@ public class BasePresenter {
     }
 
 
-    void onDestroy() {
+    public void onDestroy() {
         mSubscriptions.unsubscribe();
     }
 

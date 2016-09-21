@@ -50,6 +50,7 @@ public class JobIntentionActivity extends BaseActivity implements JobIntentionVi
 
     private List<String> typeInfos;
     private List<String> areaInfos;
+    private List<Integer> areaId_list=new ArrayList<>();
     private String cateId = "";
     private String areaId = "";
     private String workday = "";
@@ -63,7 +64,6 @@ public class JobIntentionActivity extends BaseActivity implements JobIntentionVi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
-        LogUtils.d(TAG, "onCreate");
         initTitleBar();
         mInflater = LayoutInflater.from(this);
         jobIntentionPresenter = new JobIntentionPresenter(this);
@@ -71,8 +71,7 @@ public class JobIntentionActivity extends BaseActivity implements JobIntentionVi
         initJobZone(mInflater);//兼职地点
 
         showProgressDialog(getString(R.string.dialog_msg));
-        jobIntentionPresenter.JobIntentionDown(application.getUserId(), typeInfos);
-        LogUtils.d(TAG, "onCreate endZ");
+        jobIntentionPresenter.JobIntentionDown(application.getUserId(), typeInfos, areaId_list);
     }
 
     private void initTitleBar() {
@@ -93,7 +92,6 @@ public class JobIntentionActivity extends BaseActivity implements JobIntentionVi
 
     private void initJobType(final LayoutInflater mInflater) {
         typeInfos = DataBaseHelper.getType();
-        LogUtils.d(TAG, "typeInfos:" + typeInfos);
         adapterType = new TagAdapter<String>(typeInfos) {
             @Override
             public View getView(FlowLayout parent, int position, String s) {
@@ -112,7 +110,9 @@ public class JobIntentionActivity extends BaseActivity implements JobIntentionVi
 
     private void initJobZone(final LayoutInflater mInflater) {
         areaInfos = DataBaseHelper.getArea1(application.getCurrCityId());
-        LogUtils.d(TAG, "areaInfos:" + areaInfos);
+        for (String temp : areaInfos)
+            areaId_list.add(temp.split("#").length==2?Integer.parseInt(temp.split("#")[1]):0);
+
         adapterArea = new TagAdapter<String>(areaInfos) {
             @Override
             public View getView(FlowLayout parent, int position, String s) {
@@ -139,11 +139,12 @@ public class JobIntentionActivity extends BaseActivity implements JobIntentionVi
 
         Iterator<Integer> itArea = zoneFlayout.getSelectedList().iterator();
         while (itArea.hasNext()) {
-            String temp[] = areaInfos.get(itArea.next()).split("#");
+            int pos = itArea.next();
+            String temp[] = areaInfos.get(pos).split("#");
             areaId += temp.length == 2 ? temp[1] + "," : "";
         }
-        cateId = cateId.length() > 0 ? cateId.substring(0, cateId.length() - 1) : "";
-        areaId = areaId.length() > 0 ? areaId.substring(0, areaId.length() - 1) : "";
+        cateId = cateId.length() > 0 ? cateId.substring(0, cateId.length() - 1) : "0";
+        areaId = areaId.length() > 0 ? areaId.substring(0, areaId.length() - 1) : "0";
         int len = freeTimeView.getSparseArray().size();
         for (int i = 0; i < len; i++) {
             if (freeTimeView.getSparseArray().get(i)) {
@@ -151,7 +152,6 @@ public class JobIntentionActivity extends BaseActivity implements JobIntentionVi
             }
         }
         otherInfo = otherEdt.getText().toString().trim();
-        LogUtils.d(TAG, "cateId:" + cateId + "areaId:" + areaId + "workday:" + workday);
         String type = "1";
         if (TextUtils.isEmpty(cateId) && TextUtils.isEmpty(areaId) && TextUtils.isEmpty(workday) && TextUtils.isEmpty(otherInfo))
             type = "2";
@@ -191,6 +191,8 @@ public class JobIntentionActivity extends BaseActivity implements JobIntentionVi
 
     @Override
     public void DownSucceed(RIntentionBO rIntentionBO) {
+        LogUtils.d(TAG, "RIntentionBO: workAreaId" + rIntentionBO.workAreaId + "\n" + "area:" + rIntentionBO.area);
+        LogUtils.d(TAG, "RIntentionBO: type" + rIntentionBO.type);
         closeProgressDialog();
         adapterType.setSelectedList(rIntentionBO.type);
 
@@ -214,5 +216,11 @@ public class JobIntentionActivity extends BaseActivity implements JobIntentionVi
         closeProgressDialog();
         MyUtils.showToast(getApplicationContext(), msg);
         finish();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        jobIntentionPresenter.onDestroy();
     }
 }
