@@ -136,8 +136,7 @@ public class CityListActivity extends BaseActivity implements OnScrollListener {
         sh.addTextChangedListener(new TextWatcher() {
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before,
-                                      int count) {
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (TextUtils.isEmpty(s + "")) {
                     letterListView.setVisibility(View.VISIBLE);
                     personList.setVisibility(View.VISIBLE);

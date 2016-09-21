@@ -156,8 +156,10 @@ public abstract class BaseActivity extends RxAppCompatActivity {
         progressDialog.setOnKeyListener((dialog, keyCode, event) -> {
             // TODO Auto-generated method stub
             if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
-                progressDialog.dismiss();
-                progressDialog = null;
+                if (progressDialog != null) {
+                    progressDialog.dismiss();
+                    progressDialog = null;
+                }
                 finish();
             }
             return false;

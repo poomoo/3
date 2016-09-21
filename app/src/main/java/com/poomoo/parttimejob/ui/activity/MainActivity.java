@@ -96,11 +96,11 @@ public class MainActivity extends BaseActivity {
                 .commit();
     }
 
-    @Override
-    protected void onResume() {
-        LogUtils.i(TAG, "onResume");
-        super.onResume();
-    }
+//    @Override
+//    protected void onResume() {
+//        LogUtils.i(TAG, "onResume");
+//        super.onResume();
+//    }
 
     @OnClick({R.id.rbtn_main, R.id.rbtn_job, R.id.rbtn_message, R.id.rbtn_personal})
     void change(RadioButton radioButton) {

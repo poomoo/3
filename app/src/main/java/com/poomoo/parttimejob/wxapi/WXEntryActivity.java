@@ -47,14 +47,11 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
 
     @Override
     public void onResp(BaseResp baseResp) {
-        LogUtils.d(TAG, "onResp:" + baseResp.toString());
         if (baseResp instanceof SendAuth.Resp) {
             SendAuth.Resp newResp = (SendAuth.Resp) baseResp;
-
             //获取微信传回的code
             String code = newResp.code;
-            LogUtils.d(TAG, newResp.code);
-            LoginActivity.loginPresenter.getToken(code);
+            LoginActivity.instance.loginPresenter.getToken(code);
             finish();
         }
     }

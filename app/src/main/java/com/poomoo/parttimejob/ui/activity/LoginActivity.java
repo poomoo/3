@@ -39,7 +39,7 @@ public class LoginActivity extends BaseActivity implements LoginView {
     @Bind(R.id.edt_passWord)
     EditText passWordEdt;
 
-    public static LoginPresenter loginPresenter;
+    public LoginPresenter loginPresenter;
     private String tel = "";
     private String passWord = "";
     public static LoginActivity instance = null;
@@ -214,10 +214,8 @@ public class LoginActivity extends BaseActivity implements LoginView {
 
     @Override
     public void getInfo(RWxInfoBO rWxInfoBO) {
-//        closeProgressDialog();
-//        LogUtils.d(TAG, "微信个人信息:" + rWxInfoBO.toString());
-        loginPresenter.isBond(rWxInfoBO.openid);
         this.rWxInfoBO = rWxInfoBO;
+        loginPresenter.isBond(rWxInfoBO.openid);
     }
 
     @Override
@@ -263,6 +261,7 @@ public class LoginActivity extends BaseActivity implements LoginView {
 
     @Override
     public void failed(String msg) {
+        LogUtils.d(TAG, "failed:" + msg);
         closeProgressDialog();
         MyUtils.showToast(getApplicationContext(), msg);
     }

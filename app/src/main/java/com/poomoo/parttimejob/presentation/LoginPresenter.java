@@ -79,7 +79,7 @@ public class LoginPresenter extends BasePresenter {
     public void getToken(String code) {
         mSubscriptions.add(Network.getWxApi().getToken(MyConfig.weixinAppId, MyConfig.weixinAppSecret, code, "authorization_code")
                 .subscribeOn(Schedulers.io())
-                .observeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new AbsAPICallback<RWxTokenBO>() {
                     @Override
                     protected void onError(ApiException e) {

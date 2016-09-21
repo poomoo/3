@@ -413,6 +413,8 @@ public class ResumeActivity extends BaseActivity implements ResumeView {
 
             confirmBtn.setOnClickListener(v -> {
                 dismiss();
+                if (selectedPosition == -1)
+                    return;
                 String temp[];
                 switch (adapter.getCurrAddress()) {
                     case ZoneAdapter.PROVINCE:

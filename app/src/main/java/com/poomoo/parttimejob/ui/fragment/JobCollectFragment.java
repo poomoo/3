@@ -93,6 +93,7 @@ public class JobCollectFragment extends BaseListFragment<BaseJobBO> implements B
 
     @Override
     public void cancelSucceed(String msg) {
+        closeProgressDialog();
         MyUtils.showToast(getActivity().getApplicationContext(), msg);
         adapter.removeItem(cancelPos);
         if (adapter.getItemCount() == 1) {
@@ -105,6 +106,7 @@ public class JobCollectFragment extends BaseListFragment<BaseJobBO> implements B
 
     @Override
     public void cancelFailed(String msg) {
+        closeProgressDialog();
         MyUtils.showToast(getActivity().getApplicationContext(), msg);
     }
 

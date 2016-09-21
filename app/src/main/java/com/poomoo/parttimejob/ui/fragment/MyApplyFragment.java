@@ -29,7 +29,6 @@ public class MyApplyFragment extends BaseListFragment<BaseJobBO> implements Base
 
     private JobsAdapter adapter;
     private AllJobListPresenter allJobListPresenter;
-    private int currPage = 1;
 
     @Override
     public void onCreate(Bundle bundle) {
@@ -55,8 +54,10 @@ public class MyApplyFragment extends BaseListFragment<BaseJobBO> implements Base
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        allJobListPresenter = new AllJobListPresenter(this);
-        allJobListPresenter.getApplyList(application.getUserId(), mCatalog, currPage);
+        if (allJobListPresenter == null)
+            allJobListPresenter = new AllJobListPresenter(this);
+        mCurrentPage = 1;
+        allJobListPresenter.getApplyList(application.getUserId(), mCatalog, mCurrentPage);
     }
 
     @Override
@@ -87,8 +88,8 @@ public class MyApplyFragment extends BaseListFragment<BaseJobBO> implements Base
     @Override
     public void onRefresh() {
         super.onRefresh();
-        currPage = 1;
-        allJobListPresenter.getApplyList(application.getUserId(), mCatalog, currPage);
+        mCurrentPage = 1;
+        allJobListPresenter.getApplyList(application.getUserId(), mCatalog, mCurrentPage);
     }
 
 
@@ -96,7 +97,7 @@ public class MyApplyFragment extends BaseListFragment<BaseJobBO> implements Base
     public void onLoading() {
         super.onLoading();
         LogUtils.d(TAG, "onLoading");
-        allJobListPresenter.getApplyList(application.getUserId(), mCatalog, currPage);
+        allJobListPresenter.getApplyList(application.getUserId(), mCatalog, mCurrentPage);
     }
 
     /**
@@ -105,8 +106,8 @@ public class MyApplyFragment extends BaseListFragment<BaseJobBO> implements Base
     @Override
     public void onLoadActiveClick() {
         super.onLoadActiveClick();
-        currPage = 1;
-        allJobListPresenter.getApplyList(application.getUserId(), mCatalog, currPage);
+        mCurrentPage = 1;
+        allJobListPresenter.getApplyList(application.getUserId(), mCatalog, mCurrentPage);
     }
 
 }
