@@ -13,11 +13,22 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.poomoo.api.AbsAPICallback;
+import com.poomoo.api.ApiException;
+import com.poomoo.api.NetConfig;
+import com.poomoo.api.Network;
 import com.poomoo.commlib.LogUtils;
 import com.poomoo.commlib.MyConfig;
+import com.poomoo.commlib.MyUtils;
 import com.poomoo.commlib.SPUtils;
+import com.poomoo.model.base.BaseRequestBO;
 import com.poomoo.model.response.RApplyJobBO;
+import com.poomoo.model.response.RAreaBO;
 import com.poomoo.parttimejob.R;
+import com.poomoo.parttimejob.database.AreaInfo;
+import com.poomoo.parttimejob.database.CityInfo;
+import com.poomoo.parttimejob.database.DataBaseHelper;
+import com.poomoo.parttimejob.database.ProvinceInfo;
 import com.poomoo.parttimejob.event.Events;
 import com.poomoo.parttimejob.event.RxBus;
 import com.poomoo.parttimejob.ui.activity.AuthActivity;
@@ -28,15 +39,18 @@ import com.poomoo.parttimejob.ui.activity.MainActivity;
 import com.poomoo.parttimejob.ui.activity.MoreActivity;
 import com.poomoo.parttimejob.ui.activity.MyApplyActivity;
 import com.poomoo.parttimejob.ui.activity.MyCollectionActivity;
-import com.poomoo.parttimejob.ui.activity.MyJobCollectionActivity;
 import com.poomoo.parttimejob.ui.activity.ResumeActivity;
 import com.poomoo.parttimejob.ui.base.BaseFragment;
 import com.poomoo.parttimejob.ui.custom.RoundImageView2;
 import com.trello.rxlifecycle.FragmentEvent;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import rx.schedulers.Schedulers;
 
 /**
  * 作者: 李苜菲
@@ -50,11 +64,14 @@ public class PersonalFragment extends BaseFragment {
     @Bind(R.id.txt_personalAuth)
     TextView authTxt;
 
+    private List<ProvinceInfo> province_list;
+    private List<CityInfo> city_list;
+    private List<AreaInfo> area_list;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_personal, container, false);
         ButterKnife.bind(this, view);
-//        MainActivity.instance.setBackGround1();
         return view;
     }
 
@@ -140,7 +157,7 @@ public class PersonalFragment extends BaseFragment {
         }
         switch (view.getId()) {
             case R.id.llayout_toResume:
-                openActivity(ResumeActivity.class);
+                getCity();
                 break;
             case R.id.rlayout_myCollection:
                 openActivity(MyCollectionActivity.class);
@@ -150,7 +167,7 @@ public class PersonalFragment extends BaseFragment {
                 break;
             case R.id.rlayout_setting:
                 openActivity(JobIntentionActivity.class);
-                LogUtils.d(TAG,"openActivity");
+                LogUtils.d(TAG, "openActivity");
                 break;
             case R.id.rlayout_feedBack:
                 openActivity(FeedBackActivity.class);
@@ -161,11 +178,52 @@ public class PersonalFragment extends BaseFragment {
         }
     }
 
-//    @Override
-//    public void onHiddenChanged(boolean hidden) {
-//        super.onHiddenChanged(hidden);
-//        if (!hidden)
-//            MainActivity.instance.setBackGround1();
-//    }
+    public void getCity() {
+        if (DataBaseHelper.getProvinceList().size() == 1) {
+            showProgressDialog("同步城市中,请稍后...");
+            BaseRequestBO baseRequestBO = new BaseRequestBO(NetConfig.COMMACTION, NetConfig.CITY);
+            Network.getCommApi().getCitys(baseRequestBO)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(Schedulers.io())
+                    .subscribe(new AbsAPICallback<List<RAreaBO>>() {
+                        @Override
+                        protected void onError(ApiException e) {
+                            getActivity().runOnUiThread(() -> {
+                                closeProgressDialog();
+                                MyUtils.showToast(getActivity().getApplicationContext(), e.getMessage());
+                            });
+                        }
+
+                        @Override
+                        public void onNext(List<RAreaBO> rAreaBOs) {
+                            city_list = new ArrayList<>();
+                            province_list = new ArrayList<>();
+                            city_list = new ArrayList<>();
+                            area_list = new ArrayList<>();
+                            for (RAreaBO rAreaBO : rAreaBOs) {
+                                ProvinceInfo provinceInfo = new ProvinceInfo(rAreaBO.provinceId, rAreaBO.provinceName);
+                                city_list = new ArrayList<>();
+                                for (RAreaBO.city city : rAreaBO.cityList) {
+                                    CityInfo cityInfo = new CityInfo(city.cityId, city.cityName, city.isHot, provinceInfo.getProvinceId());
+                                    city_list.add(cityInfo);
+                                    area_list = new ArrayList<>();
+                                    for (RAreaBO.area area : city.areaList)
+                                        area_list.add(new AreaInfo(area.areaId, area.areaName, cityInfo.getCityId()));
+                                    DataBaseHelper.saveArea(area_list);
+                                    city_list.add(cityInfo);
+                                }
+                                DataBaseHelper.saveCity(city_list);
+                                province_list.add(provinceInfo);
+                            }
+                            DataBaseHelper.saveProvince(province_list);
+                            getActivity().runOnUiThread(() -> {
+                                closeProgressDialog();
+                                openActivity(ResumeActivity.class);
+                            });
+                        }
+                    });
+        } else
+            openActivity(ResumeActivity.class);
+    }
 
 }

@@ -5,6 +5,8 @@ package com.poomoo.commlib;
 
 import android.app.ActivityManager;
 import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -172,5 +174,25 @@ public class MyUtils {
         }
         Log.i("NotificationLaunch", String.format("the %s is not running, isAppAlive return false", packageName));
         return false;
+    }
+
+    /**
+     * 获取当前的版本号
+     *
+     * @param context
+     * @return
+     */
+    public static String getVersion(Context context) {
+        String appVersion = "";
+        PackageManager manager = context.getPackageManager();
+        try {
+            PackageInfo info = manager.getPackageInfo(context.getPackageName(), 0);
+            appVersion = info.versionName;   //版本名
+        } catch (PackageManager.NameNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        return appVersion;
     }
 }

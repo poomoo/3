@@ -32,8 +32,8 @@ public class PushReceiver extends PushMessageReceiver {
                 + appid + " userId=" + userId + " channelId=" + channelId
                 + " requestId=" + requestId;
         LogUtils.d(TAG, responseString);
-        SPUtils.put(context, context.getString(R.string.sp_isPushBind), true);
-        SPUtils.put(context, context.getString(R.string.sp_channelId), channelId);
+//        SPUtils.put(context, context.getString(R.string.sp_isPushBind), true);
+//        SPUtils.put(context, context.getString(R.string.sp_channelId), channelId);
         if (errorCode == 0) {
             // 绑定成功
             LogUtils.d(TAG, "绑定成功");

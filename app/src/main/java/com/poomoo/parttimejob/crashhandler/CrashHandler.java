@@ -12,6 +12,7 @@ import android.util.Log;
 
 import com.poomoo.commlib.LogUtils;
 import com.poomoo.commlib.MyUtils;
+import com.poomoo.parttimejob.ui.activity.LoginActivity;
 import com.poomoo.parttimejob.ui.activity.MainActivity;
 import com.umeng.analytics.MobclickAgent;
 
@@ -104,7 +105,10 @@ public class CrashHandler implements UncaughtExceptionHandler {
             } catch (InterruptedException e) {
 
             }
-            MainActivity.instance.finish();
+            if (MainActivity.instance != null)
+                MainActivity.instance.finish();
+            if (LoginActivity.instance != null)
+                LoginActivity.instance.finish();
             Process.killProcess(Process.myPid());
         }
 

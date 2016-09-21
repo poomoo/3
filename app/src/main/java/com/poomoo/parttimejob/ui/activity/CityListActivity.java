@@ -285,7 +285,6 @@ public class CityListActivity extends BaseActivity implements OnScrollListener {
 
                     @Override
                     public void onNext(List<RAreaBO> rAreaBOs) {
-                        closeProgressDialog();
                         DataBaseHelper.deleteAll();
                         city_lists = new ArrayList<>();
                         provinceInfos = new ArrayList<>();
@@ -295,6 +294,7 @@ public class CityListActivity extends BaseActivity implements OnScrollListener {
                             for (RAreaBO.city city : rAreaBO.cityList) {
                                 CityInfo cityInfo = new CityInfo(city.cityId, city.cityName, city.isHot, provinceInfo.getProvinceId());
                                 city_lists.add(city);
+                                areaInfos=new ArrayList<>();
                                 for (RAreaBO.area area : city.areaList)
                                     areaInfos.add(new AreaInfo(area.areaId, area.areaName, cityInfo.getCityId()));
                                 DataBaseHelper.saveArea(areaInfos);
@@ -304,7 +304,10 @@ public class CityListActivity extends BaseActivity implements OnScrollListener {
                             provinceInfos.add(provinceInfo);
                         }
                         DataBaseHelper.saveProvince(provinceInfos);
-                        runOnUiThread(() -> initCity());
+                        runOnUiThread(() -> {
+                            closeProgressDialog();
+                            initCity();
+                        });
                     }
                 });
     }

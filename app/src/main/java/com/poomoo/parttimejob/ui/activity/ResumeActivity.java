@@ -167,6 +167,7 @@ public class ResumeActivity extends BaseActivity implements ResumeView {
         showProgressDialog(getString(R.string.dialog_msg));
         telTxt.setText(application.getTel());
 
+        LogUtils.d(TAG, "tel:" + application.getTel());
         adapter = new ZoneAdapter(this);
         addressPopUpWindow = new AddressPopUpWindow(this);
 

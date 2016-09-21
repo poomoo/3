@@ -160,7 +160,6 @@ public class LoginActivity extends BaseActivity implements LoginView {
         if ((boolean) SPUtils.get(getApplicationContext(), getString(R.string.sp_isRemember), false))
             SPUtils.put(getApplicationContext(), getString(R.string.sp_passWord), passWord);
 
-        SPUtils.put(getApplicationContext(), getString(R.string.sp_phoneNum), tel);
         this.application.setUserId(rUserBO.userId);
         this.application.setNickName(rUserBO.nickName);
         this.application.setRealName(rUserBO.realName);
@@ -178,6 +177,7 @@ public class LoginActivity extends BaseActivity implements LoginView {
         this.application.setUpdateDtv(rUserBO.updateDtv);
         this.application.setLogin(true);
 
+        SPUtils.put(getApplicationContext(), getString(R.string.sp_phoneNum), application.getTel());
         SPUtils.put(getApplicationContext(), getString(R.string.sp_userId), application.getUserId());
         SPUtils.put(getApplicationContext(), getString(R.string.sp_nickName), application.getNickName());
         SPUtils.put(getApplicationContext(), getString(R.string.sp_realName), application.getRealName());

@@ -23,4 +23,25 @@ public class RUserBO {
     public String deviceNum = "";//设备编号
     public String insertDt = "";//注册时间
     public String updateDtv = "";//修改时间
+
+    @Override
+    public String toString() {
+        return "RUserBO{" +
+                "userId=" + userId +
+                ", nickName='" + nickName + '\'' +
+                ", realName='" + realName + '\'' +
+                ", headPic='" + headPic + '\'' +
+                ", schoolName='" + schoolName + '\'' +
+                ", intoSchoolDt='" + intoSchoolDt + '\'' +
+                ", tel='" + tel + '\'' +
+                ", idCardNum='" + idCardNum + '\'' +
+                ", idPicture='" + idPicture + '\'' +
+                ", password='" + password + '\'' +
+                ", status='" + status + '\'' +
+                ", inviteCode='" + inviteCode + '\'' +
+                ", deviceNum='" + deviceNum + '\'' +
+                ", insertDt='" + insertDt + '\'' +
+                ", updateDtv='" + updateDtv + '\'' +
+                '}';
+    }
 }
