@@ -120,4 +120,8 @@ public class JobsAdapter extends BaseListAdapter<BaseJobBO> {
         if (!this.selectedList.contains(position))
             this.selectedList.add(position);
     }
+
+    public void clearSelectedList(){
+        this.selectedList.clear();
+    }
 }

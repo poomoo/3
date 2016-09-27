@@ -17,6 +17,7 @@ import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.widget.ImageView;
 
+import com.poomoo.commlib.LogUtils;
 import com.poomoo.parttimejob.R;
 
 
@@ -26,6 +27,7 @@ import com.poomoo.parttimejob.R;
  * @author zhy
  */
 public class RoundImageView2 extends ImageView {
+    private final String TAG = getClass().getSimpleName();
     /**
      * 图片的类型，圆形or圆角
      */
@@ -121,7 +123,6 @@ public class RoundImageView2 extends ImageView {
             scale = mWidth * 1.0f / bSize;
 
         } else if (type == TYPE_ROUND) {
-//            Log.e("TAG", "b'w = " + bmp.getWidth() + " , " + "b'h = " + bmp.getHeight());
             if (!(bmp.getWidth() == getWidth() && bmp.getHeight() == getHeight())) {
                 // 如果图片的宽或者高与view的宽高不匹配，计算出需要缩放的比例；缩放后的图片的宽高，一定要大于我们view的宽高；所以我们这里取大值；
                 scale = Math.max(getWidth() * 1.0f / bmp.getWidth(),
@@ -139,7 +140,6 @@ public class RoundImageView2 extends ImageView {
 
     @Override
     protected void onDraw(Canvas canvas) {
-//        Log.e("TAG", "onDraw");
         if (getDrawable() == null) {
             return;
         }

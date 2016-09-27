@@ -137,7 +137,6 @@ public class MainFragment extends BaseFragment implements SwipeRefreshLayout.OnR
                         swipeRefreshLayout.setEnabled(false);
                     alpha = 255 * Math.abs(verticalOffset) / appBarLayout.getTotalScrollRange();
                     collapsingToolbarLayout.setContentScrimColor(Color.argb(alpha, 13, 176, 155));
-                    LogUtils.d(TAG, "addOnOffsetChangedListener:" + verticalOffset + "alpha" + alpha + "appBarLayout.getTotalScrollRange()" + appBarLayout.getTotalScrollRange());
                 }
         );
 
@@ -151,7 +150,6 @@ public class MainFragment extends BaseFragment implements SwipeRefreshLayout.OnR
         gridView.setAdapter(gridAdapter);
         gridView.setOnItemClickListener(this);
 
-        LogUtils.d(TAG, "userId;" + application.getUserId());
         mainPresenter = new MainPresenter(this);
         mainPresenter.loadAd();
         mainPresenter.loadCate();
@@ -169,7 +167,6 @@ public class MainFragment extends BaseFragment implements SwipeRefreshLayout.OnR
                 .setEvent(Events.EventEnum.DELIVER_CITY)
                 .setEndEvent(FragmentEvent.DESTROY)
                 .onNext((events) -> {
-                    LogUtils.d(TAG, "initSubscribers onNext");
                     cityTxt.setText(application.getCurrCity());
                     SPUtils.put(getActivity().getApplicationContext(), getString(R.string.sp_currCity), application.getCurrCity());
                     SPUtils.put(getActivity().getApplicationContext(), getString(R.string.sp_currCityId), application.getCurrCityId());
@@ -218,7 +215,6 @@ public class MainFragment extends BaseFragment implements SwipeRefreshLayout.OnR
 
     @Override
     public void loadAdSucceed(List<RAdBO> rAdBOs) {
-        LogUtils.d(TAG, "loadAdSucceed:" + rAdBOs.toString());
         isLoadAd = true;
         int len = rAdBOs.size();
         urls = new String[len];
@@ -227,15 +223,11 @@ public class MainFragment extends BaseFragment implements SwipeRefreshLayout.OnR
             rAdBO = rAdBOs.get(i);
             urls[i] = rAdBO.picture;
         }
-//        urls[len] = "http://hunchaowang.com/hckj/images/slide1.jpg";
-//        urls[len+1] = "http://img5.imgtn.bdimg.com/it/u=1831523257,4273085642&fm=21&gp=0.jpg";
-//        urls[len+2] = "http://img0.imgtn.bdimg.com/it/u=2724261082,1059352100&fm=21&gp=0.jpg";
         slideShowView.setPics(urls, position -> {
             url = rAdBOs.get(position).url;
             if (!TextUtils.isEmpty(url)) {
                 LogUtils.d(TAG, "url:" + url);
                 if (url.startsWith("http://")) {
-                    LogUtils.d(TAG, "网页");
                     bundle = new Bundle();
                     bundle.putString(getString(R.string.intent_value), url);
                     openActivity(WebViewActivity.class, bundle);
@@ -254,14 +246,13 @@ public class MainFragment extends BaseFragment implements SwipeRefreshLayout.OnR
         isLoadType = true;
         RTypeBO rTypeBO = new RTypeBO();
         rTypeBO.name = "兼职换购";
-//        rTypeBOs.remove(rTypeBOs.size()-1);
         rTypeBOs.add(rTypeBO);
         gridAdapter.setItems(rTypeBOs);
     }
 
     @Override
     public void loadRecommendsSucceed(List<BaseJobBO> rAdBOs) {
-        LogUtils.d(TAG, "loadRecommendsSucceed:" + rAdBOs);
+        adapter.clearSelectedList();
         swipeRefreshLayout.setRefreshing(false);
         if (rAdBOs == null) return;
 
@@ -297,7 +288,6 @@ public class MainFragment extends BaseFragment implements SwipeRefreshLayout.OnR
             typeInfo.setName(rTypeBO.name);
             typeInfos.add(typeInfo);
         }
-        LogUtils.d(TAG, "type:" + typeInfos.size());
         DataBaseHelper.saveType(typeInfos);
     }
 

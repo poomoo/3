@@ -214,6 +214,10 @@ public class BondActivity extends BaseActivity implements BondView {
         LoginActivity.instance.finish();
     }
 
+    public void protocol(View view) {
+        openActivity(ProtocolActivity.class);
+    }
+
     @Override
     public void failed(String msg) {
     }

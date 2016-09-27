@@ -25,7 +25,7 @@
                 android:gravity="center_vertical"
                 android:padding="10dp">
 
-                <com.poomoo.parttimejob.ui.custom.RoundImageView2
+                <ImageView
                     android:id="@+id/img_userAvatar"
                     android:layout_width="66dp"
                     android:layout_height="66dp"
@@ -57,7 +57,7 @@
 
                 <EditText
                     android:id="@+id/edt_realName"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
                     android:background="@null"
@@ -292,7 +292,7 @@
 
                 <EditText
                     android:id="@+id/edt_schoolName"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
                     android:background="@null"
@@ -402,7 +402,7 @@
 
                 <EditText
                     android:id="@+id/edt_workResume"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
                     android:background="@null"
@@ -427,7 +427,7 @@
 
                 <EditText
                     android:id="@+id/edt_workExp"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
                     android:background="@null"

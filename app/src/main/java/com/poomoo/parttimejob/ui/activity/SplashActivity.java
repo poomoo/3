@@ -80,7 +80,8 @@ public class SplashActivity extends BaseActivity {
         BasicPushNotificationBuilder basicPushNotificationBuilder = new BasicPushNotificationBuilder();
         basicPushNotificationBuilder.setStatusbarIcon(R.drawable.ic_stat_notify);
         Uri uri = RingtoneManager.getActualDefaultRingtoneUri(this, RingtoneManager.TYPE_NOTIFICATION);
-        basicPushNotificationBuilder.setNotificationSound(uri.toString());
+        if (uri != null)
+            basicPushNotificationBuilder.setNotificationSound(uri.toString());
         basicPushNotificationBuilder.setNotificationFlags(Notification.FLAG_AUTO_CANCEL);
         // 推送高级设置，通知栏样式设置为下面的ID
         PushManager.setNotificationBuilder(this, 1, basicPushNotificationBuilder);

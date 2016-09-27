@@ -24,6 +24,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
@@ -39,6 +40,7 @@ import com.poomoo.commlib.picUtils.Bimp;
 import com.poomoo.commlib.picUtils.FileUtils;
 import com.poomoo.model.response.RResumeBO;
 import com.poomoo.model.response.RUrl;
+import com.poomoo.parttimejob.GlideCircleTransform;
 import com.poomoo.parttimejob.R;
 import com.poomoo.parttimejob.adapter.ZoneAdapter;
 import com.poomoo.parttimejob.database.DataBaseHelper;
@@ -47,7 +49,6 @@ import com.poomoo.parttimejob.event.RxBus;
 import com.poomoo.parttimejob.presentation.ResumePresenter;
 import com.poomoo.parttimejob.ui.base.BaseActivity;
 import com.poomoo.parttimejob.ui.custom.CustomerDatePickerDialog;
-import com.poomoo.parttimejob.ui.custom.RoundImageView2;
 import com.poomoo.parttimejob.ui.popup.HeightPopUpWindow;
 import com.poomoo.parttimejob.ui.popup.SelectPicsPopupWindow;
 import com.poomoo.parttimejob.view.ResumeView;
@@ -69,7 +70,7 @@ import butterknife.OnClick;
  */
 public class ResumeActivity extends BaseActivity implements ResumeView {
     @Bind(R.id.img_userAvatar)
-    RoundImageView2 userAvatarImg;
+    ImageView userAvatarImg;
     @Bind(R.id.edt_realName)
     EditText nameEdt;
     @Bind(R.id.rBtn_man)
@@ -158,12 +159,12 @@ public class ResumeActivity extends BaseActivity implements ResumeView {
 
     private void initView() {
         userAvatarImg.setOnClickListener(v -> select_pics());
-        showProgressDialog(getString(R.string.dialog_msg));
         telTxt.setText(application.getTel());
 
         adapter = new ZoneAdapter(this);
         addressPopUpWindow = new AddressPopUpWindow(this);
 
+        showProgressDialog(getString(R.string.dialog_msg));
         resumePresenter.downResume(application.getUserId());
     }
 
@@ -625,7 +626,7 @@ public class ResumeActivity extends BaseActivity implements ResumeView {
         cityTxt.setText(cityName);
         areaTxt.setText(areaName);
 
-        Glide.with(this).load(headPic).placeholder(R.drawable.ic_defalut_avatar).into(userAvatarImg);
+        Glide.with(this).load(headPic).placeholder(R.drawable.ic_defalut_avatar).transform(new GlideCircleTransform(this)).into(userAvatarImg);
         nameEdt.setText(realName);
         if (sex == 1) manRbtn.setChecked(true);
         else womanRbtn.setChecked(true);

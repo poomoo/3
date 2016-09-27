@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.GridView;
 import android.widget.ImageView;
@@ -156,9 +157,11 @@ public class JobInfoActivity extends BaseActivity implements JobInfoView {
      * @param view
      */
     public void toMap(View view) {
+        if (TextUtils.isEmpty(rJobInfoBO.lat) || TextUtils.isEmpty(rJobInfoBO.lng))
+            return;
         Bundle bundle = new Bundle();
-        bundle.putDouble(getString(R.string.intent_lat), rJobInfoBO.lat);
-        bundle.putDouble(getString(R.string.intent_lng), rJobInfoBO.lng);
+        bundle.putDouble(getString(R.string.intent_lat), Double.parseDouble(rJobInfoBO.lat));
+        bundle.putDouble(getString(R.string.intent_lng), Double.parseDouble(rJobInfoBO.lng));
         openActivity(MapActivity.class, bundle);
     }
 
@@ -458,5 +461,11 @@ public class JobInfoActivity extends BaseActivity implements JobInfoView {
         closeProgressDialog();
         MyUtils.showToast(getApplicationContext(), msg);
         finish();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        jobInfoPresenter.onDestroy();
     }
 }
