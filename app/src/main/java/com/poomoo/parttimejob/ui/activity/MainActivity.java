@@ -47,19 +47,10 @@ public class MainActivity extends BaseActivity {
         setDefaultFragment();
         ButterKnife.bind(this);
         instance = this;
-//        StatusBarUtil.setTransparent(this);
-//        getWindow().setBackgroundDrawable(null);
 
         String bundle = getIntent().getStringExtra(getString(R.string.intent_bundle));
-        if (!TextUtils.isEmpty(bundle)) {
+        if (!TextUtils.isEmpty(bundle))
             toJob();
-//            Bundle bundle1 = new Bundle();
-//            bundle1.putInt(getString(R.string.intent_msgId), 1);
-//            bundle1.putString(getString(R.string.intent_value), "安卓");
-//            bundle1.putString(getString(R.string.intent_msg), "测试");
-//            openActivity(MessageActivity.class, bundle1);
-        }
-
     }
 
     @Override
@@ -131,17 +122,18 @@ public class MainActivity extends BaseActivity {
     }
 
     private void switchFragment(Fragment to) {
+        LogUtils.d(TAG, "to:" + to + " isAdd():" + to.isAdded());
         if (!to.isAdded()) { // 先判断是否被add过
             getSupportFragmentManager().beginTransaction()
                     .hide(curFragment)
                     .add(R.id.flayout_main, to)
-                    .commitAllowingStateLoss();
+                    .commit();
             // 隐藏当前的fragment，add下一个到Activity中
         } else {
             getSupportFragmentManager().beginTransaction()
                     .hide(curFragment)
                     .show(to)
-                    .commitAllowingStateLoss();
+                    .commit();
             // 隐藏当前的fragment，显示下一个
         }
     }

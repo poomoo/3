@@ -173,6 +173,11 @@ public abstract class BaseActivity extends RxAppCompatActivity {
     }
 
     @Override
+    protected void onResumeFragments() {
+        super.onResumeFragments();
+    }
+
+    @Override
     protected void onPause() {
         super.onPause();
         MobclickAgent.onPause(this);

@@ -29,6 +29,9 @@ public abstract class TabFragment extends BaseTabFragment {
     TabLayout mTabLayout;
     private int currItem;
 
+    public TabFragment() {
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

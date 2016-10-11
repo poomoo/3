@@ -341,7 +341,7 @@ public class ResumeActivity extends BaseActivity implements ResumeView {
             adapter.setSelectedPosition(selectedPosition);
         }
         adapter.setItems(provinceList);
-
+        LogUtils.d(TAG, "selectProvince:" + provinceName + " " + selectedPosition);
         addressPopUpWindow.showAtLocation(this.findViewById(R.id.llayout_resume), Gravity.CENTER, 0, 0);
     }
 
@@ -358,7 +358,7 @@ public class ResumeActivity extends BaseActivity implements ResumeView {
             adapter.setSelectedPosition(selectedPosition);
         }
         adapter.setItems(cityList);
-
+        LogUtils.d(TAG, "selectCity:" + cityName + " " + selectedPosition);
         addressPopUpWindow.showAtLocation(this.findViewById(R.id.llayout_resume), Gravity.CENTER, 0, 0);
     }
 
@@ -375,7 +375,7 @@ public class ResumeActivity extends BaseActivity implements ResumeView {
             adapter.setSelectedPosition(selectedPosition);
         }
         adapter.setItems(areaList);
-
+        LogUtils.d(TAG, "selectArea:" + areaName + " " + selectedPosition);
         addressPopUpWindow.showAtLocation(this.findViewById(R.id.llayout_resume), Gravity.CENTER, 0, 0);
     }
 
