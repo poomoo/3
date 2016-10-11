@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.WindowManager;
 import android.widget.TextView;
 
@@ -163,5 +164,12 @@ public class SplashActivity extends BaseActivity {
         } catch (Exception e) {
             LogUtils.d(TAG, "EXCEPTION:" + e.getMessage());
         }
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK)
+            return true;
+        return super.onKeyDown(keyCode, event);
     }
 }

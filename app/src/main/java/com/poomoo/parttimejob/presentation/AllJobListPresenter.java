@@ -39,8 +39,8 @@ public class AllJobListPresenter extends BasePresenter {
      * @param userId
      * @param status
      */
-    public void getApplyList(int userId, int status, int currPage) {
-        QApplyBO qApplyBO = new QApplyBO(NetConfig.JOBACTION, NetConfig.APPLYLIST, userId, status, currPage, Page.PAGE_SIZE);
+    public void getApplyList(int userId, int status, int pageNum) {
+        QApplyBO qApplyBO = new QApplyBO(NetConfig.JOBACTION, NetConfig.APPLYLIST, userId, status, pageNum, Page.PAGE_SIZE);
         mSubscriptions.add(Network.getJobApi().getApplyList(qApplyBO)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
