@@ -64,10 +64,6 @@ public class PersonalFragment extends BaseFragment {
     @Bind(R.id.txt_personalAuth)
     TextView authTxt;
 
-    private List<ProvinceInfo> province_list;
-    private List<CityInfo> city_list;
-    private List<AreaInfo> area_list;
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_personal, container, false);
@@ -157,7 +153,7 @@ public class PersonalFragment extends BaseFragment {
         }
         switch (view.getId()) {
             case R.id.llayout_toResume:
-                getCity();
+                openActivity(ResumeActivity.class);
                 break;
             case R.id.rlayout_myCollection:
                 openActivity(MyCollectionActivity.class);
@@ -167,7 +163,6 @@ public class PersonalFragment extends BaseFragment {
                 break;
             case R.id.rlayout_setting:
                 openActivity(JobIntentionActivity.class);
-                LogUtils.d(TAG, "openActivity");
                 break;
             case R.id.rlayout_feedBack:
                 openActivity(FeedBackActivity.class);
@@ -177,53 +172,4 @@ public class PersonalFragment extends BaseFragment {
                 break;
         }
     }
-
-    public void getCity() {
-        if (DataBaseHelper.getProvinceList().size() == 1) {
-            showProgressDialog("同步城市中,请稍后...");
-            BaseRequestBO baseRequestBO = new BaseRequestBO(NetConfig.COMMACTION, NetConfig.CITY);
-            Network.getCommApi().getCitys(baseRequestBO)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(Schedulers.io())
-                    .subscribe(new AbsAPICallback<List<RAreaBO>>() {
-                        @Override
-                        protected void onError(ApiException e) {
-                            getActivity().runOnUiThread(() -> {
-                                closeProgressDialog();
-                                MyUtils.showToast(getActivity().getApplicationContext(), e.getMessage());
-                            });
-                        }
-
-                        @Override
-                        public void onNext(List<RAreaBO> rAreaBOs) {
-                            city_list = new ArrayList<>();
-                            province_list = new ArrayList<>();
-                            city_list = new ArrayList<>();
-                            area_list = new ArrayList<>();
-                            for (RAreaBO rAreaBO : rAreaBOs) {
-                                ProvinceInfo provinceInfo = new ProvinceInfo(rAreaBO.provinceId, rAreaBO.provinceName);
-                                city_list = new ArrayList<>();
-                                for (RAreaBO.city city : rAreaBO.cityList) {
-                                    CityInfo cityInfo = new CityInfo(city.cityId, city.cityName, city.isHot, provinceInfo.getProvinceId());
-                                    city_list.add(cityInfo);
-                                    area_list = new ArrayList<>();
-                                    for (RAreaBO.area area : city.areaList)
-                                        area_list.add(new AreaInfo(area.areaId, area.areaName, cityInfo.getCityId()));
-                                    DataBaseHelper.saveArea(area_list);
-                                    city_list.add(cityInfo);
-                                }
-                                DataBaseHelper.saveCity(city_list);
-                                province_list.add(provinceInfo);
-                            }
-                            DataBaseHelper.saveProvince(province_list);
-                            getActivity().runOnUiThread(() -> {
-                                closeProgressDialog();
-                                openActivity(ResumeActivity.class);
-                            });
-                        }
-                    });
-        } else
-            openActivity(ResumeActivity.class);
-    }
-
 }

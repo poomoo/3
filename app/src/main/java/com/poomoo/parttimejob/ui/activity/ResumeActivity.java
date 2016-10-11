@@ -32,18 +32,27 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.poomoo.api.AbsAPICallback;
+import com.poomoo.api.ApiException;
+import com.poomoo.api.NetConfig;
+import com.poomoo.api.Network;
 import com.poomoo.commlib.LogUtils;
 import com.poomoo.commlib.MyConfig;
 import com.poomoo.commlib.MyUtils;
 import com.poomoo.commlib.SPUtils;
 import com.poomoo.commlib.picUtils.Bimp;
 import com.poomoo.commlib.picUtils.FileUtils;
+import com.poomoo.model.base.BaseRequestBO;
+import com.poomoo.model.response.RAreaBO;
 import com.poomoo.model.response.RResumeBO;
 import com.poomoo.model.response.RUrl;
 import com.poomoo.parttimejob.GlideCircleTransform;
 import com.poomoo.parttimejob.R;
 import com.poomoo.parttimejob.adapter.ZoneAdapter;
+import com.poomoo.parttimejob.database.AreaInfo;
+import com.poomoo.parttimejob.database.CityInfo;
 import com.poomoo.parttimejob.database.DataBaseHelper;
+import com.poomoo.parttimejob.database.ProvinceInfo;
 import com.poomoo.parttimejob.event.Events;
 import com.poomoo.parttimejob.event.RxBus;
 import com.poomoo.parttimejob.presentation.ResumePresenter;
@@ -62,6 +71,7 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import rx.schedulers.Schedulers;
 
 /**
  * 个人简历
@@ -137,6 +147,10 @@ public class ResumeActivity extends BaseActivity implements ResumeView {
     private String workResume;
     private String workExp;
 
+    private List<ProvinceInfo> province_list;
+    private List<CityInfo> city_list;
+    private List<AreaInfo> area_list;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -164,8 +178,7 @@ public class ResumeActivity extends BaseActivity implements ResumeView {
         adapter = new ZoneAdapter(this);
         addressPopUpWindow = new AddressPopUpWindow(this);
 
-        showProgressDialog(getString(R.string.dialog_msg));
-        resumePresenter.downResume(application.getUserId());
+        getCity();
     }
 
     private void select_pics() {
@@ -316,23 +329,6 @@ public class ResumeActivity extends BaseActivity implements ResumeView {
         dp.setMaxDate(cal.getTime().getTime());
     }
 
-    private void initZone() {
-//        adapter.setCurrAddress(ZoneAdapter.PROVINCE);
-//        provinceList = DataBaseHelper.getProvince();
-//        if (!TextUtils.isEmpty(provinceName))
-//            adapter.setSelectedPosition(provinceList.indexOf(provinceName + "#" + provinceId));
-//
-//        adapter.setCurrAddress(ZoneAdapter.CITY);
-//        cityList = DataBaseHelper.getCity(provinceId);
-//        if (!TextUtils.isEmpty(cityName))
-//            adapter.setSelectedPosition(cityList.indexOf(cityName + "#" + cityId));
-//
-//        adapter.setCurrAddress(ZoneAdapter.AREA);
-//        areaList = DataBaseHelper.getArea(cityId);
-//        if (!TextUtils.isEmpty(areaName))
-//            adapter.setSelectedPosition(areaList.indexOf(areaName + "#" + areaId));
-    }
-
     public void selectProvince(View view) {
         adapter.setCurrAddress(ZoneAdapter.PROVINCE);
         provinceList = DataBaseHelper.getProvince();
@@ -451,101 +447,6 @@ public class ResumeActivity extends BaseActivity implements ResumeView {
         }
     }
 
-//    public void selectProvince(View view) {
-//        if (provincePopUpWindow == null) {
-//            provinceList = DataBaseHelper.getProvince();
-//            provincePopUpWindow = new ProvincePopUpWindow(this, provinceList, provinceCategory);
-//        }
-//        provincePopUpWindow.showAtLocation(this.findViewById(R.id.llayout_resume), Gravity.CENTER, 0, 0);
-//    }
-//
-//    ProvincePopUpWindow.SelectCategory provinceCategory = new ProvincePopUpWindow.SelectCategory() {
-//        @Override
-//        public void selectCategory(String province) {
-//            LogUtils.d(TAG, "province:" + province);
-//            String temp[] = province.split("#");
-//            province = temp[0];
-//            provinceTxt.setText(province);
-//            provinceId = Integer.parseInt(temp[1]);
-//            LogUtils.d(TAG, "provinceId:" + provinceId);
-//
-//            cityList = DataBaseHelper.getCity(provinceId);
-//            if (cityList.size() > 0) {
-//                city = cityList.get(0).split("#")[0];
-//                cityTxt.setText(city);
-//                cityId = Integer.parseInt(cityList.get(0).split("#")[1]);
-//                areaList = DataBaseHelper.getArea(cityId);
-//                if (areaList.size() > 0) {
-//                    area = areaList.get(0).split("#")[0];
-//                    areaTxt.setText(area);
-//                    areaId = Integer.parseInt(areaList.get(0).split("#")[1]);
-//                } else {
-//                    areaTxt.setText("选择区域");
-//                    areaId = 0;
-//                }
-//            } else {
-//                areaList.clear();
-//                cityTxt.setText("选择城市");
-//                cityId = 0;
-//            }
-//
-//        }
-//    };
-//
-//    public void selectCity(View view) {
-//        LogUtils.d(TAG, "selectCity:" + cityList.size());
-//        if (cityPopUpWindow == null && cityList.size() > 0) {
-//            cityPopUpWindow = new ProvincePopUpWindow(this, cityList, cityCategory);
-//        }
-//        if (cityList.size() > 0) {
-////            cityPopUpWindow.adapter.notifyDataSetChanged();
-//            cityPopUpWindow.adapter.setItems(cityList);
-//            cityPopUpWindow.showAtLocation(this.findViewById(R.id.llayout_resume), Gravity.CENTER, 0, 0);
-//        }
-//    }
-//
-//    ProvincePopUpWindow.SelectCategory cityCategory = new ProvincePopUpWindow.SelectCategory() {
-//        @Override
-//        public void selectCategory(String province) {
-//            LogUtils.d(TAG, "province:" + province);
-//            String temp[] = province.split("#");
-//            city = temp[0];
-//            cityTxt.setText(city);
-//            cityId = Integer.parseInt(temp[1]);
-//            areaList = DataBaseHelper.getArea(cityId);
-//            if (areaList.size() > 0) {
-//                area = areaList.get(0).split("#")[0];
-//                areaTxt.setText(area);
-//                areaId = Integer.parseInt(areaList.get(0).split("#")[1]);
-//            } else {
-//                areaTxt.setText("选择区域");
-//                areaId = 0;
-//            }
-//            LogUtils.d(TAG, "cityId:" + cityId + "areaList:" + areaList.toString());
-//        }
-//    };
-//
-//    public void selectArea(View view) {
-//        if (areaPopUpWindow == null && areaList.size() > 0) {
-//            areaPopUpWindow = new ProvincePopUpWindow(this, areaList, areaCategory);
-//        }
-//        if (areaList.size() > 0) {
-//            areaPopUpWindow.adapter.notifyDataSetChanged();
-//            areaPopUpWindow.showAtLocation(this.findViewById(R.id.llayout_resume), Gravity.CENTER, 0, 0);
-//        }
-//    }
-//
-//    ProvincePopUpWindow.SelectCategory areaCategory = new ProvincePopUpWindow.SelectCategory() {
-//        @Override
-//        public void selectCategory(String province) {
-//            LogUtils.d(TAG, "province:" + province);
-//            String temp[] = province.split("#");
-//            area = temp[0];
-//            areaTxt.setText(area);
-//            areaId = Integer.parseInt(temp[1]);
-//        }
-//    };
-
     public void toSubmit(View view) {
         realName = nameEdt.getText().toString().trim();
         if (TextUtils.isEmpty(realName)) {
@@ -578,6 +479,58 @@ public class ResumeActivity extends BaseActivity implements ResumeView {
             resumePresenter.changeResume(application.getUserId(), headPic, realName, sex, height, birthday, provinceId, cityId, areaId, schoolName, email, qqNum, application.getTel(), workResume, workExp);
         else
             resumePresenter.uploadPic(file);
+    }
+
+    public void getCity() {
+        if (DataBaseHelper.getProvinceList().size() == 1) {
+            showProgressDialog("同步城市中,请稍后...");
+            BaseRequestBO baseRequestBO = new BaseRequestBO(NetConfig.COMMACTION, NetConfig.CITY);
+            Network.getCommApi().getCitys(baseRequestBO)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(Schedulers.io())
+                    .subscribe(new AbsAPICallback<List<RAreaBO>>() {
+                        @Override
+                        protected void onError(ApiException e) {
+                            runOnUiThread(() -> {
+                                closeProgressDialog();
+                                MyUtils.showToast(getApplicationContext(), e.getMessage());
+                                finish();
+                            });
+                        }
+
+                        @Override
+                        public void onNext(List<RAreaBO> rAreaBOs) {
+                            city_list = new ArrayList<>();
+                            province_list = new ArrayList<>();
+                            city_list = new ArrayList<>();
+                            area_list = new ArrayList<>();
+                            for (RAreaBO rAreaBO : rAreaBOs) {
+                                ProvinceInfo provinceInfo = new ProvinceInfo(rAreaBO.provinceId, rAreaBO.provinceName);
+                                city_list = new ArrayList<>();
+                                for (RAreaBO.city city : rAreaBO.cityList) {
+                                    CityInfo cityInfo = new CityInfo(city.cityId, city.cityName, city.isHot, provinceInfo.getProvinceId());
+                                    city_list.add(cityInfo);
+                                    area_list = new ArrayList<>();
+                                    for (RAreaBO.area area : city.areaList)
+                                        area_list.add(new AreaInfo(area.areaId, area.areaName, cityInfo.getCityId()));
+                                    DataBaseHelper.saveArea(area_list);
+                                    city_list.add(cityInfo);
+                                }
+                                DataBaseHelper.saveCity(city_list);
+                                province_list.add(provinceInfo);
+                            }
+                            DataBaseHelper.saveProvince(province_list);
+                            runOnUiThread(() -> {
+                                closeProgressDialog();
+                                showProgressDialog("同步简历中," + getString(R.string.dialog_msg));
+                                resumePresenter.downResume(application.getUserId());
+                            });
+                        }
+                    });
+        } else {
+            showProgressDialog("同步简历中," + getString(R.string.dialog_msg));
+            resumePresenter.downResume(application.getUserId());
+        }
     }
 
 
